@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, ChevronDown, ChevronUp, Filter } from "lucide-react";
+import { Search, Plus, ChevronDown, ChevronUp } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -86,17 +86,16 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
       {/* 列表区域 */}
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
         <ScrollArea className="w-full">
-          <Table className="min-w-[2000px]">
-            <TableHeader className="bg-slate-50/80">
+          <Table className="min-w-[2000px] border-collapse">
+            <TableHeader className="bg-slate-50/90 sticky top-0 z-30">
               <TableRow className="hover:bg-transparent">
                 <TableHead colSpan={8} className="text-center border-r font-bold text-indigo-600 py-2">基础信息</TableHead>
                 <TableHead colSpan={5} className="text-center border-r font-bold text-orange-600 py-2">阈值设置</TableHead>
                 <TableHead colSpan={6} className="text-center border-r font-bold text-blue-600 py-2">AI预警</TableHead>
                 <TableHead colSpan={2} className="text-center border-r font-bold text-slate-600 py-2">操作信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-20 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] text-center font-bold py-2">操作</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-40 shadow-[-4px_0_12px_rgba(0,0,0,0.1)] text-center font-bold py-2 border-l">操作</TableHead>
               </TableRow>
               <TableRow className="hover:bg-transparent">
-                {/* 基础信息 */}
                 <TableHead className="w-32">设备编码</TableHead>
                 <TableHead className="w-40">设备名称</TableHead>
                 <TableHead className="w-40">IMEI标识</TableHead>
@@ -105,24 +104,20 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead className="w-32">厂家</TableHead>
                 <TableHead className="w-32">型号</TableHead>
                 <TableHead className="w-48 border-r">地址</TableHead>
-                {/* 阈值设置 */}
                 <TableHead className="w-24">报警阈值</TableHead>
                 <TableHead className="w-24">烟火阈值</TableHead>
                 <TableHead className="w-24">防倾斜阈值</TableHead>
                 <TableHead className="w-24">温度阈值</TableHead>
                 <TableHead className="w-24 border-r">湿度阈值</TableHead>
-                {/* AI预警 */}
                 <TableHead className="w-24">灵敏度</TableHead>
                 <TableHead className="w-32">报警时限</TableHead>
                 <TableHead className="w-24">频率</TableHead>
                 <TableHead className="w-32">区域</TableHead>
                 <TableHead className="w-32">预警方式</TableHead>
                 <TableHead className="w-32 border-r">预警对象</TableHead>
-                {/* 操作信息 */}
                 <TableHead className="w-24">添加人</TableHead>
                 <TableHead className="w-40 border-r">添加时间</TableHead>
-                {/* 操作 */}
-                <TableHead className="sticky right-0 bg-slate-50 z-20 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] w-40"></TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-40 shadow-[-4px_0_12px_rgba(0,0,0,0.1)] w-40 border-l"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -136,24 +131,20 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                   <TableCell>{item.factory}</TableCell>
                   <TableCell>{item.model}</TableCell>
                   <TableCell className="border-r">{item.address}</TableCell>
-                  
                   <TableCell className="text-orange-600 font-medium">{item.alarmThreshold}</TableCell>
                   <TableCell>{item.fireThreshold}</TableCell>
                   <TableCell>{item.tiltThreshold}</TableCell>
                   <TableCell>{item.tempThreshold}</TableCell>
                   <TableCell className="border-r">{item.humidityThreshold}</TableCell>
-                  
                   <TableCell><Badge variant="outline" className="font-normal">{item.sensitivity}</Badge></TableCell>
                   <TableCell>{item.alarmLimit}</TableCell>
                   <TableCell>{item.frequency}</TableCell>
                   <TableCell>{item.area}</TableCell>
                   <TableCell>{item.alertType}</TableCell>
                   <TableCell className="border-r">{item.alertTarget}</TableCell>
-                  
                   <TableCell>{item.creator}</TableCell>
                   <TableCell className="text-slate-500 border-r">{item.createTime}</TableCell>
-                  
-                  <TableCell className="sticky right-0 bg-white group-hover:bg-slate-50 z-20 shadow-[-4px_0_8px_rgba(0,0,0,0.05)]">
+                  <TableCell className="sticky right-0 bg-white group-hover:bg-slate-50 z-20 shadow-[-4px_0_12px_rgba(0,0,0,0.1)] border-l">
                     <div className="flex items-center justify-center gap-1">
                       <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2 hover:bg-indigo-50">详情</Button>
                       <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2 hover:bg-slate-100">编辑</Button>
