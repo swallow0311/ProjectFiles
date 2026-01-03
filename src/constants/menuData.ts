@@ -25,7 +25,15 @@ export const MENU_DATA: Module[] = [
           { id: "monitoring", label: "文物保护工程及防治监测卷" },
         ]
       },
-      { id: "sub-volume", label: "副卷管理" },
+      { 
+        id: "sub-volume", 
+        label: "副卷管理",
+        children: [
+          { id: "admin-doc", label: "行政管理文件" },
+          { id: "legal-doc", label: "法律文书" },
+          { id: "chronicle", label: "大事记" },
+        ]
+      },
       { id: "voucher", label: "备考券管理" },
       { id: "category", label: "文物分类" },
     ]

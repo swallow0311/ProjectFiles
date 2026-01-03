@@ -11,6 +11,12 @@ import TextVolumeForm from '@/components/archives/TextVolumeForm';
 import ImageVolumeGallery from '@/components/archives/ImageVolumeGallery';
 import DocumentVolumeList from '@/components/archives/DocumentVolumeList';
 import DocumentVolumeForm from '@/components/archives/DocumentVolumeForm';
+import AdminDocList from '@/components/archives/AdminDocList';
+import AdminDocForm from '@/components/archives/AdminDocForm';
+import LegalDocList from '@/components/archives/LegalDocList';
+import LegalDocForm from '@/components/archives/LegalDocForm';
+import ChronicleList from '@/components/archives/ChronicleList';
+import ChronicleForm from '@/components/archives/ChronicleForm';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); // 默认选中“文物档案”
@@ -54,11 +60,15 @@ const Index = () => {
 
   const renderContent = () => {
     if (viewMode === 'add') {
-      if (activeMenuId === 'text') {
-        return <TextVolumeForm onBack={() => setViewMode('list')} />;
-      }
-      if (['planning', 'archaeology', 'monitoring'].includes(activeMenuId)) {
-        return <DocumentVolumeForm type={activeMenuId as any} onBack={() => setViewMode('list')} />;
+      switch (activeMenuId) {
+        case 'text': return <TextVolumeForm onBack={() => setViewMode('list')} />;
+        case 'planning':
+        case 'archaeology':
+        case 'monitoring':
+          return <DocumentVolumeForm type={activeMenuId as any} onBack={() => setViewMode('list')} />;
+        case 'admin-doc': return <AdminDocForm onBack={() => setViewMode('list')} />;
+        case 'legal-doc': return <LegalDocForm onBack={() => setViewMode('list')} />;
+        case 'chronicle': return <ChronicleForm onBack={() => setViewMode('list')} />;
       }
     }
 
@@ -81,6 +91,12 @@ const Index = () => {
         return <DocumentVolumeList type="archaeology" onAdd={() => setViewMode('add')} />;
       case 'monitoring':
         return <DocumentVolumeList type="monitoring" onAdd={() => setViewMode('add')} />;
+      case 'admin-doc':
+        return <AdminDocList onAdd={() => setViewMode('add')} />;
+      case 'legal-doc':
+        return <LegalDocList onAdd={() => setViewMode('add')} />;
+      case 'chronicle':
+        return <ChronicleList onAdd={() => setViewMode('add')} />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">
