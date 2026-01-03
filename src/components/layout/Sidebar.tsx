@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { MenuItem } from '@/types/menu';
 import { cn } from '@/lib/utils';
-import { ChevronDown, ChevronRight, Hexagon } from 'lucide-react';
+import { ChevronDown, ChevronRight, LayoutGrid } from 'lucide-react';
 
 interface SidebarProps {
   menus: MenuItem[];
@@ -25,32 +25,30 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
     const isExpanded = expandedIds.includes(item.id);
     const isActive = activeMenuId === item.id;
 
+    // 一级菜单样式（侧边栏顶层）
     if (depth === 0) {
       return (
-        <div key={item.id} className="mb-4 px-4">
+        <div key={item.id} className="mb-2 px-3">
           <button
             onClick={() => hasChildren ? toggleExpand(item.id) : onMenuChange(item.id)}
             className={cn(
-              "w-full flex items-center py-3 px-4 rounded-xl transition-all group relative overflow-hidden",
+              "w-full flex items-center py-2.5 px-3 rounded-lg transition-all group",
               isActive && !hasChildren
-                ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30"
-                : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-100"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
             )}
           >
-            {isActive && !hasChildren && (
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-cyan-500 shadow-[0_0_15px_#06b6d4]" />
-            )}
-            <Hexagon size={16} className={cn("mr-3 transition-colors", isActive ? "text-cyan-400" : "text-slate-600 group-hover:text-cyan-500")} />
-            <span className="flex-1 text-left text-sm font-black tracking-widest uppercase">{item.label}</span>
+            <LayoutGrid size={16} className={cn("mr-2.5 opacity-70", isActive && !hasChildren ? "text-white" : "text-slate-400 group-hover:text-slate-600")} />
+            <span className="flex-1 text-left text-sm font-bold tracking-wide">{item.label}</span>
             {hasChildren && (
-              <div className="opacity-40">
+              <div className="opacity-50">
                 {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
               </div>
             )}
           </button>
           
           {hasChildren && isExpanded && (
-            <div className="mt-2 ml-2 border-l border-slate-800 space-y-1">
+            <div className="mt-1 space-y-1">
               {item.children?.map(child => renderMenuItem(child, depth + 1))}
             </div>
           )}
@@ -58,19 +56,23 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
       );
     }
 
+    // 二级/子菜单样式
     return (
       <button
         key={item.id}
         onClick={() => onMenuChange(item.id)}
         className={cn(
-          "w-full flex items-center py-2.5 pl-8 pr-4 text-[13px] transition-all relative group",
+          "w-full flex items-center py-2 pl-10 pr-4 text-[13px] transition-all relative group",
           isActive 
-            ? "text-cyan-400 font-bold" 
-            : "text-slate-500 hover:text-slate-200 hover:pl-9"
+            ? "text-blue-600 font-semibold" 
+            : "text-slate-500 hover:text-slate-900 hover:pl-11"
         )}
       >
         {isActive && (
-          <div className="absolute left-0 w-4 h-[1px] bg-cyan-500 shadow-[0_0_8px_#06b6d4]" />
+          <div className="absolute left-4 w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.6)]" />
+        )}
+        {!isActive && (
+          <div className="absolute left-4 w-1 h-1 rounded-full bg-slate-300 group-hover:bg-slate-400 transition-colors" />
         )}
         <span className="truncate">{item.label}</span>
       </button>
@@ -78,11 +80,8 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
   };
 
   return (
-    <aside className="w-64 border-r border-slate-800 bg-slate-950/50 backdrop-blur-sm overflow-y-auto shrink-0">
-      <div className="py-8">
-        <div className="px-8 mb-6">
-          <div className="h-[1px] bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
-        </div>
+    <aside className="w-64 border-r border-slate-200 bg-white overflow-y-auto shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+      <div className="py-6">
         {menus.map(menu => renderMenuItem(menu))}
       </div>
     </aside>

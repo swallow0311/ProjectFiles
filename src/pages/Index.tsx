@@ -26,7 +26,6 @@ import BookForm from '@/components/archives/BookForm';
 import BasicInfoList from '@/components/archives/BasicInfoList';
 import BasicInfoForm from '@/components/archives/BasicInfoForm';
 import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
-import { LayoutGrid } from 'lucide-react';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
@@ -106,20 +105,19 @@ const Index = () => {
       case 'publicity': return <PublicityMaintenance />;
       default:
         return (
-          <div className="flex flex-col items-center justify-center h-96 border border-cyan-500/20 rounded-2xl bg-slate-900/50 backdrop-blur-sm shadow-2xl">
-            <div className="bg-cyan-500/10 p-6 rounded-full mb-6 relative">
-              <div className="absolute inset-0 bg-cyan-500 blur-xl opacity-20" />
-              <LayoutGrid size={48} className="text-cyan-500 relative" />
+          <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
+            <div className="bg-slate-50 p-4 rounded-full mb-4">
+              <LayoutGrid size={48} className="text-slate-300" />
             </div>
-            <p className="text-slate-300 font-bold text-lg tracking-widest uppercase">System Module: {activeMenuLabel}</p>
-            <p className="text-cyan-500/50 text-xs mt-2 font-mono">INITIALIZING INTERFACE...</p>
+            <p className="text-slate-500 font-medium">正在展示：{activeModule.label} - {activeMenuLabel}</p>
+            <p className="text-sm text-slate-400 mt-1">此处为功能模块内容展示区域</p>
           </div>
         );
     }
   };
 
   return (
-    <div className="h-screen flex flex-col bg-[#020617] overflow-hidden font-sans antialiased text-slate-100">
+    <div className="h-screen flex flex-col bg-[#f8fafc] overflow-hidden font-sans antialiased text-slate-900">
       <Header 
         activeModuleId={activeModuleId} 
         onModuleChange={handleModuleChange} 
@@ -132,38 +130,46 @@ const Index = () => {
           onMenuChange={handleMenuChange} 
         />
         
-        <main className="flex-1 overflow-y-auto p-8 flex flex-col relative">
-          {/* 装饰背景 */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 blur-[100px] -z-10" />
-          
+        <main className="flex-1 overflow-y-auto p-8 flex flex-col">
           {/* 顶部导航与标题区 */}
-          <div className="mb-10">
-            <Breadcrumb className="mb-4">
-              <BreadcrumbList className="text-slate-500 text-[10px] font-bold tracking-widest uppercase">
+          <div className="mb-8">
+            <Breadcrumb className="mb-3">
+              <BreadcrumbList className="text-slate-500 text-xs">
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-cyan-400 transition-colors">CORE</BreadcrumbLink>
+                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">首页</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="opacity-20" />
+                <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <span className="text-slate-400">{activeModule.label}</span>
+                  <span className="font-medium">{activeModule.label}</span>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="opacity-20" />
+                <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="text-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.3)]">{activeMenuLabel}</BreadcrumbPage>
+                  {viewMode === 'add' ? (
+                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">
+                      {activeMenuLabel}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage className="text-slate-900 font-semibold">{activeMenuLabel}</BreadcrumbPage>
+                  )}
                 </BreadcrumbItem>
+                {viewMode === 'add' && (
+                  <>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="text-blue-600 font-semibold">新增{activeMenuLabel}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
               </BreadcrumbList>
             </Breadcrumb>
             
-            <div className="flex items-end justify-between">
-              <div className="space-y-1">
-                <h2 className="text-4xl font-black tracking-tighter text-white uppercase italic">
-                  {viewMode === 'add' ? `NEW_${activeMenuLabel}` : activeMenuLabel}
-                </h2>
-                <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-transparent rounded-full" />
-              </div>
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+                {viewMode === 'add' ? `新增${activeMenuLabel}` : activeMenuLabel}
+              </h2>
               {viewMode === 'list' && (
-                <div className="text-[10px] font-mono text-cyan-500/50 bg-cyan-500/5 px-4 py-2 rounded-lg border border-cyan-500/10 backdrop-blur-sm">
-                  SYSTEM_TIME: {new Date().toLocaleTimeString()}
+                <div className="text-xs text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                  最后更新: {new Date().toLocaleDateString()}
                 </div>
               )}
             </div>
@@ -174,7 +180,7 @@ const Index = () => {
             {renderContent()}
           </div>
           
-          <footer className="mt-12 pb-4 opacity-30 hover:opacity-100 transition-opacity">
+          <footer className="mt-12 pb-4">
             <MadeWithDyad />
           </footer>
         </main>
