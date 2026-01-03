@@ -86,7 +86,7 @@ const AlarmProcessingList = () => {
                 <TableHead className="w-32 border-b">处置人员</TableHead>
                 <TableHead className="w-40 border-b">联系信息</TableHead>
                 {/* 浮窗表头 - 顶层 */}
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-6px_0_12px_rgba(0,0,0,0.08)] text-center w-32 border-b">操作</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-8px_0_12px_rgba(0,0,0,0.1)] text-center w-32 border-b border-l">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -105,7 +105,7 @@ const AlarmProcessingList = () => {
                   <TableCell>{item.processor}</TableCell>
                   <TableCell className="text-slate-500">{item.contact}</TableCell>
                   {/* 浮窗单元格 - 绝对固定 */}
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-6px_0_12px_rgba(0,0,0,0.08)] group-hover:bg-slate-50 transition-colors">
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-8px_0_12px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
                     <div className="flex items-center gap-2 px-2">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
                       <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>

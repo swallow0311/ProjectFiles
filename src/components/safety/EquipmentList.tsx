@@ -92,7 +92,7 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead colSpan={6} className="text-center border-r border-b font-bold text-blue-600 py-2">AI预警</TableHead>
                 <TableHead colSpan={2} className="text-center border-r border-b font-bold text-slate-600 py-2">操作信息</TableHead>
                 {/* 浮窗表头 - 顶层 */}
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-6px_0_12px_rgba(0,0,0,0.08)] text-center font-bold py-2 border-b">操作</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-8px_0_12px_rgba(0,0,0,0.1)] text-center font-bold py-2 border-b border-l">操作</TableHead>
               </TableRow>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-32 border-b">设备编码</TableHead>
@@ -117,7 +117,7 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead className="w-24 border-b">添加人</TableHead>
                 <TableHead className="w-40 border-r border-b">添加时间</TableHead>
                 {/* 浮窗表头占位 - 顶层 */}
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-6px_0_12px_rgba(0,0,0,0.08)] w-40 border-b"></TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-8px_0_12px_rgba(0,0,0,0.1)] w-40 border-b border-l"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -145,7 +145,7 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                   <TableCell>{item.creator}</TableCell>
                   <TableCell className="text-slate-500 border-r">{item.createTime}</TableCell>
                   {/* 浮窗单元格 - 绝对固定 */}
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-6px_0_12px_rgba(0,0,0,0.08)] group-hover:bg-slate-50 transition-colors">
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-8px_0_12px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
                     <div className="flex items-center gap-2 px-2">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
                       <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
