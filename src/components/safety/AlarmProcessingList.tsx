@@ -85,8 +85,8 @@ const AlarmProcessingList = () => {
                 <TableHead className="w-48 border-b">告警条件</TableHead>
                 <TableHead className="w-32 border-b">处置人员</TableHead>
                 <TableHead className="w-40 border-b">联系信息</TableHead>
-                {/* 浮窗表头 - 顶层 */}
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-8px_0_12px_rgba(0,0,0,0.1)] text-center w-32 border-b border-l">操作</TableHead>
+                {/* 浮窗表头 - 始终可见 */}
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-32 border-b border-l">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -104,11 +104,11 @@ const AlarmProcessingList = () => {
                   <TableCell className="text-orange-600 text-xs">{item.condition}</TableCell>
                   <TableCell>{item.processor}</TableCell>
                   <TableCell className="text-slate-500">{item.contact}</TableCell>
-                  {/* 浮窗单元格 - 绝对固定 */}
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-8px_0_12px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
-                    <div className="flex items-center gap-2 px-2">
-                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
-                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                  {/* 浮窗单元格 - 始终可见 */}
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                    <div className="flex items-center gap-2 px-2 justify-center">
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2 hover:bg-blue-50">详情</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2 hover:bg-red-50">删除</Button>
                     </div>
                   </TableCell>
                 </TableRow>
