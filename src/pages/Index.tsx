@@ -17,6 +17,12 @@ import LegalDocList from '@/components/archives/LegalDocList';
 import LegalDocForm from '@/components/archives/LegalDocForm';
 import ChronicleList from '@/components/archives/ChronicleList';
 import ChronicleForm from '@/components/archives/ChronicleForm';
+import ReferenceList from '@/components/archives/ReferenceList';
+import ReferenceForm from '@/components/archives/ReferenceForm';
+import LiteratureList from '@/components/archives/LiteratureList';
+import LiteratureForm from '@/components/archives/LiteratureForm';
+import BookList from '@/components/archives/BookList';
+import BookForm from '@/components/archives/BookForm';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); // 默认选中“文物档案”
@@ -69,6 +75,9 @@ const Index = () => {
         case 'admin-doc': return <AdminDocForm onBack={() => setViewMode('list')} />;
         case 'legal-doc': return <LegalDocForm onBack={() => setViewMode('list')} />;
         case 'chronicle': return <ChronicleForm onBack={() => setViewMode('list')} />;
+        case 'reference': return <ReferenceForm onBack={() => setViewMode('list')} />;
+        case 'literature': return <LiteratureForm onBack={() => setViewMode('list')} />;
+        case 'book': return <BookForm onBack={() => setViewMode('list')} />;
       }
     }
 
@@ -97,6 +106,12 @@ const Index = () => {
         return <LegalDocList onAdd={() => setViewMode('add')} />;
       case 'chronicle':
         return <ChronicleList onAdd={() => setViewMode('add')} />;
+      case 'reference':
+        return <ReferenceList onAdd={() => setViewMode('add')} />;
+      case 'literature':
+        return <LiteratureList onAdd={() => setViewMode('add')} />;
+      case 'book':
+        return <BookList onAdd={() => setViewMode('add')} />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">

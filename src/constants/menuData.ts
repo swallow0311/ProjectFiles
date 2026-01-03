@@ -34,7 +34,15 @@ export const MENU_DATA: Module[] = [
           { id: "chronicle", label: "大事记" },
         ]
       },
-      { id: "voucher", label: "备考券管理" },
+      { 
+        id: "voucher", 
+        label: "备考卷管理",
+        children: [
+          { id: "reference", label: "参考资料" },
+          { id: "literature", label: "论文与文献" },
+          { id: "book", label: "图书管理" },
+        ]
+      },
       { id: "category", label: "文物分类" },
     ]
   },
