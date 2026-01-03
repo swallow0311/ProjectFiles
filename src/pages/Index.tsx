@@ -105,19 +105,19 @@ const Index = () => {
       case 'publicity': return <PublicityMaintenance />;
       default:
         return (
-          <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
-            <div className="bg-slate-50 p-4 rounded-full mb-4">
-              <LayoutGrid size={48} className="text-slate-300" />
+          <div className="flex flex-col items-center justify-center h-96 border border-white/5 rounded-3xl bg-white/5 backdrop-blur-sm shadow-2xl">
+            <div className="bg-white/5 p-6 rounded-full mb-6 shadow-[0_0_30px_rgba(244,63,94,0.1)]">
+              <Sparkles size={48} className="text-pink-500" />
             </div>
-            <p className="text-slate-500 font-medium">正在展示：{activeModule.label} - {activeMenuLabel}</p>
-            <p className="text-sm text-slate-400 mt-1">此处为功能模块内容展示区域</p>
+            <p className="text-slate-300 font-bold text-lg">正在展示：{activeModule.label} - {activeMenuLabel}</p>
+            <p className="text-sm text-slate-500 mt-2">此处为功能模块内容展示区域</p>
           </div>
         );
     }
   };
 
   return (
-    <div className="h-screen flex flex-col bg-[#f8fafc] overflow-hidden font-sans antialiased text-slate-900">
+    <div className="h-screen flex flex-col bg-[#0f111a] overflow-hidden font-sans antialiased text-slate-200">
       <Header 
         activeModuleId={activeModuleId} 
         onModuleChange={handleModuleChange} 
@@ -130,46 +130,33 @@ const Index = () => {
           onMenuChange={handleMenuChange} 
         />
         
-        <main className="flex-1 overflow-y-auto p-8 flex flex-col">
+        <main className="flex-1 overflow-y-auto p-10 flex flex-col">
           {/* 顶部导航与标题区 */}
-          <div className="mb-8">
-            <Breadcrumb className="mb-3">
-              <BreadcrumbList className="text-slate-500 text-xs">
+          <div className="mb-10">
+            <Breadcrumb className="mb-4">
+              <BreadcrumbList className="text-slate-500 text-[11px] uppercase tracking-widest font-bold">
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">首页</BreadcrumbLink>
+                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-pink-500 transition-colors">Home</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
+                <BreadcrumbSeparator className="opacity-20" />
                 <BreadcrumbItem>
-                  <span className="font-medium">{activeModule.label}</span>
+                  <span className="text-slate-400">{activeModule.label}</span>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
+                <BreadcrumbSeparator className="opacity-20" />
                 <BreadcrumbItem>
-                  {viewMode === 'add' ? (
-                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">
-                      {activeMenuLabel}
-                    </BreadcrumbLink>
-                  ) : (
-                    <BreadcrumbPage className="text-slate-900 font-semibold">{activeMenuLabel}</BreadcrumbPage>
-                  )}
+                  <BreadcrumbPage className="text-pink-500">{activeMenuLabel}</BreadcrumbPage>
                 </BreadcrumbItem>
-                {viewMode === 'add' && (
-                  <>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage className="text-blue-600 font-semibold">新增{activeMenuLabel}</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </>
-                )}
               </BreadcrumbList>
             </Breadcrumb>
             
             <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+              <h2 className="text-4xl font-black tracking-tighter text-white">
                 {viewMode === 'add' ? `新增${activeMenuLabel}` : activeMenuLabel}
               </h2>
               {viewMode === 'list' && (
-                <div className="text-xs text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
-                  最后更新: {new Date().toLocaleDateString()}
+                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 bg-white/5 px-4 py-2 rounded-full border border-white/5">
+                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                  SYSTEM UPDATED: {new Date().toLocaleDateString()}
                 </div>
               )}
             </div>
@@ -180,7 +167,7 @@ const Index = () => {
             {renderContent()}
           </div>
           
-          <footer className="mt-12 pb-4">
+          <footer className="mt-16 pb-6 opacity-30 hover:opacity-100 transition-opacity">
             <MadeWithDyad />
           </footer>
         </main>
