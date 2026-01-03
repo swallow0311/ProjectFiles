@@ -72,8 +72,8 @@ const AlarmProcessingList = () => {
       {/* 列表区域 */}
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
         <ScrollArea className="w-full">
-          <Table className="min-w-[1800px] border-collapse">
-            <TableHeader className="bg-slate-50/90 sticky top-0 z-30">
+          <Table className="min-w-[1800px]">
+            <TableHeader className="bg-slate-50/80">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-48">事件名称</TableHead>
                 <TableHead className="w-48">事件编号</TableHead>
@@ -87,7 +87,7 @@ const AlarmProcessingList = () => {
                 <TableHead className="w-48">告警条件</TableHead>
                 <TableHead className="w-32">处置人员</TableHead>
                 <TableHead className="w-40">联系信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-40 shadow-[-4px_0_12px_rgba(0,0,0,0.1)] text-center w-32 border-l">操作</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-20 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] text-center w-32">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -105,7 +105,7 @@ const AlarmProcessingList = () => {
                   <TableCell className="text-orange-600 text-xs">{item.condition}</TableCell>
                   <TableCell>{item.processor}</TableCell>
                   <TableCell className="text-slate-500">{item.contact}</TableCell>
-                  <TableCell className="sticky right-0 bg-white group-hover:bg-slate-50 z-20 shadow-[-4px_0_12px_rgba(0,0,0,0.1)] border-l">
+                  <TableCell className="sticky right-0 bg-white group-hover:bg-slate-50 z-20 shadow-[-4px_0_8px_rgba(0,0,0,0.05)]">
                     <div className="flex items-center justify-center gap-1">
                       <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2 hover:bg-indigo-50">
                         <Eye className="w-3.5 h-3.5 mr-1" /> 详情
