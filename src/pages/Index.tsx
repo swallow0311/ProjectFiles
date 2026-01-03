@@ -4,8 +4,8 @@ import React, { useState, useMemo } from 'react';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import { MENU_DATA } from '@/constants/menuData';
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { LayoutGrid } from 'lucide-react';
 import TextVolumeList from '@/components/archives/TextVolumeList';
 import TextVolumeForm from '@/components/archives/TextVolumeForm';
 import ImageVolumeGallery from '@/components/archives/ImageVolumeGallery';
@@ -181,7 +181,7 @@ const Index = () => {
           </div>
           
           <footer className="mt-12 pb-4">
-            <MadeWithDyad />
+            {/* Footer content removed */}
           </footer>
         </main>
       </div>
