@@ -72,15 +72,15 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
             className={cn(
               "w-full flex items-center py-2.5 px-3 rounded-xl transition-all group",
               isActive && !hasChildren
-                ? "bg-blue-600 text-white shadow-lg shadow-blue-200/50"
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200/50"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
             )}
           >
             <div className={cn(
               "p-1.5 rounded-lg mr-3 transition-colors",
-              isActive && !hasChildren ? "bg-blue-500" : "bg-slate-100 group-hover:bg-white shadow-sm"
+              isActive && !hasChildren ? "bg-indigo-500" : "bg-slate-100 group-hover:bg-white shadow-sm"
             )}>
-              <IconComponent size={16} className={cn(isActive && !hasChildren ? "text-white" : "text-slate-500 group-hover:text-blue-600")} />
+              <IconComponent size={16} className={cn(isActive && !hasChildren ? "text-white" : "text-slate-500 group-hover:text-indigo-600")} />
             </div>
             <span className="flex-1 text-left text-[13px] font-bold tracking-wide">{item.label}</span>
             {hasChildren && (
@@ -91,7 +91,7 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
           </button>
           
           {hasChildren && isExpanded && (
-            <div className="mt-1 space-y-0.5 relative before:absolute before:left-[23px] before:top-0 before:bottom-2 before:w-px before:bg-slate-200">
+            <div className="mt-1 space-y-0.5">
               {item.children?.map(child => renderMenuItem(child, depth + 1))}
             </div>
           )}
@@ -107,15 +107,15 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
         className={cn(
           "w-full flex items-center py-2.5 pl-10 pr-4 text-[13px] transition-all relative group rounded-lg mx-1",
           isActive 
-            ? "text-blue-600 font-bold bg-blue-50/50" 
-            : "text-slate-500 hover:text-blue-600 hover:bg-slate-50 hover:translate-x-1"
+            ? "text-indigo-600 font-bold bg-indigo-50/50" 
+            : "text-slate-500 hover:text-indigo-600 hover:bg-slate-50 hover:translate-x-1"
         )}
       >
         {isActive && (
-          <div className="absolute left-[21px] w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.8)] z-10" />
+          <div className="absolute left-[21px] w-1.5 h-1.5 rounded-full bg-indigo-600 shadow-[0_0_8px_rgba(79,70,229,0.8)] z-10" />
         )}
         {!isActive && (
-          <div className="absolute left-[22px] w-1 h-1 rounded-full bg-slate-300 group-hover:bg-blue-400 transition-colors z-10" />
+          <div className="absolute left-[22px] w-1 h-1 rounded-full bg-slate-300 group-hover:bg-indigo-400 transition-colors z-10" />
         )}
         <span className="truncate">{item.label}</span>
       </button>
