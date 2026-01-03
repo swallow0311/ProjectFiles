@@ -28,6 +28,7 @@ import BasicInfoForm from '@/components/archives/BasicInfoForm';
 import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
 import EquipmentList from '@/components/safety/EquipmentList';
 import EquipmentForm from '@/components/safety/EquipmentForm';
+import AlarmProcessingList from '@/components/safety/AlarmProcessingList';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
@@ -107,6 +108,7 @@ const Index = () => {
       case 'basic-info': return <BasicInfoList onAdd={() => setViewMode('add')} />;
       case 'publicity': return <PublicityMaintenance />;
       case 'equipment': return <EquipmentList onAdd={() => setViewMode('add')} />;
+      case 'alarm-process': return <AlarmProcessingList />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
