@@ -84,14 +84,15 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
         <ScrollArea className="w-full">
-          <Table className="min-w-[2200px] border-separate border-spacing-0">
+          <Table className="min-w-[2000px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
                 <TableHead colSpan={8} className="text-center border-r border-b font-bold text-indigo-600 py-2">基础信息</TableHead>
                 <TableHead colSpan={5} className="text-center border-r border-b font-bold text-orange-600 py-2">阈值设置</TableHead>
                 <TableHead colSpan={6} className="text-center border-r border-b font-bold text-blue-600 py-2">AI预警</TableHead>
                 <TableHead colSpan={2} className="text-center border-r border-b font-bold text-slate-600 py-2">操作信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-4px_rgba(0,0,0,0.1)] text-center font-bold py-2 border-b border-l">操作</TableHead>
+                {/* 浮窗表头 - 增加阴影和固定背景 */}
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-10px_0_15px_rgba(0,0,0,0.05)] text-center font-bold py-2 border-b border-l">操作</TableHead>
               </TableRow>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-32 border-b">设备编码</TableHead>
@@ -115,7 +116,8 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead className="w-32 border-r border-b">预警对象</TableHead>
                 <TableHead className="w-24 border-b">添加人</TableHead>
                 <TableHead className="w-40 border-r border-b">添加时间</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-4px_rgba(0,0,0,0.1)] w-40 border-b border-l"></TableHead>
+                {/* 浮窗表头占位 - 保持阴影一致 */}
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-10px_0_15px_rgba(0,0,0,0.05)] w-40 border-b border-l"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -142,7 +144,8 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                   <TableCell className="border-r">{item.alertTarget}</TableCell>
                   <TableCell>{item.creator}</TableCell>
                   <TableCell className="text-slate-500 border-r">{item.createTime}</TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-4px_rgba(0,0,0,0.12)] group-hover:bg-slate-50 transition-colors border-l">
+                  {/* 浮窗单元格 - 绝对固定并增强阴影 */}
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-10px_0_15px_rgba(0,0,0,0.08)] group-hover:bg-slate-50 transition-colors border-l">
                     <div className="flex items-center justify-center gap-1 px-2">
                       <Button variant="ghost" size="sm" className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 h-8 px-3 font-medium">详情</Button>
                       <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900 hover:bg-slate-100 h-8 px-3 font-medium">编辑</Button>
