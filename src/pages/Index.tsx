@@ -5,12 +5,12 @@ import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import { MENU_DATA } from '@/constants/menuData';
 import { MadeWithDyad } from "@/components/made-with-dyad";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import TextVolumeList from '@/components/archives/TextVolumeList';
 import TextVolumeForm from '@/components/archives/TextVolumeForm';
 import ImageVolumeGallery from '@/components/archives/ImageVolumeGallery';
 import DocumentVolumeList from '@/components/archives/DocumentVolumeList';
+import DocumentVolumeForm from '@/components/archives/DocumentVolumeForm';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); // 默认选中“文物档案”
@@ -54,7 +54,12 @@ const Index = () => {
 
   const renderContent = () => {
     if (viewMode === 'add') {
-      return <TextVolumeForm onBack={() => setViewMode('list')} />;
+      if (activeMenuId === 'text') {
+        return <TextVolumeForm onBack={() => setViewMode('list')} />;
+      }
+      if (['planning', 'archaeology', 'monitoring'].includes(activeMenuId)) {
+        return <DocumentVolumeForm type={activeMenuId as any} onBack={() => setViewMode('list')} />;
+      }
     }
 
     switch (activeMenuId) {
