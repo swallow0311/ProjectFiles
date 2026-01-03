@@ -3,13 +3,50 @@
 import React, { useState } from 'react';
 import { MenuItem } from '@/types/menu';
 import { cn } from '@/lib/utils';
-import { ChevronDown, ChevronRight, LayoutGrid } from 'lucide-react';
+import { 
+  ChevronDown, 
+  ChevronRight, 
+  Database, 
+  Files, 
+  BookOpen, 
+  Tags, 
+  ShieldCheck, 
+  BarChart3, 
+  Settings2,
+  LayoutDashboard,
+  Wrench
+} from 'lucide-react';
 
 interface SidebarProps {
   menus: MenuItem[];
   activeMenuId: string;
   onMenuChange: (id: string) => void;
 }
+
+// 菜单图标映射表
+const ICON_MAP: Record<string, any> = {
+  'main-volume': Database,
+  'sub-volume': Files,
+  'voucher': BookOpen,
+  'category': Tags,
+  'overview': LayoutDashboard,
+  'plan': Wrench,
+  'approval': ShieldCheck,
+  'record': Files,
+  'evaluation': BarChart3,
+  'equipment': Database,
+  'analysis': BarChart3,
+  'alarm': ShieldCheck,
+  'event': Files,
+  'stats': BarChart3,
+  'report': Files,
+  'user': Settings2,
+  'role': ShieldCheck,
+  'contacts': BookOpen,
+  'api': Settings2,
+  'login-log': Files,
+  'op-log': Files,
+};
 
 const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
   const [expandedIds, setExpandedIds] = useState<string[]>(['main-volume', 'sub-volume', 'voucher', 'category']);
@@ -24,31 +61,37 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedIds.includes(item.id);
     const isActive = activeMenuId === item.id;
+    const IconComponent = ICON_MAP[item.id] || Database;
 
-    // 一级菜单样式（侧边栏顶层）
+    // 二级菜单样式（侧边栏分组标题）
     if (depth === 0) {
       return (
         <div key={item.id} className="mb-2 px-3">
           <button
             onClick={() => hasChildren ? toggleExpand(item.id) : onMenuChange(item.id)}
             className={cn(
-              "w-full flex items-center py-2.5 px-3 rounded-lg transition-all group",
+              "w-full flex items-center py-2.5 px-3 rounded-xl transition-all group",
               isActive && !hasChildren
-                ? "bg-blue-600 text-white shadow-md shadow-blue-200"
-                : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                ? "bg-blue-600 text-white shadow-lg shadow-blue-200/50"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
             )}
           >
-            <LayoutGrid size={16} className={cn("mr-2.5 opacity-70", isActive && !hasChildren ? "text-white" : "text-slate-400 group-hover:text-slate-600")} />
-            <span className="flex-1 text-left text-sm font-bold tracking-wide">{item.label}</span>
+            <div className={cn(
+              "p-1.5 rounded-lg mr-3 transition-colors",
+              isActive && !hasChildren ? "bg-blue-500" : "bg-slate-100 group-hover:bg-white shadow-sm"
+            )}>
+              <IconComponent size={16} className={cn(isActive && !hasChildren ? "text-white" : "text-slate-500 group-hover:text-blue-600")} />
+            </div>
+            <span className="flex-1 text-left text-[13px] font-bold tracking-wide">{item.label}</span>
             {hasChildren && (
-              <div className="opacity-50">
+              <div className="opacity-40 group-hover:opacity-100 transition-opacity">
                 {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
               </div>
             )}
           </button>
           
           {hasChildren && isExpanded && (
-            <div className="mt-1 space-y-1">
+            <div className="mt-1 space-y-0.5 relative before:absolute before:left-[23px] before:top-0 before:bottom-2 before:w-px before:bg-slate-200">
               {item.children?.map(child => renderMenuItem(child, depth + 1))}
             </div>
           )}
@@ -56,23 +99,23 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
       );
     }
 
-    // 二级/子菜单样式
+    // 三级菜单样式（具体功能项）
     return (
       <button
         key={item.id}
         onClick={() => onMenuChange(item.id)}
         className={cn(
-          "w-full flex items-center py-2 pl-10 pr-4 text-[13px] transition-all relative group",
+          "w-full flex items-center py-2.5 pl-10 pr-4 text-[13px] transition-all relative group rounded-lg mx-1",
           isActive 
-            ? "text-blue-600 font-semibold" 
-            : "text-slate-500 hover:text-slate-900 hover:pl-11"
+            ? "text-blue-600 font-bold bg-blue-50/50" 
+            : "text-slate-500 hover:text-blue-600 hover:bg-slate-50 hover:translate-x-1"
         )}
       >
         {isActive && (
-          <div className="absolute left-4 w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.6)]" />
+          <div className="absolute left-[21px] w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.8)] z-10" />
         )}
         {!isActive && (
-          <div className="absolute left-4 w-1 h-1 rounded-full bg-slate-300 group-hover:bg-slate-400 transition-colors" />
+          <div className="absolute left-[22px] w-1 h-1 rounded-full bg-slate-300 group-hover:bg-blue-400 transition-colors z-10" />
         )}
         <span className="truncate">{item.label}</span>
       </button>
@@ -80,7 +123,7 @@ const Sidebar = ({ menus, activeMenuId, onMenuChange }: SidebarProps) => {
   };
 
   return (
-    <aside className="w-64 border-r border-slate-200 bg-white overflow-y-auto shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+    <aside className="w-66 border-r border-slate-200 bg-white overflow-y-auto shrink-0 shadow-[10px_0_30px_rgba(0,0,0,0.02)]">
       <div className="py-6">
         {menus.map(menu => renderMenuItem(menu))}
       </div>
