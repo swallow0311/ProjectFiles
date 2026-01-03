@@ -85,12 +85,12 @@ const AlarmProcessingList = () => {
                 <TableHead className="w-48 border-b">告警条件</TableHead>
                 <TableHead className="w-32 border-b">处置人员</TableHead>
                 <TableHead className="w-40 border-b">联系信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] text-center w-32 border-b">操作</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-40 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] text-center w-32 border-b">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.id} className="group">
                   <TableCell className="font-medium text-slate-900">{item.name}</TableCell>
                   <TableCell className="text-indigo-600 font-mono text-xs">{item.code}</TableCell>
                   <TableCell className="text-slate-500">{item.time}</TableCell>
@@ -103,8 +103,8 @@ const AlarmProcessingList = () => {
                   <TableCell className="text-orange-600 text-xs">{item.condition}</TableCell>
                   <TableCell>{item.processor}</TableCell>
                   <TableCell className="text-slate-500">{item.contact}</TableCell>
-                  <TableCell className="sticky right-0 bg-white shadow-[-4px_0_8px_rgba(0,0,0,0.05)]">
-                    <div className="flex items-center gap-2">
+                  <TableCell className="sticky right-0 bg-white z-30 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] group-hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center gap-2 px-2">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
                       <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
                     </div>

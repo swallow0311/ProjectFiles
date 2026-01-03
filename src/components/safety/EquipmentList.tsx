@@ -91,7 +91,7 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead colSpan={5} className="text-center border-r border-b font-bold text-orange-600 py-2">阈值设置</TableHead>
                 <TableHead colSpan={6} className="text-center border-r border-b font-bold text-blue-600 py-2">AI预警</TableHead>
                 <TableHead colSpan={2} className="text-center border-r border-b font-bold text-slate-600 py-2">操作信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] text-center font-bold py-2 border-b">操作</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-40 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] text-center font-bold py-2 border-b">操作</TableHead>
               </TableRow>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-32 border-b">设备编码</TableHead>
@@ -115,12 +115,12 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead className="w-32 border-r border-b">预警对象</TableHead>
                 <TableHead className="w-24 border-b">添加人</TableHead>
                 <TableHead className="w-40 border-r border-b">添加时间</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] w-40 border-b"></TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-40 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] w-40 border-b"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.id} className="group">
                   <TableCell className="font-medium text-indigo-600">{item.code}</TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell className="text-slate-500 text-xs">{item.imei}</TableCell>
@@ -142,8 +142,8 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                   <TableCell className="border-r">{item.alertTarget}</TableCell>
                   <TableCell>{item.creator}</TableCell>
                   <TableCell className="text-slate-500 border-r">{item.createTime}</TableCell>
-                  <TableCell className="sticky right-0 bg-white shadow-[-4px_0_8px_rgba(0,0,0,0.05)]">
-                    <div className="flex items-center gap-2">
+                  <TableCell className="sticky right-0 bg-white z-30 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] group-hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center gap-2 px-2">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
                       <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
                       <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
