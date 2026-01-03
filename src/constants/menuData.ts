@@ -43,7 +43,14 @@ export const MENU_DATA: Module[] = [
           { id: "book", label: "图书管理" },
         ]
       },
-      { id: "category", label: "文物分类" },
+      { 
+        id: "category", 
+        label: "文物分类",
+        children: [
+          { id: "basic-info", label: "基础信息维护" },
+          { id: "publicity", label: "公开性维护" },
+        ]
+      },
     ]
   },
   {

@@ -23,6 +23,9 @@ import LiteratureList from '@/components/archives/LiteratureList';
 import LiteratureForm from '@/components/archives/LiteratureForm';
 import BookList from '@/components/archives/BookList';
 import BookForm from '@/components/archives/BookForm';
+import BasicInfoList from '@/components/archives/BasicInfoList';
+import BasicInfoForm from '@/components/archives/BasicInfoForm';
+import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); // 默认选中“文物档案”
@@ -78,6 +81,7 @@ const Index = () => {
         case 'reference': return <ReferenceForm onBack={() => setViewMode('list')} />;
         case 'literature': return <LiteratureForm onBack={() => setViewMode('list')} />;
         case 'book': return <BookForm onBack={() => setViewMode('list')} />;
+        case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} />;
       }
     }
 
@@ -112,6 +116,10 @@ const Index = () => {
         return <LiteratureList onAdd={() => setViewMode('add')} />;
       case 'book':
         return <BookList onAdd={() => setViewMode('add')} />;
+      case 'basic-info':
+        return <BasicInfoList onAdd={() => setViewMode('add')} />;
+      case 'publicity':
+        return <PublicityMaintenance />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">
