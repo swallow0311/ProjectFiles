@@ -68,7 +68,6 @@ export const MENU_DATA: Module[] = [
     label: "文物安全",
     menus: [
       { id: "equipment", label: "设备台账" },
-      { id: "analysis", label: "检测分析" },
       { id: "alarm", label: "检测告警" },
       { id: "event", label: "事件处理" },
     ]

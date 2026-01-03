@@ -26,6 +26,8 @@ import BookForm from '@/components/archives/BookForm';
 import BasicInfoList from '@/components/archives/BasicInfoList';
 import BasicInfoForm from '@/components/archives/BasicInfoForm';
 import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
+import EquipmentList from '@/components/safety/EquipmentList';
+import EquipmentForm from '@/components/safety/EquipmentForm';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
@@ -82,6 +84,7 @@ const Index = () => {
         case 'literature': return <LiteratureForm onBack={() => setViewMode('list')} />;
         case 'book': return <BookForm onBack={() => setViewMode('list')} />;
         case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} />;
+        case 'equipment': return <EquipmentForm onBack={() => setViewMode('list')} />;
       }
     }
 
@@ -103,6 +106,7 @@ const Index = () => {
       case 'book': return <BookList onAdd={() => setViewMode('add')} />;
       case 'basic-info': return <BasicInfoList onAdd={() => setViewMode('add')} />;
       case 'publicity': return <PublicityMaintenance />;
+      case 'equipment': return <EquipmentList onAdd={() => setViewMode('add')} />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
