@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ChevronDown, ChevronUp, Trash2, Eye } from "lucide-react";
+import { Search, ChevronDown, ChevronUp } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
@@ -30,7 +30,6 @@ const AlarmProcessingList = () => {
 
   return (
     <div className="space-y-4">
-      {/* 查询区域 */}
       <div className="bg-white p-4 rounded-xl border shadow-sm space-y-4">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-3 flex-1">
@@ -69,11 +68,10 @@ const AlarmProcessingList = () => {
         )}
       </div>
 
-      {/* 列表区域 */}
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
         <ScrollArea className="w-full">
           <Table className="min-w-[1800px] border-separate border-spacing-0">
-            <TableHeader className="bg-slate-50/90 backdrop-blur-sm">
+            <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-48 border-b">事件名称</TableHead>
                 <TableHead className="w-48 border-b">事件编号</TableHead>
@@ -87,12 +85,12 @@ const AlarmProcessingList = () => {
                 <TableHead className="w-48 border-b">告警条件</TableHead>
                 <TableHead className="w-32 border-b">处置人员</TableHead>
                 <TableHead className="w-40 border-b">联系信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-30 shadow-[-4px_0_12px_rgba(0,0,0,0.08)] text-center w-32 border-b">操作</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 shadow-[-4px_0_8px_rgba(0,0,0,0.05)] text-center w-32 border-b">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
-                <TableRow key={item.id} className="group">
+                <TableRow key={item.id}>
                   <TableCell className="font-medium text-slate-900">{item.name}</TableCell>
                   <TableCell className="text-indigo-600 font-mono text-xs">{item.code}</TableCell>
                   <TableCell className="text-slate-500">{item.time}</TableCell>
@@ -105,14 +103,10 @@ const AlarmProcessingList = () => {
                   <TableCell className="text-orange-600 text-xs">{item.condition}</TableCell>
                   <TableCell>{item.processor}</TableCell>
                   <TableCell className="text-slate-500">{item.contact}</TableCell>
-                  <TableCell className="sticky right-0 bg-white group-hover:bg-slate-50 z-20 shadow-[-4px_0_12px_rgba(0,0,0,0.08)] transition-colors">
-                    <div className="flex items-center justify-center gap-1">
-                      <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2 hover:bg-indigo-50">
-                        <Eye className="w-3.5 h-3.5 mr-1" /> 详情
-                      </Button>
-                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2 hover:bg-red-50">
-                        <Trash2 className="w-3.5 h-3.5 mr-1" /> 删除
-                      </Button>
+                  <TableCell className="sticky right-0 bg-white shadow-[-4px_0_8px_rgba(0,0,0,0.05)]">
+                    <div className="flex items-center gap-2">
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -123,7 +117,6 @@ const AlarmProcessingList = () => {
         </ScrollArea>
       </div>
 
-      {/* 分页区域 */}
       <div className="flex items-center justify-between px-2 py-4">
         <div className="text-sm text-slate-500">共 {data.length} 条数据</div>
         <div className="flex items-center gap-6">
