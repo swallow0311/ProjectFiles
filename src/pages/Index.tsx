@@ -126,15 +126,21 @@ const Index = () => {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="#" onClick={() => setViewMode('list')}>首页</BreadcrumbLink>
+                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }}>首页</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="#">{activeModule.label}</BreadcrumbLink>
+                  <BreadcrumbLink href="#" onClick={(e) => e.preventDefault()}>{activeModule.label}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>{activeMenuLabel}</BreadcrumbPage>
+                  {viewMode === 'add' ? (
+                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }}>
+                      {activeMenuLabel}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage>{activeMenuLabel}</BreadcrumbPage>
+                  )}
                 </BreadcrumbItem>
                 {viewMode === 'add' && (
                   <>

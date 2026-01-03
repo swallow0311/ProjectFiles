@@ -21,9 +21,14 @@ const LegalDocList = ({ onAdd }: LegalDocListProps) => {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-lg border">
         <div className="flex items-center gap-3 flex-1">
-          <Input className="w-48" placeholder="存储与使用单位" />
-          <Input className="w-48" placeholder="责任方" />
-          <Input className="w-48" type="date" placeholder="签署时间" />
+          <Input className="w-40" placeholder="存储与使用单位" />
+          <Input className="w-40" placeholder="责任方" />
+          <div className="flex items-center gap-2 bg-slate-50 px-2 py-1 rounded-md border">
+            <span className="text-xs text-slate-500 shrink-0">签署时间:</span>
+            <Input className="w-36 h-8 border-0 bg-transparent focus-visible:ring-0" type="date" />
+            <span className="text-slate-300">-</span>
+            <Input className="w-36 h-8 border-0 bg-transparent focus-visible:ring-0" type="date" />
+          </div>
           <Button variant="outline">查询</Button>
         </div>
         <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700">
