@@ -66,7 +66,7 @@ const ApprovalList = () => {
     switch (item.status) {
       case '审核中':
         return (
-          <div className="flex items-center gap-2 px-2 justify-center">
+          <div className="flex items-center gap-2 px-2">
             {baseActions}
             <Button variant="ghost" size="sm" className="text-green-600 h-8 px-2 hover:bg-green-50" onClick={() => handleApprove(item.name)}>
               <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> 通过
@@ -78,7 +78,7 @@ const ApprovalList = () => {
         );
       case '已通过':
         return (
-          <div className="flex items-center gap-2 px-2 justify-center">
+          <div className="flex items-center gap-2 px-2">
             {baseActions}
             <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2 hover:bg-red-50" onClick={() => handleReject(item.name)}>
               <XCircle className="w-3.5 h-3.5 mr-1" /> 驳回
@@ -87,7 +87,7 @@ const ApprovalList = () => {
         );
       default:
         return (
-          <div className="flex items-center gap-2 px-2 justify-center">
+          <div className="flex items-center gap-2 px-2">
             {baseActions}
           </div>
         );
@@ -168,7 +168,8 @@ const ApprovalList = () => {
                 <TableHead className="w-24 border-b">方案状态</TableHead>
                 <TableHead className="w-24 border-b">提审人</TableHead>
                 <TableHead className="w-40 border-b">提审时间</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-48 border-b border-l">操作</TableHead>
+                {/* 固定操作列：左对齐 */}
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-left w-48 border-b border-l pl-6">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -200,7 +201,8 @@ const ApprovalList = () => {
                   </TableCell>
                   <TableCell className="border-b">{item.submitter}</TableCell>
                   <TableCell className="text-slate-500 border-b">{item.submitTime}</TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b">
+                  {/* 固定操作列单元格：左对齐 */}
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b pl-4">
                     {renderActions(item)}
                   </TableCell>
                 </TableRow>

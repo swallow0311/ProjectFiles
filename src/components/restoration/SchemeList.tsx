@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, ChevronDown, ChevronUp, Edit, Trash2, PlusCircle } from "lucide-react";
+import { Search, Plus, ChevronDown, ChevronUp, Edit, Trash2, History } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -136,6 +136,7 @@ const SchemeList = ({ onAdd, onAddVersion }: SchemeListProps) => {
                 <TableHead className="w-24 border-b">方案状态</TableHead>
                 <TableHead className="w-24 border-b">添加人</TableHead>
                 <TableHead className="w-40 border-b">添加时间</TableHead>
+                {/* 固定操作列 */}
                 <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-40 border-b border-l">操作</TableHead>
               </TableRow>
             </TableHeader>
@@ -173,6 +174,7 @@ const SchemeList = ({ onAdd, onAddVersion }: SchemeListProps) => {
                     </TableCell>
                     <TableCell className="border-b">{item.creator}</TableCell>
                     <TableCell className="text-slate-500 border-b">{item.createTime}</TableCell>
+                    {/* 固定操作列单元格 */}
                     <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b">
                       <div className="flex items-center gap-2 px-2 justify-center">
                         <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => toggleExpand(item.id)}>详情</Button>
