@@ -58,9 +58,8 @@ export const MENU_DATA: Module[] = [
     label: "文物修缮",
     menus: [
       { id: "plan", label: "修葺方案" },
-      { id: "approval", label: "方案审批" },
+      { id: "approval", label: "方案审核" },
       { id: "record", label: "修葺记录" },
-      { id: "evaluation", label: "效果评估" },
     ]
   },
   {

@@ -29,6 +29,11 @@ import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
 import EquipmentList from '@/components/safety/EquipmentList';
 import EquipmentForm from '@/components/safety/EquipmentForm';
 import AlarmProcessingList from '@/components/safety/AlarmProcessingList';
+import SchemeList from '@/components/restoration/SchemeList';
+import SchemeForm from '@/components/restoration/SchemeForm';
+import ApprovalList from '@/components/restoration/ApprovalList';
+import RecordList from '@/components/restoration/RecordList';
+import RecordForm from '@/components/restoration/RecordForm';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
@@ -86,6 +91,8 @@ const Index = () => {
         case 'book': return <BookForm onBack={() => setViewMode('list')} />;
         case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} />;
         case 'equipment': return <EquipmentForm onBack={() => setViewMode('list')} />;
+        case 'plan': return <SchemeForm onBack={() => setViewMode('list')} />;
+        case 'record': return <RecordForm onBack={() => setViewMode('list')} />;
       }
     }
 
@@ -109,6 +116,9 @@ const Index = () => {
       case 'publicity': return <PublicityMaintenance />;
       case 'equipment': return <EquipmentList onAdd={() => setViewMode('add')} />;
       case 'alarm-process': return <AlarmProcessingList />;
+      case 'plan': return <SchemeList onAdd={() => setViewMode('add')} />;
+      case 'approval': return <ApprovalList />;
+      case 'record': return <RecordList onAdd={() => setViewMode('add')} />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
