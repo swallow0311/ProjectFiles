@@ -72,14 +72,6 @@ export const MENU_DATA: Module[] = [
     ]
   },
   {
-    id: "data-center",
-    label: "数据中心",
-    menus: [
-      { id: "stats", label: "数据统计" },
-      { id: "report", label: "报表导出" },
-    ]
-  },
-  {
     id: "system",
     label: "系统管理",
     menus: [

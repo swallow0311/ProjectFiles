@@ -34,6 +34,12 @@ import SchemeForm from '@/components/restoration/SchemeForm';
 import ApprovalList from '@/components/restoration/ApprovalList';
 import RecordList from '@/components/restoration/RecordList';
 import RecordForm from '@/components/restoration/RecordForm';
+import UserList from '@/components/system/UserList';
+import RoleList from '@/components/system/RoleList';
+import ContactList from '@/components/system/ContactList';
+import ApiList from '@/components/system/ApiList';
+import LoginLogList from '@/components/system/LoginLogList';
+import OpLogList from '@/components/system/OpLogList';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
@@ -138,6 +144,12 @@ const Index = () => {
       case 'scheme-mgmt': return <SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />;
       case 'scheme-audit': return <ApprovalList />;
       case 'exec-record': return <RecordList onAdd={() => setViewMode('add')} onAddDetail={handleAddRecord} />;
+      case 'user': return <UserList />;
+      case 'role': return <RoleList />;
+      case 'contacts': return <ContactList />;
+      case 'api': return <ApiList />;
+      case 'login-log': return <LoginLogList />;
+      case 'op-log': return <OpLogList />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
