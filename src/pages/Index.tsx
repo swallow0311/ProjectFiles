@@ -38,7 +38,8 @@ import RecordForm from '@/components/restoration/RecordForm';
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
   const [activeMenuId, setActiveMenuId] = useState('text'); 
-  const [viewMode, setViewMode] = useState<'list' | 'add'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'add' | 'add-version'>('list');
+  const [selectedScheme, setSelectedScheme] = useState<any>(null);
 
   const activeModule = useMemo(() => 
     MENU_DATA.find(m => m.id === activeModuleId) || MENU_DATA[0],
@@ -75,6 +76,11 @@ const Index = () => {
     setViewMode('list');
   };
 
+  const handleAddVersion = (scheme: any) => {
+    setSelectedScheme(scheme);
+    setViewMode('add-version');
+  };
+
   const renderContent = () => {
     if (viewMode === 'add') {
       switch (activeMenuId) {
@@ -91,9 +97,13 @@ const Index = () => {
         case 'book': return <BookForm onBack={() => setViewMode('list')} />;
         case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} />;
         case 'equipment': return <EquipmentForm onBack={() => setViewMode('list')} />;
-        case 'plan': return <SchemeForm onBack={() => setViewMode('list')} />;
-        case 'record': return <RecordForm onBack={() => setViewMode('list')} />;
+        case 'scheme-mgmt': return <SchemeForm onBack={() => setViewMode('list')} />;
+        case 'exec-record': return <RecordForm onBack={() => setViewMode('list')} />;
       }
+    }
+
+    if (viewMode === 'add-version') {
+      return <SchemeForm onBack={() => setViewMode('list')} initialData={selectedScheme} isVersionMode />;
     }
 
     switch (activeMenuId) {
@@ -116,9 +126,9 @@ const Index = () => {
       case 'publicity': return <PublicityMaintenance />;
       case 'equipment': return <EquipmentList onAdd={() => setViewMode('add')} />;
       case 'alarm-process': return <AlarmProcessingList />;
-      case 'plan': return <SchemeList onAdd={() => setViewMode('add')} />;
-      case 'approval': return <ApprovalList />;
-      case 'record': return <RecordList onAdd={() => setViewMode('add')} />;
+      case 'scheme-mgmt': return <SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />;
+      case 'scheme-audit': return <ApprovalList />;
+      case 'exec-record': return <RecordList onAdd={() => setViewMode('add')} />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
@@ -160,7 +170,7 @@ const Index = () => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  {viewMode === 'add' ? (
+                  {viewMode !== 'list' ? (
                     <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">
                       {activeMenuLabel}
                     </BreadcrumbLink>
@@ -176,12 +186,21 @@ const Index = () => {
                     </BreadcrumbItem>
                   </>
                 )}
+                {viewMode === 'add-version' && (
+                  <>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="text-indigo-600 font-semibold">添加版本</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
               </BreadcrumbList>
             </Breadcrumb>
             
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
-                {viewMode === 'add' ? `新增${activeMenuLabel}` : activeMenuLabel}
+                {viewMode === 'add' ? `新增${activeMenuLabel}` : 
+                 viewMode === 'add-version' ? '添加方案版本' : activeMenuLabel}
               </h2>
               {viewMode === 'list' && (
                 <div className="text-xs text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">

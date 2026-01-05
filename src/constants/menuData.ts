@@ -55,11 +55,13 @@ export const MENU_DATA: Module[] = [
   },
   {
     id: "restoration",
-    label: "文物修缮",
+    label: "文物修葺",
     menus: [
-      { id: "plan", label: "修葺方案" },
-      { id: "approval", label: "方案审核" },
-      { id: "record", label: "修葺记录" },
+      { id: "scheme-mgmt", label: "方案管理" },
+      { id: "scheme-audit", label: "方案审核" },
+      { id: "exec-record", label: "执行记录" },
+      { id: "archive-mgmt", label: "档案管理" },
+      { id: "stats-analysis", label: "统计分析" },
     ]
   },
   {
