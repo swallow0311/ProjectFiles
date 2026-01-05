@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, Users, Lock } from "lucide-react";
 
-const RoleList = () => {
+interface RoleListProps {
+  onAdd: () => void;
+}
+
+const RoleList = ({ onAdd }: RoleListProps) => {
   const data = [
     { id: '1', name: '超级管理员', code: 'ROLE_ADMIN', desc: '拥有系统所有操作权限', userCount: 2 },
     { id: '2', name: '文保专员', code: 'ROLE_ARCHIVE', desc: '负责文物档案的录入与维护', userCount: 15 },
@@ -16,7 +20,7 @@ const RoleList = () => {
   return (
     <div className="space-y-4">
       <div className="flex justify-end bg-white p-4 rounded-xl border shadow-sm">
-        <Button className="bg-indigo-600 hover:bg-indigo-700 h-9">
+        <Button onClick={onAdd} className="bg-indigo-600 hover:bg-indigo-700 h-9">
           <ShieldCheck className="w-4 h-4 mr-2" /> 新增角色
         </Button>
       </div>

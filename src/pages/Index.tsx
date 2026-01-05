@@ -35,9 +35,13 @@ import ApprovalList from '@/components/restoration/ApprovalList';
 import RecordList from '@/components/restoration/RecordList';
 import RecordForm from '@/components/restoration/RecordForm';
 import UserList from '@/components/system/UserList';
+import UserForm from '@/components/system/UserForm';
 import RoleList from '@/components/system/RoleList';
+import RoleForm from '@/components/system/RoleForm';
 import ContactList from '@/components/system/ContactList';
+import ContactForm from '@/components/system/ContactForm';
 import ApiList from '@/components/system/ApiList';
+import ApiForm from '@/components/system/ApiForm';
 import LoginLogList from '@/components/system/LoginLogList';
 import OpLogList from '@/components/system/OpLogList';
 
@@ -110,6 +114,10 @@ const Index = () => {
         case 'equipment': return <EquipmentForm onBack={() => setViewMode('list')} />;
         case 'scheme-mgmt': return <SchemeForm onBack={() => setViewMode('list')} />;
         case 'exec-record': return <RecordForm onBack={() => setViewMode('list')} />;
+        case 'user': return <UserForm onBack={() => setViewMode('list')} />;
+        case 'role': return <RoleForm onBack={() => setViewMode('list')} />;
+        case 'contacts': return <ContactForm onBack={() => setViewMode('list')} />;
+        case 'api': return <ApiForm onBack={() => setViewMode('list')} />;
       }
     }
 
@@ -144,10 +152,10 @@ const Index = () => {
       case 'scheme-mgmt': return <SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />;
       case 'scheme-audit': return <ApprovalList />;
       case 'exec-record': return <RecordList onAdd={() => setViewMode('add')} onAddDetail={handleAddRecord} />;
-      case 'user': return <UserList />;
-      case 'role': return <RoleList />;
-      case 'contacts': return <ContactList />;
-      case 'api': return <ApiList />;
+      case 'user': return <UserList onAdd={() => setViewMode('add')} />;
+      case 'role': return <RoleList onAdd={() => setViewMode('add')} />;
+      case 'contacts': return <ContactList onAdd={() => setViewMode('add')} />;
+      case 'api': return <ApiList onAdd={() => setViewMode('add')} />;
       case 'login-log': return <LoginLogList />;
       case 'op-log': return <OpLogList />;
       default:

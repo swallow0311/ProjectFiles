@@ -8,9 +8,9 @@ import { Search, Monitor, Globe } from "lucide-react";
 
 const LoginLogList = () => {
   const data = [
-    { id: '1', user: 'admin', ip: '192.168.1.105', location: '北京', time: '2023-11-15 10:20:33', browser: 'Chrome 119', os: 'Windows 11' },
-    { id: '2', user: 'zhangsan', ip: '110.242.68.3', location: '上海', time: '2023-11-15 09:15:12', browser: 'Safari', os: 'macOS' },
-    { id: '3', user: 'lisi', ip: '221.192.15.66', location: '西安', time: '2023-11-14 18:30:05', browser: 'Edge', os: 'Windows 10' },
+    { id: '1', user: 'admin', ip: '192.168.1.105', location: '北京', time: '2023-11-15 10:20:33', logoutTime: '2023-11-15 18:05:12', browser: 'Chrome 119', os: 'Windows 11' },
+    { id: '2', user: 'zhangsan', ip: '110.242.68.3', location: '上海', time: '2023-11-15 09:15:12', logoutTime: '2023-11-15 17:30:45', browser: 'Safari', os: 'macOS' },
+    { id: '3', user: 'lisi', ip: '221.192.15.66', location: '西安', time: '2023-11-14 18:30:05', logoutTime: '2023-11-14 21:00:00', browser: 'Edge', os: 'Windows 10' },
   ];
 
   return (
@@ -37,6 +37,7 @@ const LoginLogList = () => {
               <TableHead>IP地址</TableHead>
               <TableHead>登录地点</TableHead>
               <TableHead>登录时间</TableHead>
+              <TableHead>登出时间</TableHead>
               <TableHead>浏览器</TableHead>
               <TableHead>操作系统</TableHead>
             </TableRow>
@@ -53,6 +54,7 @@ const LoginLogList = () => {
                   </div>
                 </TableCell>
                 <TableCell className="text-slate-500 text-xs">{log.time}</TableCell>
+                <TableCell className="text-slate-500 text-xs">{log.logoutTime || '-'}</TableCell>
                 <TableCell>{log.browser}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-1.5">

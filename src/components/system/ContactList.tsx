@@ -4,9 +4,13 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Phone, Mail, Building2 } from "lucide-react";
+import { Search, Phone, Mail, Building2, Plus } from "lucide-react";
 
-const ContactList = () => {
+interface ContactListProps {
+  onAdd: () => void;
+}
+
+const ContactList = ({ onAdd }: ContactListProps) => {
   const data = [
     { id: '1', name: '王建国', unit: '故宫博物院', position: '古建修复专家', phone: '13800138000', email: 'wangjg@dpm.org.cn' },
     { id: '2', name: '李明', unit: '北京市文物局', position: '档案科科长', phone: '13911223344', email: 'liming@bjww.gov.cn' },
@@ -23,7 +27,9 @@ const ContactList = () => {
           </div>
           <Button variant="outline" className="h-9">查询</Button>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 h-9">新增联系人</Button>
+        <Button onClick={onAdd} className="bg-indigo-600 hover:bg-indigo-700 h-9">
+          <Plus className="w-4 h-4 mr-2" /> 新增联系人
+        </Button>
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">

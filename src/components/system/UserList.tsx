@@ -4,11 +4,15 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, UserPlus, Shield } from "lucide-react";
+import { Search, UserPlus, Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 
-const UserList = () => {
+interface UserListProps {
+  onAdd: () => void;
+}
+
+const UserList = ({ onAdd }: UserListProps) => {
   const data = [
     { id: '1', username: 'admin', name: '系统管理员', role: '超级管理员', dept: '技术部', status: true, lastLogin: '2023-11-15 10:20' },
     { id: '2', username: 'zhangsan', name: '张三', role: '文保专员', dept: '档案科', status: true, lastLogin: '2023-11-14 15:45' },
@@ -25,7 +29,7 @@ const UserList = () => {
           </div>
           <Button variant="outline" className="h-9">查询</Button>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 h-9">
+        <Button onClick={onAdd} className="bg-indigo-600 hover:bg-indigo-700 h-9">
           <UserPlus className="w-4 h-4 mr-2" /> 新增用户
         </Button>
       </div>

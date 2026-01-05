@@ -4,9 +4,13 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link2, RefreshCw, Activity } from "lucide-react";
+import { Link2, RefreshCw, Activity, Plus } from "lucide-react";
 
-const ApiList = () => {
+interface ApiListProps {
+  onAdd: () => void;
+}
+
+const ApiList = ({ onAdd }: ApiListProps) => {
   const data = [
     { id: '1', name: '国家文物局数据同步', endpoint: 'https://api.ncha.gov.cn/v1/sync', status: 'connected', lastSync: '2023-11-15 08:00' },
     { id: '2', name: 'GIS地理信息系统', endpoint: 'https://gis.internal/api/map', status: 'connected', lastSync: '实时' },
@@ -20,8 +24,8 @@ const ApiList = () => {
           <Activity className="w-5 h-5 text-green-500" />
           <span className="text-sm font-medium">系统接口运行状态良好</span>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 h-9">
-          <Link2 className="w-4 h-4 mr-2" /> 配置新接口
+        <Button onClick={onAdd} className="bg-indigo-600 hover:bg-indigo-700 h-9">
+          <Plus className="w-4 h-4 mr-2" /> 配置新接口
         </Button>
       </div>
 
