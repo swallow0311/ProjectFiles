@@ -17,14 +17,13 @@ interface SchemeFormProps {
 }
 
 const SchemeForm = ({ onBack, initialData, isVersionMode = false }: SchemeFormProps) => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    showSuccess(isVersionMode ? "新版本添加成功" : "方案提交成功");
+  const handleAction = (action: string) => {
+    showSuccess(`${action}成功`);
     onBack();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 pb-24">
+    <form className="space-y-8 pb-24">
       {/* 基本信息 */}
       <Card className="border-none shadow-sm">
         <CardHeader className="bg-slate-50/50 border-b">
@@ -157,9 +156,8 @@ const SchemeForm = ({ onBack, initialData, isVersionMode = false }: SchemeFormPr
 
       <div className="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end gap-4 z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
         <Button type="button" variant="outline" onClick={onBack}>取消</Button>
-        <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 px-8">
-          {isVersionMode ? "保存新版本" : "提交方案"}
-        </Button>
+        <Button type="button" variant="secondary" onClick={() => handleAction("保存草稿")}>保存草稿</Button>
+        <Button type="button" className="bg-indigo-600 hover:bg-indigo-700 px-8" onClick={() => handleAction("提交审核")}>提交审核</Button>
       </div>
     </form>
   );
