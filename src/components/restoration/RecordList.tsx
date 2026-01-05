@@ -4,15 +4,16 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, Download, Calendar } from "lucide-react";
+import { Search, Plus, Download, Calendar, Eye, Trash2, PlusCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { showSuccess } from "@/utils/toast";
 
 interface RecordListProps {
   onAdd: () => void;
+  onAddDetail: (record: any) => void;
 }
 
-const RecordList = ({ onAdd }: RecordListProps) => {
+const RecordList = ({ onAdd, onAddDetail }: RecordListProps) => {
   const data = [
     { id: '1', name: '故宫太和殿屋顶修缮项目', progress: 65, startTime: '2023-05-20', expectedEnd: '2023-12-30', dept: '古建一队', manager: '张三' },
     { id: '2', name: '天坛祈年殿彩画修复项目', progress: 30, startTime: '2023-09-15', expectedEnd: '2024-03-15', dept: '彩画修复组', manager: '李四' },
@@ -50,12 +51,12 @@ const RecordList = ({ onAdd }: RecordListProps) => {
               <TableHead>开始时间</TableHead>
               <TableHead>预计完成</TableHead>
               <TableHead className="w-48">修缮进度</TableHead>
-              <TableHead className="text-right">操作</TableHead>
+              <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-64 border-l">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((item) => (
-              <TableRow key={item.id}>
+              <TableRow key={item.id} className="group">
                 <TableCell className="font-medium">{item.name}</TableCell>
                 <TableCell>{item.dept}</TableCell>
                 <TableCell>{item.manager}</TableCell>
@@ -70,11 +71,17 @@ const RecordList = ({ onAdd }: RecordListProps) => {
                     <Progress value={item.progress} className="h-1.5" />
                   </div>
                 </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2"><Calendar className="w-3.5 h-3.5 mr-1" /> 进度记录</Button>
-                    <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
-                    <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                  <div className="flex items-center justify-center gap-2">
+                    <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2" onClick={() => onAddDetail(item)}>
+                      <PlusCircle className="w-3.5 h-3.5 mr-1" /> +记录
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">
+                      <Eye className="w-3.5 h-3.5 mr-1" /> 记录详情
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">
+                      <Trash2 className="w-3.5 h-3.5 mr-1" /> 删除
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>

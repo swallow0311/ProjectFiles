@@ -38,8 +38,8 @@ import RecordForm from '@/components/restoration/RecordForm';
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
   const [activeMenuId, setActiveMenuId] = useState('text'); 
-  const [viewMode, setViewMode] = useState<'list' | 'add' | 'add-version'>('list');
-  const [selectedScheme, setSelectedScheme] = useState<any>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'add' | 'add-version' | 'add-record'>('list');
+  const [selectedData, setSelectedData] = useState<any>(null);
 
   const activeModule = useMemo(() => 
     MENU_DATA.find(m => m.id === activeModuleId) || MENU_DATA[0],
@@ -77,8 +77,13 @@ const Index = () => {
   };
 
   const handleAddVersion = (scheme: any) => {
-    setSelectedScheme(scheme);
+    setSelectedData(scheme);
     setViewMode('add-version');
+  };
+
+  const handleAddRecord = (record: any) => {
+    setSelectedData(record);
+    setViewMode('add-record');
   };
 
   const renderContent = () => {
@@ -103,7 +108,11 @@ const Index = () => {
     }
 
     if (viewMode === 'add-version') {
-      return <SchemeForm onBack={() => setViewMode('list')} initialData={selectedScheme} isVersionMode />;
+      return <SchemeForm onBack={() => setViewMode('list')} initialData={selectedData} isVersionMode />;
+    }
+
+    if (viewMode === 'add-record') {
+      return <RecordForm onBack={() => setViewMode('list')} initialData={selectedData} isAddRecordMode />;
     }
 
     switch (activeMenuId) {
@@ -128,7 +137,7 @@ const Index = () => {
       case 'alarm-process': return <AlarmProcessingList />;
       case 'scheme-mgmt': return <SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />;
       case 'scheme-audit': return <ApprovalList />;
-      case 'exec-record': return <RecordList onAdd={() => setViewMode('add')} />;
+      case 'exec-record': return <RecordList onAdd={() => setViewMode('add')} onAddDetail={handleAddRecord} />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
@@ -194,13 +203,22 @@ const Index = () => {
                     </BreadcrumbItem>
                   </>
                 )}
+                {viewMode === 'add-record' && (
+                  <>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="text-indigo-600 font-semibold">新增修葺记录</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
               </BreadcrumbList>
             </Breadcrumb>
             
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
                 {viewMode === 'add' ? `新增${activeMenuLabel}` : 
-                 viewMode === 'add-version' ? '添加方案版本' : activeMenuLabel}
+                 viewMode === 'add-version' ? '添加方案版本' : 
+                 viewMode === 'add-record' ? '新增修葺记录' : activeMenuLabel}
               </h2>
               {viewMode === 'list' && (
                 <div className="text-xs text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">

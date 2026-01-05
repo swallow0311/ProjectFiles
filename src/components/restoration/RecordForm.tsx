@@ -6,14 +6,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Trash2, Camera, Plane, Clock } from "lucide-react";
+import { Plus, Trash2, Camera, Plane } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface RecordFormProps {
   onBack: () => void;
+  initialData?: any;
+  isAddRecordMode?: boolean;
 }
 
-const RecordForm = ({ onBack }: RecordFormProps) => {
+const RecordForm = ({ onBack, initialData, isAddRecordMode = false }: RecordFormProps) => {
   const [nodes, setNodes] = useState([{ id: '1', time: '', content: '', status: '进行中' }]);
 
   const addNode = () => {
@@ -22,7 +24,7 @@ const RecordForm = ({ onBack }: RecordFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess("修缮记录已保存");
+    showSuccess(isAddRecordMode ? "修缮记录已追加" : "修缮信息已保存");
     onBack();
   };
 
@@ -35,15 +37,33 @@ const RecordForm = ({ onBack }: RecordFormProps) => {
         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
           <div className="space-y-2 md:col-span-3">
             <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">项目名称</Label>
-            <Input required placeholder="关联已审批的修缮方案" />
+            <Input 
+              required 
+              placeholder="关联已审批的修缮方案" 
+              defaultValue={initialData?.name}
+              readOnly={isAddRecordMode}
+              className={isAddRecordMode ? "bg-slate-50" : ""}
+            />
           </div>
           <div className="space-y-2">
             <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">开始时间</Label>
-            <Input required type="date" />
+            <Input 
+              required 
+              type="date" 
+              defaultValue={initialData?.startTime}
+              readOnly={isAddRecordMode}
+              className={isAddRecordMode ? "bg-slate-50" : ""}
+            />
           </div>
           <div className="space-y-2">
             <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">预计完成时间</Label>
-            <Input required type="date" />
+            <Input 
+              required 
+              type="date" 
+              defaultValue={initialData?.expectedEnd}
+              readOnly={isAddRecordMode}
+              className={isAddRecordMode ? "bg-slate-50" : ""}
+            />
           </div>
           <div className="space-y-2">
             <Label>实际完成时间</Label>

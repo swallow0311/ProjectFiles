@@ -59,8 +59,7 @@ export const MENU_DATA: Module[] = [
     menus: [
       { id: "scheme-mgmt", label: "方案管理" },
       { id: "scheme-audit", label: "方案审核" },
-      { id: "exec-record", label: "执行记录" },
-      { id: "archive-mgmt", label: "档案管理" },
+      { id: "exec-record", label: "修葺记录" },
       { id: "stats-analysis", label: "统计分析" },
     ]
   },
