@@ -96,7 +96,7 @@ const IntelligentAnalysis = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* 年代关联分析 - 知识图谱维度 */}
+        {/* 年代关联分析 */}
         <Card className="border-none shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between py-4 border-b">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -114,7 +114,13 @@ const IntelligentAnalysis = () => {
                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                     cursor={{ fill: '#f8fafc' }}
                   />
-                  <Bar dataKey="value" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={40} />
+                  <Bar 
+                    dataKey="value" 
+                    fill="#6366f1" 
+                    radius={[4, 4, 0, 0]} 
+                    barSize={40}
+                    label={{ position: 'top', fill: '#64748b', fontSize: 10, fontWeight: 'bold' }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -124,7 +130,7 @@ const IntelligentAnalysis = () => {
           </CardContent>
         </Card>
 
-        {/* 分类分布网状图 - 可视化展示 */}
+        {/* 分类分布网状图 */}
         <Card className="border-none shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between py-4 border-b">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -143,6 +149,7 @@ const IntelligentAnalysis = () => {
                     outerRadius={100}
                     paddingAngle={5}
                     dataKey="value"
+                    label={({ name, value }) => `${name}: ${value}%`}
                   >
                     {CATEGORY_DATA.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -159,7 +166,7 @@ const IntelligentAnalysis = () => {
           </CardContent>
         </Card>
 
-        {/* 保护状况监测 - 大数据分析 */}
+        {/* 保护状况监测 */}
         <Card className="border-none shadow-sm lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between py-4 border-b">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -175,25 +182,33 @@ const IntelligentAnalysis = () => {
                   <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="完好" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                  <Line type="monotone" dataKey="轻微受损" stroke="#f59e0b" strokeWidth={3} dot={{ r: 4 }} />
-                  <Line type="monotone" dataKey="需修缮" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} />
+                  <Line 
+                    type="monotone" 
+                    dataKey="完好" 
+                    stroke="#10b981" 
+                    strokeWidth={3} 
+                    dot={{ r: 4 }} 
+                    activeDot={{ r: 6 }}
+                    label={{ position: 'top', fill: '#10b981', fontSize: 10, fontWeight: 'bold' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="轻微受损" 
+                    stroke="#f59e0b" 
+                    strokeWidth={3} 
+                    dot={{ r: 4 }}
+                    label={{ position: 'top', fill: '#f59e0b', fontSize: 10, fontWeight: 'bold' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="需修缮" 
+                    stroke="#ef4444" 
+                    strokeWidth={3} 
+                    dot={{ r: 4 }}
+                    label={{ position: 'top', fill: '#ef4444', fontSize: 10, fontWeight: 'bold' }}
+                  />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-slate-50">
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold text-slate-700">智能决策支持</h4>
-                <p className="text-[10px] text-slate-400">通过对保护状况、利用情况、游客流量等多维度数据进行实时监测，及时发现管理问题。</p>
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold text-slate-700">可持续利用分析</h4>
-                <p className="text-[10px] text-slate-400">分析游客流量数据，优化文物保护与旅游开发的平衡，确保文物的可持续利用。</p>
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold text-slate-700">科学决策依据</h4>
-                <p className="text-[10px] text-slate-400">为文物的保护、利用和管理提供科学依据，揭示文物间的内在联系和发展趋势。</p>
-              </div>
             </div>
           </CardContent>
         </Card>
