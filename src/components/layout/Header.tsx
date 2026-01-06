@@ -24,7 +24,7 @@ const Header = ({ activeModuleId, onModuleChange, onBellClick }: HeaderProps) =>
         </div>
         <div className="flex flex-col">
           <span className="text-lg font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-            文物管理系统
+            智慧文物系统
           </span>
           <span className="text-[9px] text-indigo-400/60 mt-0.5 tracking-[0.15em] uppercase font-semibold">
             Intelligent Archive
