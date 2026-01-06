@@ -94,11 +94,13 @@ const Index = () => {
     };
   }, [activeModuleId, isPaused]);
 
-  const handleModuleChange = (id: string) => {
+  const handleModuleChange = (id: string, menuId?: string) => {
     setActiveModuleId(id);
     setViewMode('list');
     const module = MENU_DATA.find(m => m.id === id);
-    if (module && module.menus.length > 0) {
+    if (menuId) {
+      setActiveMenuId(menuId);
+    } else if (module && module.menus.length > 0) {
       const firstMenu = module.menus[0];
       setActiveMenuId(firstMenu.children ? firstMenu.children[0].id : firstMenu.id);
     } else {
@@ -214,6 +216,7 @@ const Index = () => {
       <Header 
         activeModuleId={activeModuleId} 
         onModuleChange={handleModuleChange} 
+        onBellClick={() => handleModuleChange('safety', 'alarm-process')}
       />
       
       <div className="flex flex-1 overflow-hidden">
@@ -252,49 +255,49 @@ const Index = () => {
               </BreadcrumbList>
             </Breadcrumb>
             
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between relative">
               <div className="flex items-center gap-6">
                 <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
                   {viewMode === 'add' ? `新增${activeMenuLabel}` : 
                    viewMode === 'add-version' ? '添加方案版本' : 
                    viewMode === 'add-record' ? '新增修葺记录' : activeMenuLabel}
                 </h2>
-                
-                {/* 智慧大屏专用切换按钮 - 与标题对齐 */}
-                {activeModuleId === 'cockpit' && (
-                  <div 
-                    className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200"
-                    onMouseEnter={() => setIsPaused(true)}
-                    onMouseLeave={() => setIsPaused(false)}
-                  >
-                    {DASHBOARDS.map((item, idx) => (
-                      <button
-                        key={item.id}
-                        onClick={() => setSmartScreenIndex(idx)}
-                        className={cn(
-                          "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
-                          smartScreenIndex === idx 
-                            ? "bg-white text-blue-600 shadow-sm" 
-                            : "text-slate-500 hover:text-slate-900"
-                        )}
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                    <div className="w-px h-4 bg-slate-200 mx-1" />
-                    <button 
-                      onClick={() => setIsPaused(!isPaused)}
-                      className={cn(
-                        "p-1.5 rounded-md transition-colors",
-                        isPaused ? "text-orange-500 hover:bg-orange-50" : "text-slate-400 hover:bg-slate-200"
-                      )}
-                      title={isPaused ? "点击恢复自动滚动" : "点击暂停自动滚动"}
-                    >
-                      {isPaused ? <PlayCircle size={16} /> : <PauseCircle size={16} />}
-                    </button>
-                  </div>
-                )}
               </div>
+
+              {/* 智慧大屏专用切换按钮 - 居中处理 */}
+              {activeModuleId === 'cockpit' && (
+                <div 
+                  className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shadow-sm"
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
+                >
+                  {DASHBOARDS.map((item, idx) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setSmartScreenIndex(idx)}
+                      className={cn(
+                        "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
+                        smartScreenIndex === idx 
+                          ? "bg-white text-blue-600 shadow-sm" 
+                          : "text-slate-500 hover:text-slate-900"
+                      )}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                  <div className="w-px h-4 bg-slate-200 mx-1" />
+                  <button 
+                    onClick={() => setIsPaused(!isPaused)}
+                    className={cn(
+                      "p-1.5 rounded-md transition-colors",
+                      isPaused ? "text-orange-500 hover:bg-orange-50" : "text-slate-400 hover:bg-slate-200"
+                    )}
+                    title={isPaused ? "点击恢复自动滚动" : "点击暂停自动滚动"}
+                  >
+                    {isPaused ? <PlayCircle size={16} /> : <PauseCircle size={16} />}
+                  </button>
+                </div>
+              )}
 
               {viewMode === 'list' && activeModuleId !== 'cockpit' && (
                 <div className="text-xs text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
