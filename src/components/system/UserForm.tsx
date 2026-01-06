@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, Phone, ShieldCheck, Mail, MessageSquare, AtSign } from "lucide-react";
+import { User, Phone, ShieldCheck, Mail, MessageSquare, AtSign, Info } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface UserFormProps {
@@ -97,10 +97,14 @@ const UserForm = ({ onBack }: UserFormProps) => {
 
       {/* 安全设置 */}
       <Card className="border-none shadow-sm">
-        <CardHeader className="bg-slate-50/50 border-b">
+        <CardHeader className="bg-slate-50/50 border-b flex flex-row items-center justify-between">
           <CardTitle className="text-base flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-orange-600" /> 安全设置
           </CardTitle>
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+            <Info className="w-3.5 h-3.5 text-blue-500" />
+            可通过验证的手机/邮箱登录系统
+          </div>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
