@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, X } from "lucide-react";
+import { Search, X, Plus, Trash2 } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -24,6 +24,7 @@ const RANGE_OPTIONS = [
 const BasicInfoForm = ({ onBack }: BasicInfoFormProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[]>(['']);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +36,14 @@ const BasicInfoForm = ({ onBack }: BasicInfoFormProps) => {
     setSelectedItems(prev => 
       prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
     );
+  };
+
+  const addOption = () => setOptions([...options, '']);
+  const removeOption = (index: number) => setOptions(options.filter((_, i) => i !== index));
+  const updateOption = (index: number, value: string) => {
+    const newOptions = [...options];
+    newOptions[index] = value;
+    setOptions(newOptions);
   };
 
   const filteredOptions = RANGE_OPTIONS.map(group => ({
@@ -50,8 +59,8 @@ const BasicInfoForm = ({ onBack }: BasicInfoFormProps) => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">基础信息名称</Label>
-            <Input required placeholder="请输入基础信息名称" />
+            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">信息字段名称</Label>
+            <Input required placeholder="请输入信息字段名称" />
           </div>
 
           <div className="space-y-3">
@@ -66,7 +75,7 @@ const BasicInfoForm = ({ onBack }: BasicInfoFormProps) => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <ScrollArea className="h-[300px] p-4">
+              <ScrollArea className="h-[200px] p-4">
                 <div className="space-y-6">
                   {filteredOptions.map((group) => (
                     <div key={group.group} className="space-y-3">
@@ -102,6 +111,37 @@ const BasicInfoForm = ({ onBack }: BasicInfoFormProps) => {
                 ))}
                 {selectedItems.length === 0 && <span className="text-xs text-slate-400 italic">暂未选择</span>}
               </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">选项值设置</Label>
+              <Button type="button" variant="outline" size="sm" onClick={addOption}>
+                <Plus className="w-4 h-4 mr-1" /> 添加选项
+              </Button>
+            </div>
+            <div className="space-y-3">
+              {options.map((opt, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <Input 
+                    required 
+                    placeholder={`选项 ${idx + 1}`} 
+                    value={opt} 
+                    onChange={(e) => updateOption(idx, e.target.value)}
+                  />
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="icon" 
+                    className="text-red-500 shrink-0" 
+                    onClick={() => removeOption(idx)}
+                    disabled={options.length === 1}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
             </div>
           </div>
 

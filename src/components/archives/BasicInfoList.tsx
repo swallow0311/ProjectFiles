@@ -24,7 +24,7 @@ const BasicInfoList = ({ onAdd }: BasicInfoListProps) => {
         <div className="flex items-center gap-3 flex-1">
           <div className="relative w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-            <Input className="pl-9" placeholder="基础信息名称" />
+            <Input className="pl-9" placeholder="信息字段名称" />
           </div>
           <Input className="w-64" placeholder="应用范围" />
           <Button variant="outline">查询</Button>
@@ -38,7 +38,7 @@ const BasicInfoList = ({ onAdd }: BasicInfoListProps) => {
         <Table>
           <TableHeader className="bg-slate-50">
             <TableRow>
-              <TableHead>基础信息名称</TableHead>
+              <TableHead>信息字段名称</TableHead>
               <TableHead>应用范围</TableHead>
               <TableHead>添加人</TableHead>
               <TableHead>添加时间</TableHead>

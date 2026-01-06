@@ -3,12 +3,8 @@ import { Module } from "../types/menu";
 export const MENU_DATA: Module[] = [
   {
     id: "cockpit",
-    label: "驾驶舱",
-    menus: [
-      { id: "relic-data", label: "文物数据一张图" },
-      { id: "event-data", label: "文保事件一张图" },
-      { id: "device-data", label: "监测设备一张图" },
-    ]
+    label: "智慧大屏",
+    menus: [] // 隐藏二级菜单，采用自动滚动模式
   },
   {
     id: "archives",

@@ -45,9 +45,7 @@ import ApiList from '@/components/system/ApiList';
 import ApiForm from '@/components/system/ApiForm';
 import LoginLogList from '@/components/system/LoginLogList';
 import OpLogList from '@/components/system/OpLogList';
-import RelicDataDashboard from '@/components/cockpit/RelicDataDashboard';
-import EventDashboard from '@/components/cockpit/EventDashboard';
-import DeviceDashboard from '@/components/cockpit/DeviceDashboard';
+import SmartScreenCarousel from '@/components/cockpit/SmartScreenCarousel';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[0].id); 
@@ -61,6 +59,7 @@ const Index = () => {
   );
 
   const activeMenuLabel = useMemo(() => {
+    if (activeModuleId === 'cockpit') return '智慧大屏';
     let label = '';
     const findLabel = (items: any[]) => {
       for (const item of items) {
@@ -73,7 +72,7 @@ const Index = () => {
     };
     findLabel(activeModule.menus);
     return label || activeModule.label;
-  }, [activeModule, activeMenuId]);
+  }, [activeModule, activeMenuId, activeModuleId]);
 
   const handleModuleChange = (id: string) => {
     setActiveModuleId(id);
@@ -82,6 +81,8 @@ const Index = () => {
     if (module && module.menus.length > 0) {
       const firstMenu = module.menus[0];
       setActiveMenuId(firstMenu.children ? firstMenu.children[0].id : firstMenu.id);
+    } else {
+      setActiveMenuId(''); // 智慧大屏没有二级菜单
     }
   };
 
@@ -101,6 +102,10 @@ const Index = () => {
   };
 
   const renderContent = () => {
+    if (activeModuleId === 'cockpit') {
+      return <SmartScreenCarousel />;
+    }
+
     if (viewMode === 'add') {
       switch (activeMenuId) {
         case 'text': return <TextVolumeForm onBack={() => setViewMode('list')} />;
@@ -134,9 +139,6 @@ const Index = () => {
     }
 
     switch (activeMenuId) {
-      case 'relic-data': return <RelicDataDashboard />;
-      case 'event-data': return <EventDashboard />;
-      case 'device-data': return <DeviceDashboard />;
       case 'text': return <TextVolumeList onAdd={() => setViewMode('add')} />;
       case 'drawing': return <ImageVolumeGallery type="drawing" title="图纸卷" />;
       case 'photo': return <ImageVolumeGallery type="photo" title="照片卷" />;
@@ -205,16 +207,20 @@ const Index = () => {
                 <BreadcrumbItem>
                   <span className="font-medium">{activeModule.label}</span>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  {viewMode !== 'list' ? (
-                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">
-                      {activeMenuLabel}
-                    </BreadcrumbLink>
-                  ) : (
-                    <BreadcrumbPage className="text-slate-900 font-semibold">{activeMenuLabel}</BreadcrumbPage>
-                  )}
-                </BreadcrumbItem>
+                {activeMenuLabel !== activeModule.label && (
+                  <>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      {viewMode !== 'list' ? (
+                        <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">
+                          {activeMenuLabel}
+                        </BreadcrumbLink>
+                      ) : (
+                        <BreadcrumbPage className="text-slate-900 font-semibold">{activeMenuLabel}</BreadcrumbPage>
+                      )}
+                    </BreadcrumbItem>
+                  </>
+                )}
                 {viewMode === 'add' && (
                   <>
                     <BreadcrumbSeparator />
