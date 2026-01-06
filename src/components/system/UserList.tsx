@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search, UserPlus, Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import DeptTree from './DeptTree';
 
 interface UserListProps {
   onAdd: () => void;
@@ -20,56 +21,62 @@ const UserList = ({ onAdd }: UserListProps) => {
   ];
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border shadow-sm">
-        <div className="flex items-center gap-3 flex-1">
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-            <Input className="pl-9 h-9" placeholder="搜索用户名 / 姓名" />
-          </div>
-          <Button variant="outline" className="h-9">查询</Button>
-        </div>
-        <Button onClick={onAdd} className="bg-indigo-600 hover:bg-indigo-700 h-9">
-          <UserPlus className="w-4 h-4 mr-2" /> 新增用户
-        </Button>
-      </div>
+    <div className="flex gap-6 h-[calc(100vh-240px)]">
+      {/* 左侧组织架构 */}
+      <DeptTree />
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <Table>
-          <TableHeader className="bg-slate-50">
-            <TableRow>
-              <TableHead>用户名</TableHead>
-              <TableHead>姓名</TableHead>
-              <TableHead>所属角色</TableHead>
-              <TableHead>部门</TableHead>
-              <TableHead>状态</TableHead>
-              <TableHead>最后登录</TableHead>
-              <TableHead className="text-right pr-6">操作</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-mono text-xs font-bold">{user.username}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>
-                  <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 border-indigo-100">
-                    <Shield className="w-3 h-3 mr-1" /> {user.role}
-                  </Badge>
-                </TableCell>
-                <TableCell>{user.dept}</TableCell>
-                <TableCell>
-                  <Switch checked={user.status} />
-                </TableCell>
-                <TableCell className="text-slate-500 text-xs">{user.lastLogin}</TableCell>
-                <TableCell className="text-right pr-6">
-                  <Button variant="ghost" size="sm" className="text-blue-600">编辑</Button>
-                  <Button variant="ghost" size="sm" className="text-red-600">重置密码</Button>
-                </TableCell>
+      {/* 右侧用户列表 */}
+      <div className="flex-1 flex flex-col gap-4 min-w-0">
+        <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border shadow-sm">
+          <div className="flex items-center gap-3 flex-1">
+            <div className="relative w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <Input className="pl-9 h-9" placeholder="搜索用户名 / 姓名" />
+            </div>
+            <Button variant="outline" className="h-9">查询</Button>
+          </div>
+          <Button onClick={onAdd} className="bg-indigo-600 hover:bg-indigo-700 h-9">
+            <UserPlus className="w-4 h-4 mr-2" /> 新增用户
+          </Button>
+        </div>
+
+        <div className="bg-white rounded-xl border shadow-sm overflow-hidden flex-1">
+          <Table>
+            <TableHeader className="bg-slate-50">
+              <TableRow>
+                <TableHead>用户名</TableHead>
+                <TableHead>姓名</TableHead>
+                <TableHead>所属角色</TableHead>
+                <TableHead>部门</TableHead>
+                <TableHead>状态</TableHead>
+                <TableHead>最后登录</TableHead>
+                <TableHead className="text-right pr-6">操作</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell className="font-mono text-xs font-bold">{user.username}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 border-indigo-100">
+                      <Shield className="w-3 h-3 mr-1" /> {user.role}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{user.dept}</TableCell>
+                  <TableCell>
+                    <Switch checked={user.status} />
+                  </TableCell>
+                  <TableCell className="text-slate-500 text-xs">{user.lastLogin}</TableCell>
+                  <TableCell className="text-right pr-6">
+                    <Button variant="ghost" size="sm" className="text-blue-600">编辑</Button>
+                    <Button variant="ghost" size="sm" className="text-red-600">重置密码</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );

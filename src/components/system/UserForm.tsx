@@ -1,12 +1,12 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
+import { User, Phone, ShieldCheck, Mail, MessageSquare, AtSign } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface UserFormProps {
@@ -14,6 +14,9 @@ interface UserFormProps {
 }
 
 const UserForm = ({ onBack }: UserFormProps) => {
+  const [smsSent, setSmsSent] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     showSuccess("用户创建成功");
@@ -21,22 +24,37 @@ const UserForm = ({ onBack }: UserFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8 pb-24">
+      {/* 基本信息 */}
       <Card className="border-none shadow-sm">
         <CardHeader className="bg-slate-50/50 border-b">
-          <CardTitle className="text-base">用户信息录入</CardTitle>
+          <CardTitle className="text-base flex items-center gap-2">
+            <User className="w-4 h-4 text-blue-600" /> 基本信息
+          </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-          <div className="space-y-2">
-            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">用户名</Label>
-            <Input required placeholder="用于系统登录的唯一账号" />
-          </div>
           <div className="space-y-2">
             <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">姓名</Label>
             <Input required placeholder="请输入真实姓名" />
           </div>
           <div className="space-y-2">
-            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">所属角色</Label>
+            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">账号</Label>
+            <Input required placeholder="请输入登录账号" />
+          </div>
+          <div className="space-y-2">
+            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">所属部门</Label>
+            <Select required>
+              <SelectTrigger>
+                <SelectValue placeholder="请选择部门" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dept1">测试部门</SelectItem>
+                <SelectItem value="dept2">开发部门1</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">角色</Label>
             <Select required>
               <SelectTrigger>
                 <SelectValue placeholder="请选择角色" />
@@ -44,26 +62,117 @@ const UserForm = ({ onBack }: UserFormProps) => {
               <SelectContent>
                 <SelectItem value="admin">超级管理员</SelectItem>
                 <SelectItem value="archive">文保专员</SelectItem>
-                <SelectItem value="auditor">审核员</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-2">
-            <Label>所属部门</Label>
-            <Input placeholder="请输入部门名称" />
-          </div>
-          <div className="space-y-2">
-            <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">初始密码</Label>
-            <Input required type="password" placeholder="请输入初始登录密码" />
-          </div>
-          <div className="flex items-center space-x-2 pt-8">
-            <Switch id="user-status" defaultChecked />
-            <Label htmlFor="user-status">立即启用账号</Label>
           </div>
         </CardContent>
       </Card>
 
-      <div className="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end gap-4 z-10 shadow-lg">
+      {/* 联系方式 */}
+      <Card className="border-none shadow-sm">
+        <CardHeader className="bg-slate-50/50 border-b">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Phone className="w-4 h-4 text-green-600" /> 联系方式
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-6">
+          <div className="space-y-2">
+            <Label>手机</Label>
+            <Input placeholder="请输入手机号" />
+          </div>
+          <div className="space-y-2">
+            <Label>微信</Label>
+            <Input placeholder="请输入微信号" />
+          </div>
+          <div className="space-y-2">
+            <Label>QQ</Label>
+            <Input placeholder="请输入QQ号" />
+          </div>
+          <div className="space-y-2">
+            <Label>邮箱</Label>
+            <Input type="email" placeholder="请输入常用邮箱" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 安全设置 */}
+      <Card className="border-none shadow-sm">
+        <CardHeader className="bg-slate-50/50 border-b">
+          <CardTitle className="text-base flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-orange-600" /> 安全设置
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">密码</Label>
+              <Input required type="password" placeholder="请输入登录密码" />
+            </div>
+            <div className="space-y-2">
+              <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">确认密码</Label>
+              <Input required type="password" placeholder="请再次输入密码" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* 手机验证 */}
+            <div className="space-y-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                <MessageSquare className="w-4 h-4 text-blue-500" /> 登录手机验证
+              </div>
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs">登录手机号</Label>
+                  <Input className="h-9" placeholder="用于接收验证码" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">短信验证码</Label>
+                  <div className="flex gap-2">
+                    <Input className="h-9" placeholder="6位验证码" />
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="h-9 shrink-0"
+                      onClick={() => { setSmsSent(true); showSuccess("验证码已发送至手机"); }}
+                    >
+                      {smsSent ? "重新发送" : "获取验证码"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 邮箱验证 */}
+            <div className="space-y-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                <AtSign className="w-4 h-4 text-purple-500" /> 登录邮箱验证
+              </div>
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs">登录邮箱</Label>
+                  <Input className="h-9" placeholder="用于接收验证邮件" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">邮箱验证码</Label>
+                  <div className="flex gap-2">
+                    <Input className="h-9" placeholder="6位验证码" />
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="h-9 shrink-0"
+                      onClick={() => { setEmailSent(true); showSuccess("验证码已发送至邮箱"); }}
+                    >
+                      {emailSent ? "重新发送" : "获取验证码"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end gap-4 z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
         <Button type="button" variant="outline" onClick={onBack}>取消</Button>
         <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 px-8">提交保存</Button>
       </div>
