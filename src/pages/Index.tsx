@@ -26,6 +26,7 @@ import BookForm from '@/components/archives/BookForm';
 import BasicInfoList from '@/components/archives/BasicInfoList';
 import BasicInfoForm from '@/components/archives/BasicInfoForm';
 import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
+import IntelligentAnalysis from '@/components/archives/IntelligentAnalysis';
 import EquipmentList from '@/components/safety/EquipmentList';
 import EquipmentForm from '@/components/safety/EquipmentForm';
 import AlarmProcessingList from '@/components/safety/AlarmProcessingList';
@@ -147,6 +148,7 @@ const Index = () => {
       case 'book': return <BookList onAdd={() => setViewMode('add')} />;
       case 'basic-info': return <BasicInfoList onAdd={() => setViewMode('add')} />;
       case 'publicity': return <PublicityMaintenance />;
+      case 'smart-analysis': return <IntelligentAnalysis />;
       case 'equipment': return <EquipmentList onAdd={() => setViewMode('add')} />;
       case 'alarm-process': return <AlarmProcessingList />;
       case 'scheme-mgmt': return <SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />;

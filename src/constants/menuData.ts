@@ -51,6 +51,13 @@ export const MENU_DATA: Module[] = [
           { id: "publicity", label: "公开性维护" },
         ]
       },
+      {
+        id: "analysis",
+        label: "智能分析决策",
+        children: [
+          { id: "smart-analysis", label: "智能分析" }
+        ]
+      }
     ]
   },
   {
