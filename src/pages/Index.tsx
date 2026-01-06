@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import { MENU_DATA } from '@/constants/menuData';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { LayoutGrid } from 'lucide-react';
+import { LayoutGrid, PauseCircle, PlayCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import TextVolumeList from '@/components/archives/TextVolumeList';
 import TextVolumeForm from '@/components/archives/TextVolumeForm';
 import ImageVolumeGallery from '@/components/archives/ImageVolumeGallery';
@@ -45,13 +46,18 @@ import ApiList from '@/components/system/ApiList';
 import ApiForm from '@/components/system/ApiForm';
 import LoginLogList from '@/components/system/LoginLogList';
 import OpLogList from '@/components/system/OpLogList';
-import SmartScreenCarousel from '@/components/cockpit/SmartScreenCarousel';
+import SmartScreenCarousel, { DASHBOARDS } from '@/components/cockpit/SmartScreenCarousel';
 
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[0].id); 
   const [activeMenuId, setActiveMenuId] = useState('relic-data'); 
   const [viewMode, setViewMode] = useState<'list' | 'add' | 'add-version' | 'add-record'>('list');
   const [selectedData, setSelectedData] = useState<any>(null);
+  
+  // 智慧大屏滚动状态
+  const [smartScreenIndex, setSmartScreenIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const activeModule = useMemo(() => 
     MENU_DATA.find(m => m.id === activeModuleId) || MENU_DATA[0],
@@ -74,6 +80,20 @@ const Index = () => {
     return label || activeModule.label;
   }, [activeModule, activeMenuId, activeModuleId]);
 
+  // 处理智慧大屏自动滚动
+  useEffect(() => {
+    if (activeModuleId === 'cockpit' && !isPaused) {
+      timerRef.current = setInterval(() => {
+        setSmartScreenIndex((prev) => (prev + 1) % DASHBOARDS.length);
+      }, 8000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [activeModuleId, isPaused]);
+
   const handleModuleChange = (id: string) => {
     setActiveModuleId(id);
     setViewMode('list');
@@ -82,7 +102,7 @@ const Index = () => {
       const firstMenu = module.menus[0];
       setActiveMenuId(firstMenu.children ? firstMenu.children[0].id : firstMenu.id);
     } else {
-      setActiveMenuId(''); // 智慧大屏没有二级菜单
+      setActiveMenuId(''); 
     }
   };
 
@@ -103,7 +123,15 @@ const Index = () => {
 
   const renderContent = () => {
     if (activeModuleId === 'cockpit') {
-      return <SmartScreenCarousel />;
+      return (
+        <div 
+          className="h-full" 
+          onMouseEnter={() => setIsPaused(true)} 
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <SmartScreenCarousel activeIndex={smartScreenIndex} />
+        </div>
+      );
     }
 
     if (viewMode === 'add') {
@@ -221,40 +249,54 @@ const Index = () => {
                     </BreadcrumbItem>
                   </>
                 )}
-                {viewMode === 'add' && (
-                  <>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage className="text-blue-600 font-semibold">新增{activeMenuLabel}</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </>
-                )}
-                {viewMode === 'add-version' && (
-                  <>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage className="text-indigo-600 font-semibold">添加版本</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </>
-                )}
-                {viewMode === 'add-record' && (
-                  <>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage className="text-indigo-600 font-semibold">新增修葺记录</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </>
-                )}
               </BreadcrumbList>
             </Breadcrumb>
             
             <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
-                {viewMode === 'add' ? `新增${activeMenuLabel}` : 
-                 viewMode === 'add-version' ? '添加方案版本' : 
-                 viewMode === 'add-record' ? '新增修葺记录' : activeMenuLabel}
-              </h2>
-              {viewMode === 'list' && (
+              <div className="flex items-center gap-6">
+                <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+                  {viewMode === 'add' ? `新增${activeMenuLabel}` : 
+                   viewMode === 'add-version' ? '添加方案版本' : 
+                   viewMode === 'add-record' ? '新增修葺记录' : activeMenuLabel}
+                </h2>
+                
+                {/* 智慧大屏专用切换按钮 - 与标题对齐 */}
+                {activeModuleId === 'cockpit' && (
+                  <div 
+                    className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200"
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                  >
+                    {DASHBOARDS.map((item, idx) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setSmartScreenIndex(idx)}
+                        className={cn(
+                          "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
+                          smartScreenIndex === idx 
+                            ? "bg-white text-blue-600 shadow-sm" 
+                            : "text-slate-500 hover:text-slate-900"
+                        )}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                    <div className="w-px h-4 bg-slate-200 mx-1" />
+                    <button 
+                      onClick={() => setIsPaused(!isPaused)}
+                      className={cn(
+                        "p-1.5 rounded-md transition-colors",
+                        isPaused ? "text-orange-500 hover:bg-orange-50" : "text-slate-400 hover:bg-slate-200"
+                      )}
+                      title={isPaused ? "点击恢复自动滚动" : "点击暂停自动滚动"}
+                    >
+                      {isPaused ? <PlayCircle size={16} /> : <PauseCircle size={16} />}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {viewMode === 'list' && activeModuleId !== 'cockpit' && (
                 <div className="text-xs text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
                   最后更新: {new Date().toLocaleDateString()}
                 </div>
@@ -266,10 +308,6 @@ const Index = () => {
           <div className="flex-1">
             {renderContent()}
           </div>
-          
-          <footer className="mt-12 pb-4">
-            {/* Footer content removed */}
-          </footer>
         </main>
       </div>
     </div>
