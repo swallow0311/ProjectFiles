@@ -45,10 +45,13 @@ import ApiList from '@/components/system/ApiList';
 import ApiForm from '@/components/system/ApiForm';
 import LoginLogList from '@/components/system/LoginLogList';
 import OpLogList from '@/components/system/OpLogList';
+import RelicDataDashboard from '@/components/cockpit/RelicDataDashboard';
+import EventDashboard from '@/components/cockpit/EventDashboard';
+import DeviceDashboard from '@/components/cockpit/DeviceDashboard';
 
 const Index = () => {
-  const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[1].id); 
-  const [activeMenuId, setActiveMenuId] = useState('text'); 
+  const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[0].id); 
+  const [activeMenuId, setActiveMenuId] = useState('relic-data'); 
   const [viewMode, setViewMode] = useState<'list' | 'add' | 'add-version' | 'add-record'>('list');
   const [selectedData, setSelectedData] = useState<any>(null);
 
@@ -131,6 +134,9 @@ const Index = () => {
     }
 
     switch (activeMenuId) {
+      case 'relic-data': return <RelicDataDashboard />;
+      case 'event-data': return <EventDashboard />;
+      case 'device-data': return <DeviceDashboard />;
       case 'text': return <TextVolumeList onAdd={() => setViewMode('add')} />;
       case 'drawing': return <ImageVolumeGallery type="drawing" title="图纸卷" />;
       case 'photo': return <ImageVolumeGallery type="photo" title="照片卷" />;
