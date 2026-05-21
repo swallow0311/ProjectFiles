@@ -38,6 +38,7 @@ import SchemeForm from '@/components/restoration/SchemeForm';
 import ApprovalList from '@/components/restoration/ApprovalList';
 import RecordList from '@/components/restoration/RecordList';
 import RecordForm from '@/components/restoration/RecordForm';
+import RestorationStats from '@/components/restoration/RestorationStats';
 import UserList from '@/components/system/UserList';
 import UserForm from '@/components/system/UserForm';
 import RoleList from '@/components/system/RoleList';
@@ -214,6 +215,7 @@ const Index = () => {
       case 'scheme-mgmt': return <SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />;
       case 'scheme-audit': return <ApprovalList />;
       case 'exec-record': return <RecordList onAdd={() => setViewMode('add')} onAddDetail={handleAddRecord} />;
+      case 'stats-analysis': return <RestorationStats />;
       case 'user': return <UserList onAdd={() => setViewMode('add')} />;
       case 'role': return <RoleList onAdd={() => setViewMode('add')} />;
       case 'contacts': return <ContactList onAdd={() => setViewMode('add')} />;
