@@ -5,7 +5,7 @@ import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import { MENU_DATA } from '@/constants/menuData';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { LayoutGrid, PauseCircle, PlayCircle } from 'lucide-react';
+import { LayoutGrid, PauseCircle, PlayCircle, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TextVolumeList from '@/components/archives/TextVolumeList';
 import TextVolumeForm from '@/components/archives/TextVolumeForm';
@@ -28,6 +28,7 @@ import BasicInfoList from '@/components/archives/BasicInfoList';
 import BasicInfoForm from '@/components/archives/BasicInfoForm';
 import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
 import IntelligentAnalysis from '@/components/archives/IntelligentAnalysis';
+import RelicArchiveOverview from '@/components/archives/RelicArchiveOverview';
 import EquipmentList from '@/components/safety/EquipmentList';
 import EquipmentForm from '@/components/safety/EquipmentForm';
 import AlarmProcessingList from '@/components/safety/AlarmProcessingList';
@@ -53,6 +54,7 @@ const Index = () => {
   const [activeMenuId, setActiveMenuId] = useState('relic-data'); 
   const [viewMode, setViewMode] = useState<'list' | 'add' | 'add-version' | 'add-record'>('list');
   const [selectedData, setSelectedData] = useState<any>(null);
+  const [selectedRelic, setSelectedRelic] = useState<any>(null);
   
   // 智慧大屏滚动状态
   const [smartScreenIndex, setSmartScreenIndex] = useState(0);
@@ -97,6 +99,7 @@ const Index = () => {
   const handleModuleChange = (id: string, menuId?: string) => {
     setActiveModuleId(id);
     setViewMode('list');
+    setSelectedRelic(null); // 切换模块时重置选中的文物
     const module = MENU_DATA.find(m => m.id === id);
     if (menuId) {
       setActiveMenuId(menuId);
@@ -111,6 +114,11 @@ const Index = () => {
   const handleMenuChange = (id: string) => {
     setActiveMenuId(id);
     setViewMode('list');
+  };
+
+  const handleSelectRelic = (relic: any) => {
+    setSelectedRelic(relic);
+    setActiveMenuId('text'); // 默认进入文字卷
   };
 
   const handleAddVersion = (scheme: any) => {
@@ -134,6 +142,11 @@ const Index = () => {
           <SmartScreenCarousel activeIndex={smartScreenIndex} />
         </div>
       );
+    }
+
+    // 文物档案模块且未选择具体文物时，显示总览页
+    if (activeModuleId === 'archives' && !selectedRelic) {
+      return <RelicArchiveOverview onSelectRelic={handleSelectRelic} />;
     }
 
     if (viewMode === 'add') {
@@ -232,7 +245,7 @@ const Index = () => {
             <Breadcrumb className="mb-3">
               <BreadcrumbList className="text-slate-500 text-xs">
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">首页</BreadcrumbLink>
+                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); setSelectedRelic(null); }} className="hover:text-blue-600 transition-colors">首页</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -252,15 +265,34 @@ const Index = () => {
                     </BreadcrumbItem>
                   </>
                 )}
+                {selectedRelic && (
+                  <>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="text-blue-600 font-bold">{selectedRelic.name}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
               </BreadcrumbList>
             </Breadcrumb>
             
             <div className="flex items-center justify-between relative">
               <div className="flex items-center gap-6">
+                {selectedRelic && viewMode === 'list' && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-slate-500 hover:text-blue-600 -ml-2"
+                    onClick={() => setSelectedRelic(null)}
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-1" /> 返回总览
+                  </Button>
+                )}
                 <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
                   {viewMode === 'add' ? `新增${activeMenuLabel}` : 
                    viewMode === 'add-version' ? '添加方案版本' : 
-                   viewMode === 'add-record' ? '新增修葺记录' : activeMenuLabel}
+                   viewMode === 'add-record' ? '新增修葺记录' : 
+                   (activeModuleId === 'archives' && !selectedRelic) ? '文物档案总览' : activeMenuLabel}
                 </h2>
               </div>
 
