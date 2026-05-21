@@ -6,6 +6,7 @@ import Sidebar from '@/components/layout/Sidebar';
 import { MENU_DATA } from '@/constants/menuData';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { LayoutGrid, PauseCircle, PlayCircle, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import TextVolumeList from '@/components/archives/TextVolumeList';
 import TextVolumeForm from '@/components/archives/TextVolumeForm';
@@ -144,7 +145,7 @@ const Index = () => {
       );
     }
 
-    // 文物档案模块且未选择具体文物时，显示总览页
+    // 文物管理模块且未选择具体文物时，显示总览页
     if (activeModuleId === 'archives' && !selectedRelic) {
       return <RelicArchiveOverview onSelectRelic={handleSelectRelic} />;
     }
@@ -285,7 +286,7 @@ const Index = () => {
                     className="text-slate-500 hover:text-blue-600 -ml-2"
                     onClick={() => setSelectedRelic(null)}
                   >
-                    <ArrowLeft className="w-4 h-4 mr-1" /> 返回总览
+                    <ArrowLeft className="w-4 h-4 mr-1" /> 返回菜单
                   </Button>
                 )}
                 <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">

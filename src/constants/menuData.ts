@@ -8,7 +8,7 @@ export const MENU_DATA: Module[] = [
   },
   {
     id: "archives",
-    label: "文物档案",
+    label: "文物管理",
     menus: [
       {
         id: "main-volume",
