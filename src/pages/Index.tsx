@@ -290,16 +290,6 @@ const Index = () => {
             
             <div className="flex items-center justify-between relative">
               <div className="flex items-center gap-6">
-                {selectedRelic && viewMode === 'list' && (
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 font-bold shadow-sm"
-                    onClick={() => setSelectedRelic(null)}
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-1.5" /> 返回总览菜单
-                  </Button>
-                )}
                 <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
                   {viewMode === 'add' ? `新增${activeMenuLabel}` : 
                    viewMode === 'add-version' ? '添加方案版本' : 
