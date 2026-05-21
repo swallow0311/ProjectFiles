@@ -71,21 +71,21 @@ const PublicityMaintenance = () => {
   };
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className="space-y-6 pb-12">
       {/* 搜索区域 */}
-      <div className="flex flex-wrap items-center gap-4 bg-white p-4 rounded-lg border">
+      <div className="flex flex-wrap items-center gap-4 bg-white p-4 rounded-xl border shadow-sm">
         <div className="flex items-center gap-3 flex-1">
           <div className="relative w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input 
-              className="pl-9" 
+              className="pl-9 h-9" 
               placeholder="搜索字段名称" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <Select value={selectedModule} onValueChange={setSelectedModule}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48 h-9">
               <SelectValue placeholder="功能模块" />
             </SelectTrigger>
             <SelectContent>
@@ -95,14 +95,14 @@ const PublicityMaintenance = () => {
               ))}
             </SelectContent>
           </Select>
-          <Button variant="outline" onClick={handleReset}>重置</Button>
+          <Button variant="outline" className="h-9" onClick={handleReset}>重置</Button>
         </div>
       </div>
 
       {/* 列表区域 */}
       {filteredGroups.length > 0 ? (
         filteredGroups.map((group) => (
-          <Card key={group.id}>
+          <Card key={group.id} className="border-none shadow-sm overflow-hidden">
             <CardHeader className="bg-slate-50/50 border-b py-3">
               <CardTitle className="text-sm font-bold text-slate-700">{group.title}</CardTitle>
             </CardHeader>
@@ -142,14 +142,14 @@ const PublicityMaintenance = () => {
           </Card>
         ))
       ) : (
-        <div className="flex flex-col items-center justify-center h-48 bg-white rounded-lg border border-dashed">
+        <div className="flex flex-col items-center justify-center h-48 bg-white rounded-xl border border-dashed">
           <p className="text-slate-400">未找到匹配的字段信息</p>
         </div>
       )}
 
-      <div className="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end gap-4 z-10 shadow-lg">
-        <Button variant="outline" onClick={handleReset}>重置设置</Button>
-        <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleSave}>保存设置</Button>
+      <div className="sticky bottom-6 mt-10 bg-white/90 backdrop-blur-md border border-slate-200 p-4 rounded-2xl flex justify-end gap-4 z-10 shadow-xl shadow-slate-200/50">
+        <Button variant="outline" className="px-6" onClick={handleReset}>重置设置</Button>
+        <Button className="bg-blue-600 hover:bg-blue-700 px-8" onClick={handleSave}>保存设置</Button>
       </div>
     </div>
   );

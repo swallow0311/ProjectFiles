@@ -46,8 +46,8 @@ const RoleForm = ({ onBack }: RoleFormProps) => {
         </CardContent>
       </Card>
 
-      <div className="sticky bottom-4 mt-8 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-xl flex justify-end gap-4 z-10 shadow-lg">
-        <Button type="button" variant="outline" onClick={onBack}>取消</Button>
+      <div className="sticky bottom-6 mt-10 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-2xl flex justify-end gap-4 z-10 shadow-xl shadow-slate-200/50">
+        <Button type="button" variant="outline" onClick={onBack} className="px-6">取消</Button>
         <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 px-8">确认创建</Button>
       </div>
     </form>
