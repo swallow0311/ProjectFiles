@@ -67,8 +67,16 @@ const Index = () => {
     [activeModuleId]
   );
 
+  // 判断是否处于“文物档案总览”模式（全屏，无侧边栏）
+  const isArchiveOverview = useMemo(() => 
+    activeModuleId === 'archives' && !selectedRelic,
+    [activeModuleId, selectedRelic]
+  );
+
   const activeMenuLabel = useMemo(() => {
     if (activeModuleId === 'cockpit') return '智慧大屏';
+    if (isArchiveOverview) return '文物档案总览';
+    
     let label = '';
     const findLabel = (items: any[]) => {
       for (const item of items) {
@@ -81,7 +89,7 @@ const Index = () => {
     };
     findLabel(activeModule.menus);
     return label || activeModule.label;
-  }, [activeModule, activeMenuId, activeModuleId]);
+  }, [activeModule, activeMenuId, activeModuleId, isArchiveOverview]);
 
   // 处理智慧大屏自动滚动
   useEffect(() => {
@@ -146,7 +154,7 @@ const Index = () => {
     }
 
     // 文物管理模块且未选择具体文物时，显示总览页
-    if (activeModuleId === 'archives' && !selectedRelic) {
+    if (isArchiveOverview) {
       return <RelicArchiveOverview onSelectRelic={handleSelectRelic} />;
     }
 
@@ -234,11 +242,14 @@ const Index = () => {
       />
       
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar 
-          menus={activeModule.menus} 
-          activeMenuId={activeMenuId} 
-          onMenuChange={handleMenuChange} 
-        />
+        {/* 只有在非总览模式下才显示侧边栏 */}
+        {!isArchiveOverview && activeModuleId !== 'cockpit' && (
+          <Sidebar 
+            menus={activeModule.menus} 
+            activeMenuId={activeMenuId} 
+            onMenuChange={handleMenuChange} 
+          />
+        )}
         
         <main className="flex-1 overflow-y-auto p-8 flex flex-col">
           {/* 顶部导航与标题区 */}
@@ -252,7 +263,7 @@ const Index = () => {
                 <BreadcrumbItem>
                   <span className="font-medium">{activeModule.label}</span>
                 </BreadcrumbItem>
-                {activeMenuLabel !== activeModule.label && (
+                {activeMenuLabel !== activeModule.label && !isArchiveOverview && (
                   <>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
@@ -281,19 +292,19 @@ const Index = () => {
               <div className="flex items-center gap-6">
                 {selectedRelic && viewMode === 'list' && (
                   <Button 
-                    variant="ghost" 
+                    variant="outline" 
                     size="sm" 
-                    className="text-slate-500 hover:text-blue-600 -ml-2"
+                    className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 font-bold shadow-sm"
                     onClick={() => setSelectedRelic(null)}
                   >
-                    <ArrowLeft className="w-4 h-4 mr-1" /> 返回菜单
+                    <ArrowLeft className="w-4 h-4 mr-1.5" /> 返回总览菜单
                   </Button>
                 )}
                 <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
                   {viewMode === 'add' ? `新增${activeMenuLabel}` : 
                    viewMode === 'add-version' ? '添加方案版本' : 
                    viewMode === 'add-record' ? '新增修葺记录' : 
-                   (activeModuleId === 'archives' && !selectedRelic) ? '文物档案总览' : activeMenuLabel}
+                   isArchiveOverview ? '文物档案总览' : activeMenuLabel}
                 </h2>
               </div>
 
