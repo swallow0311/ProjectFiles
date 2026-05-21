@@ -52,7 +52,7 @@ const BasicInfoForm = ({ onBack }: BasicInfoFormProps) => {
   })).filter(group => group.items.length > 0);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 pb-24">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="text-base">基础信息录入</CardTitle>
@@ -152,7 +152,7 @@ const BasicInfoForm = ({ onBack }: BasicInfoFormProps) => {
         </CardContent>
       </Card>
 
-      <div className="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end gap-4 z-10 shadow-lg">
+      <div className="sticky bottom-4 mt-8 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-xl flex justify-end gap-4 z-10 shadow-lg">
         <Button type="button" variant="outline" onClick={onBack}>取消</Button>
         <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={selectedItems.length === 0}>提交保存</Button>
       </div>

@@ -23,7 +23,7 @@ const SchemeForm = ({ onBack, initialData, isVersionMode = false }: SchemeFormPr
   };
 
   return (
-    <form className="space-y-8 pb-24">
+    <form className="space-y-8">
       {/* 基本信息 */}
       <Card className="border-none shadow-sm">
         <CardHeader className="bg-slate-50/50 border-b">
@@ -154,7 +154,7 @@ const SchemeForm = ({ onBack, initialData, isVersionMode = false }: SchemeFormPr
         </CardContent>
       </Card>
 
-      <div className="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end gap-4 z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+      <div className="sticky bottom-4 mt-8 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-xl flex justify-end gap-4 z-10 shadow-lg">
         <Button type="button" variant="outline" onClick={onBack}>取消</Button>
         <Button type="button" variant="secondary" onClick={() => handleAction("保存草稿")}>保存草稿</Button>
         <Button type="button" className="bg-indigo-600 hover:bg-indigo-700 px-8" onClick={() => handleAction("提交审核")}>提交审核</Button>

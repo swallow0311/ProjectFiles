@@ -29,7 +29,7 @@ const RecordForm = ({ onBack, initialData, isAddRecordMode = false }: RecordForm
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 pb-24">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <Card className="border-none shadow-sm">
         <CardHeader className="bg-slate-50/50 border-b">
           <CardTitle className="text-base">修缮项目概况</CardTitle>
@@ -128,7 +128,7 @@ const RecordForm = ({ onBack, initialData, isAddRecordMode = false }: RecordForm
         </CardContent>
       </Card>
 
-      <div className="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end gap-4 z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+      <div className="sticky bottom-4 mt-8 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-xl flex justify-end gap-4 z-10 shadow-lg">
         <Button type="button" variant="outline" onClick={onBack}>取消</Button>
         <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 px-8">保存记录</Button>
       </div>
