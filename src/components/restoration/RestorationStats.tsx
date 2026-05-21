@@ -4,9 +4,9 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  PieChart, Pie, Cell, LineChart, Line, Legend, AreaChart, Area 
+  PieChart, Pie, Cell, Legend, AreaChart, Area 
 } from 'recharts';
-import { Wrench, ClipboardCheck, FileText, CheckCircle2, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Wrench, ClipboardCheck, FileText, CheckCircle2, TrendingUp } from 'lucide-react';
 
 // 模拟数据：方案类型分布
 const TYPE_DATA = [
@@ -39,32 +39,36 @@ const STATUS_COLORS = ['#10b981', '#3b82f6', '#ef4444', '#94a3b8'];
 
 const RestorationStats = () => {
   return (
-    <div className="space-y-6 bg-[#020617] p-6 rounded-2xl border border-white/5 min-h-screen text-white">
+    <div className="space-y-6 pb-12">
       {/* 顶部核心指标 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {[
-          { label: '方案总数', value: '128', icon: FileText, color: 'text-blue-400', sub: '本月新增 12 份' },
-          { label: '待审核方案', value: '12', icon: ClipboardCheck, color: 'text-orange-400', sub: '紧急处理 3 份' },
-          { label: '在建修缮项目', value: '15', icon: Wrench, color: 'text-indigo-400', sub: '进度正常 13 个' },
-          { label: '年度完工率', value: '92%', icon: CheckCircle2, color: 'text-green-400', sub: '较去年提升 5%' },
+          { label: '方案总数', value: '128', icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50', sub: '本月新增 12 份' },
+          { label: '待审核方案', value: '12', icon: ClipboardCheck, color: 'text-orange-600', bg: 'bg-orange-50', sub: '紧急处理 3 份' },
+          { label: '在建修缮项目', value: '15', icon: Wrench, color: 'text-indigo-600', bg: 'bg-indigo-50', sub: '进度正常 13 个' },
+          { label: '年度完工率', value: '92%', icon: CheckCircle2, color: 'text-green-600', bg: 'bg-green-50', sub: '较去年提升 5%' },
         ].map((item, idx) => (
-          <div key={idx} className="bg-white/5 border border-white/10 p-6 rounded-2xl flex items-center justify-between group hover:bg-white/10 transition-all">
-            <div>
-              <p className="text-slate-400 text-xs font-medium mb-1">{item.label}</p>
-              <h3 className="text-3xl font-bold tracking-tight">{item.value}</h3>
-              <p className="text-[10px] text-slate-500 mt-2">{item.sub}</p>
-            </div>
-            <item.icon className={item.color} size={32} />
-          </div>
+          <Card key={idx} className="border-none shadow-sm overflow-hidden">
+            <CardContent className="p-6 flex items-center justify-between">
+              <div>
+                <p className="text-slate-500 text-xs font-medium mb-1">{item.label}</p>
+                <h3 className="text-3xl font-bold tracking-tight text-slate-900">{item.value}</h3>
+                <p className="text-[10px] text-slate-400 mt-2">{item.sub}</p>
+              </div>
+              <div className={`p-3 rounded-2xl ${item.bg}`}>
+                <item.icon className={item.color} size={28} />
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 方案类型占比 */}
-        <Card className="bg-white/5 border-white/10 text-white">
-          <CardHeader className="border-b border-white/5">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-indigo-400" /> 修缮方案类型分布
+        <Card className="border-none shadow-sm">
+          <CardHeader className="border-b py-4">
+            <CardTitle className="text-sm font-bold flex items-center gap-2 text-slate-800">
+              <TrendingUp className="w-4 h-4 text-indigo-500" /> 修缮方案类型分布
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
@@ -84,8 +88,10 @@ const RestorationStats = () => {
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '8px' }} />
-                  <Legend verticalAlign="bottom" height={36} />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  />
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -93,20 +99,23 @@ const RestorationStats = () => {
         </Card>
 
         {/* 审核状态统计 */}
-        <Card className="bg-white/5 border-white/10 text-white">
-          <CardHeader className="border-b border-white/5">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <ClipboardCheck className="w-4 h-4 text-blue-400" /> 方案审核状态统计
+        <Card className="border-none shadow-sm">
+          <CardHeader className="border-b py-4">
+            <CardTitle className="text-sm font-bold flex items-center gap-2 text-slate-800">
+              <ClipboardCheck className="w-4 h-4 text-blue-500" /> 方案审核状态统计
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={STATUS_DATA}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: 'none' }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+                  <Tooltip 
+                    cursor={{ fill: '#f8fafc' }}
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  />
                   <Bar dataKey="value" radius={[4, 4, 0, 0]} barSize={40}>
                     {STATUS_DATA.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={STATUS_COLORS[index % STATUS_COLORS.length]} />
@@ -119,10 +128,10 @@ const RestorationStats = () => {
         </Card>
 
         {/* 修缮进度趋势分析 */}
-        <Card className="bg-white/5 border-white/10 text-white lg:col-span-2">
-          <CardHeader className="border-b border-white/5">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <Wrench className="w-4 h-4 text-green-400" /> 修缮项目执行进度趋势
+        <Card className="border-none shadow-sm lg:col-span-2">
+          <CardHeader className="border-b py-4">
+            <CardTitle className="text-sm font-bold flex items-center gap-2 text-slate-800">
+              <Wrench className="w-4 h-4 text-green-500" /> 修缮项目执行进度趋势
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
@@ -131,19 +140,21 @@ const RestorationStats = () => {
                 <AreaChart data={PROGRESS_TREND}>
                   <defs>
                     <linearGradient id="colorPlan" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.1}/>
                       <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
                     </linearGradient>
                     <linearGradient id="colorDone" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
                       <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: 'none' }} />
-                  <Legend />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  />
+                  <Legend verticalAlign="top" align="right" height={36} iconType="circle" />
                   <Area type="monotone" dataKey="计划" stroke="#6366f1" fillOpacity={1} fill="url(#colorPlan)" strokeWidth={3} />
                   <Area type="monotone" dataKey="完成" stroke="#10b981" fillOpacity={1} fill="url(#colorDone)" strokeWidth={3} />
                 </AreaChart>
