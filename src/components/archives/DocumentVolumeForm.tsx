@@ -93,19 +93,21 @@ const DocumentVolumeForm = ({ type, onBack }: DocumentVolumeFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <Card className="border-none shadow-sm">
-        <CardHeader className="border-b bg-slate-50/50">
-          <CardTitle className="text-base">基本信息录入</CardTitle>
-        </CardHeader>
-        <CardContent className="pt-6">
-          {renderFields()}
-        </CardContent>
-      </Card>
+    <form onSubmit={handleSubmit} className="flex flex-col min-h-full">
+      <div className="flex-1 space-y-6 pb-24">
+        <Card className="border-none shadow-sm">
+          <CardHeader className="border-b bg-slate-50/50">
+            <CardTitle className="text-base">基本信息录入</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            {renderFields()}
+          </CardContent>
+        </Card>
+      </div>
 
-      <div className="sticky bottom-6 mt-10 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-2xl flex justify-end gap-4 z-10 shadow-xl shadow-slate-200/50">
-        <Button type="button" variant="outline" onClick={onBack} className="px-6">取消</Button>
-        <Button type="submit" className="bg-blue-600 hover:bg-blue-700 px-8">提交保存</Button>
+      <div className="sticky bottom-0 -mx-8 -mb-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-20">
+        <Button type="submit" className="bg-blue-600 hover:bg-blue-700 px-8">确定</Button>
+        <Button type="button" variant="outline" onClick={onBack} className="px-8">取消</Button>
       </div>
     </form>
   );
