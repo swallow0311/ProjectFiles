@@ -4,7 +4,6 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
@@ -140,7 +139,7 @@ const EquipmentForm = ({ onBack }: EquipmentFormProps) => {
         </Card>
       </div>
 
-      <div className="sticky bottom-0 -mx-8 -mb-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-20">
+      <div className="sticky bottom-0 -mx-8 -mb-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
         <Button type="submit" className="bg-blue-600 hover:bg-blue-700 px-8">确定</Button>
         <Button type="button" variant="outline" onClick={onBack} className="px-8">取消</Button>
       </div>

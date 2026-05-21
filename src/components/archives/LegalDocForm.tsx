@@ -55,7 +55,7 @@ const LegalDocForm = ({ onBack }: LegalDocFormProps) => {
         </Card>
       </div>
 
-      <div className="sticky bottom-0 -mx-8 -mb-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-20">
+      <div className="sticky bottom-0 -mx-8 -mb-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
         <Button type="submit" className="bg-blue-600 hover:bg-blue-700 px-8">确定</Button>
         <Button type="button" variant="outline" onClick={onBack} className="px-8">取消</Button>
       </div>
