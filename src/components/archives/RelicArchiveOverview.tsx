@@ -1,3 +1,4 @@
+>'} 表达式包裹特殊符号，确保解析器正确识别">
 "use client";
 
 import React from 'react';
@@ -124,7 +125,7 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
         <Card className="border-slate-200 shadow-sm">
           <div className="p-4 border-b flex items-center justify-between">
             <h3 className="text-sm font-bold">修缮审批</h3>
-            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 >></Button>
+            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 {'>>'}</Button>
           </div>
           <Table>
             <TableHeader className="bg-slate-50">
@@ -160,7 +161,7 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
         <Card className="border-slate-200 shadow-sm">
           <div className="p-4 border-b flex items-center justify-between">
             <h3 className="text-sm font-bold">告警通知</h3>
-            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 >></Button>
+            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 {'>>'}</Button>
           </div>
           <Table>
             <TableHeader className="bg-slate-50">
