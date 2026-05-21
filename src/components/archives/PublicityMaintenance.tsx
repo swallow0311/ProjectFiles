@@ -147,7 +147,7 @@ const PublicityMaintenance = () => {
         )}
       </div>
 
-      <div className="sticky bottom-0 -mx-8 -mb-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+      <div className="sticky bottom-0 -mx-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
         <Button className="bg-blue-600 hover:bg-blue-700 px-8" onClick={handleSave}>确定</Button>
         <Button variant="outline" className="px-8" onClick={handleReset}>取消</Button>
       </div>

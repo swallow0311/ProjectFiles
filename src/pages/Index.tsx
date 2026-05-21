@@ -58,7 +58,6 @@ const Index = () => {
   const [selectedData, setSelectedData] = useState<any>(null);
   const [selectedRelic, setSelectedRelic] = useState<any>(null);
   
-  // 智慧大屏滚动状态
   const [smartScreenIndex, setSmartScreenIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -68,7 +67,6 @@ const Index = () => {
     [activeModuleId]
   );
 
-  // 判断是否处于“文物档案总览”模式（全屏，无侧边栏）
   const isArchiveOverview = useMemo(() => 
     activeModuleId === 'archives' && !selectedRelic,
     [activeModuleId, selectedRelic]
@@ -92,7 +90,6 @@ const Index = () => {
     return label || activeModule.label;
   }, [activeModule, activeMenuId, activeModuleId, isArchiveOverview]);
 
-  // 处理智慧大屏自动滚动
   useEffect(() => {
     if (activeModuleId === 'cockpit' && !isPaused) {
       timerRef.current = setInterval(() => {
@@ -109,7 +106,7 @@ const Index = () => {
   const handleModuleChange = (id: string, menuId?: string) => {
     setActiveModuleId(id);
     setViewMode('list');
-    setSelectedRelic(null); // 切换模块时重置选中的文物
+    setSelectedRelic(null);
     const module = MENU_DATA.find(m => m.id === id);
     if (menuId) {
       setActiveMenuId(menuId);
@@ -128,7 +125,7 @@ const Index = () => {
 
   const handleSelectRelic = (relic: any) => {
     setSelectedRelic(relic);
-    setActiveMenuId('text'); // 默认进入文字卷
+    setActiveMenuId('text');
   };
 
   const handleAddVersion = (scheme: any) => {
@@ -154,9 +151,8 @@ const Index = () => {
       );
     }
 
-    // 文物管理模块且未选择具体文物时，显示总览页
     if (isArchiveOverview) {
-      return <RelicArchiveOverview onSelectRelic={handleSelectRelic} />;
+      return <div className="pb-8"><RelicArchiveOverview onSelectRelic={handleSelectRelic} /></div>;
     }
 
     if (viewMode === 'add') {
@@ -191,39 +187,42 @@ const Index = () => {
       return <RecordForm onBack={() => setViewMode('list')} initialData={selectedData} isAddRecordMode />;
     }
 
+    // 列表页统一包裹底部间距
+    const listWrapper = (content: React.ReactNode) => <div className="pb-8">{content}</div>;
+
     switch (activeMenuId) {
-      case 'text': return <TextVolumeList onAdd={() => setViewMode('add')} />;
-      case 'drawing': return <ImageVolumeGallery type="drawing" title="图纸卷" />;
-      case 'photo': return <ImageVolumeGallery type="photo" title="照片卷" />;
-      case 'rubbing': return <ImageVolumeGallery type="rubbing" title="拓片卷" />;
-      case 'curtain': return <ImageVolumeGallery type="curtain" title="幕本卷" />;
-      case 'display': return <ImageVolumeGallery type="display" title="文物展示卷" />;
-      case 'planning': return <DocumentVolumeList type="planning" onAdd={() => setViewMode('add')} />;
-      case 'archaeology': return <DocumentVolumeList type="archaeology" onAdd={() => setViewMode('add')} />;
-      case 'monitoring': return <DocumentVolumeList type="monitoring" onAdd={() => setViewMode('add')} />;
-      case 'admin-doc': return <AdminDocList onAdd={() => setViewMode('add')} />;
-      case 'legal-doc': return <LegalDocList onAdd={() => setViewMode('add')} />;
-      case 'chronicle': return <ChronicleList onAdd={() => setViewMode('add')} />;
-      case 'reference': return <ReferenceList onAdd={() => setViewMode('add')} />;
-      case 'literature': return <LiteratureList onAdd={() => setViewMode('add')} />;
-      case 'book': return <BookList onAdd={() => setViewMode('add')} />;
-      case 'basic-info': return <BasicInfoList onAdd={() => setViewMode('add')} />;
+      case 'text': return listWrapper(<TextVolumeList onAdd={() => setViewMode('add')} />);
+      case 'drawing': return listWrapper(<ImageVolumeGallery type="drawing" title="图纸卷" />);
+      case 'photo': return listWrapper(<ImageVolumeGallery type="photo" title="照片卷" />);
+      case 'rubbing': return listWrapper(<ImageVolumeGallery type="rubbing" title="拓片卷" />);
+      case 'curtain': return listWrapper(<ImageVolumeGallery type="curtain" title="幕本卷" />);
+      case 'display': return listWrapper(<ImageVolumeGallery type="display" title="文物展示卷" />);
+      case 'planning': return listWrapper(<DocumentVolumeList type="planning" onAdd={() => setViewMode('add')} />);
+      case 'archaeology': return listWrapper(<DocumentVolumeList type="archaeology" onAdd={() => setViewMode('add')} />);
+      case 'monitoring': return listWrapper(<DocumentVolumeList type="monitoring" onAdd={() => setViewMode('add')} />);
+      case 'admin-doc': return listWrapper(<AdminDocList onAdd={() => setViewMode('add')} />);
+      case 'legal-doc': return listWrapper(<LegalDocList onAdd={() => setViewMode('add')} />);
+      case 'chronicle': return listWrapper(<ChronicleList onAdd={() => setViewMode('add')} />);
+      case 'reference': return listWrapper(<ReferenceList onAdd={() => setViewMode('add')} />);
+      case 'literature': return listWrapper(<LiteratureList onAdd={() => setViewMode('add')} />);
+      case 'book': return listWrapper(<BookList onAdd={() => setViewMode('add')} />);
+      case 'basic-info': return listWrapper(<BasicInfoList onAdd={() => setViewMode('add')} />);
       case 'publicity': return <PublicityMaintenance />;
-      case 'smart-analysis': return <IntelligentAnalysis />;
-      case 'equipment': return <EquipmentList onAdd={() => setViewMode('add')} />;
-      case 'alarm-process': return <AlarmProcessingList />;
-      case 'scheme-mgmt': return <SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />;
-      case 'scheme-audit': return <ApprovalList />;
-      case 'exec-record': return <RecordList onAdd={() => setViewMode('add')} onAddDetail={handleAddRecord} />;
-      case 'stats-analysis': return <RestorationStats />;
-      case 'user': return <UserList onAdd={() => setViewMode('add')} />;
-      case 'role': return <RoleList onAdd={() => setViewMode('add')} />;
-      case 'contacts': return <ContactList onAdd={() => setViewMode('add')} />;
-      case 'api': return <ApiList onAdd={() => setViewMode('add')} />;
-      case 'login-log': return <LoginLogList />;
-      case 'op-log': return <OpLogList />;
+      case 'smart-analysis': return listWrapper(<IntelligentAnalysis />);
+      case 'equipment': return listWrapper(<EquipmentList onAdd={() => setViewMode('add')} />);
+      case 'alarm-process': return listWrapper(<AlarmProcessingList />);
+      case 'scheme-mgmt': return listWrapper(<SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />);
+      case 'scheme-audit': return listWrapper(<ApprovalList />);
+      case 'exec-record': return listWrapper(<RecordList onAdd={() => setViewMode('add')} onAddDetail={handleAddRecord} />);
+      case 'stats-analysis': return listWrapper(<RestorationStats />);
+      case 'user': return listWrapper(<UserList onAdd={() => setViewMode('add')} />);
+      case 'role': return listWrapper(<RoleList onAdd={() => setViewMode('add')} />);
+      case 'contacts': return listWrapper(<ContactList onAdd={() => setViewMode('add')} />);
+      case 'api': return listWrapper(<ApiList onAdd={() => setViewMode('add')} />);
+      case 'login-log': return listWrapper(<LoginLogList />);
+      case 'op-log': return listWrapper(<OpLogList />);
       default:
-        return (
+        return listWrapper(
           <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
             <div className="bg-slate-50 p-4 rounded-full mb-4">
               <LayoutGrid size={48} className="text-slate-300" />
@@ -244,7 +243,6 @@ const Index = () => {
       />
       
       <div className="flex flex-1 overflow-hidden">
-        {/* 只有在非总览模式下才显示侧边栏 */}
         {!isArchiveOverview && activeModuleId !== 'cockpit' && (
           <Sidebar 
             menus={activeModule.menus} 
@@ -253,9 +251,8 @@ const Index = () => {
           />
         )}
         
-        <main className="flex-1 overflow-y-auto p-8 flex flex-col">
-          {/* 顶部导航与标题区 */}
-          <div className="mb-8">
+        <main className="flex-1 overflow-y-auto flex flex-col">
+          <div className="p-8 pb-4">
             <Breadcrumb className="mb-3">
               <BreadcrumbList className="text-slate-500 text-xs">
                 <BreadcrumbItem>
@@ -300,7 +297,6 @@ const Index = () => {
                 </h2>
               </div>
 
-              {/* 智慧大屏专用切换按钮 - 居中处理 */}
               {activeModuleId === 'cockpit' && (
                 <div 
                   className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shadow-sm"
@@ -343,8 +339,7 @@ const Index = () => {
             </div>
           </div>
 
-          {/* 内容主体区 */}
-          <div className="flex-1">
+          <div className="flex-1 px-8">
             {renderContent()}
           </div>
         </main>

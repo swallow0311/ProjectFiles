@@ -153,7 +153,7 @@ const SchemeForm = ({ onBack, initialData, isVersionMode = false }: SchemeFormPr
         </Card>
       </div>
 
-      <div className="sticky bottom-0 -mx-8 -mb-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+      <div className="sticky bottom-0 -mx-8 bg-white border-t p-4 px-8 flex justify-start gap-3 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
         <Button type="button" className="bg-blue-600 hover:bg-blue-700 px-8" onClick={() => handleAction("提交审核")}>确定</Button>
         <Button type="button" variant="secondary" onClick={() => handleAction("保存草稿")} className="px-8">保存草稿</Button>
         <Button type="button" variant="outline" onClick={onBack} className="px-8">取消</Button>
