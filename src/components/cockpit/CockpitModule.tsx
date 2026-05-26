@@ -10,6 +10,7 @@ const CockpitModule = () => {
 
   // 自动轮播逻辑
   useEffect(() => {
+    // 如果处于锁定状态，不执行轮播
     if (isLocked) return;
 
     const timer = setInterval(() => {
@@ -17,7 +18,7 @@ const CockpitModule = () => {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [isLocked]);
+  }, [isLocked, activeIndex]); // 增加 activeIndex 依赖确保状态同步
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-[#020617]">
