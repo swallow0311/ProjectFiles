@@ -14,10 +14,7 @@ import {
 } from '@/components/ui/breadcrumb';
 
 // 驾驶舱组件
-import RelicMapDashboard from '@/components/cockpit/RelicMapDashboard';
-import RelicDataDashboard from '@/components/cockpit/RelicDataDashboard';
-import EventDashboard from '@/components/cockpit/EventDashboard';
-import DeviceDashboard from '@/components/cockpit/DeviceDashboard';
+import CockpitModule from '@/components/cockpit/CockpitModule';
 
 // 档案组件
 import RelicArchiveOverview from '@/components/archives/RelicArchiveOverview';
@@ -97,14 +94,9 @@ const Index = () => {
   };
 
   const renderContent = () => {
-    // 驾驶舱
+    // 驾驶舱：使用统一的轮播容器，不再依赖侧边栏切换
     if (activeModuleId === 'cockpit') {
-      switch (activeMenuId) {
-        case 'map': return <RelicMapDashboard />;
-        case 'relic': return <RelicDataDashboard />;
-        case 'event': return <EventDashboard />;
-        case 'device': return <DeviceDashboard />;
-      }
+      return <CockpitModule />;
     }
 
     // 文物档案
@@ -197,19 +189,25 @@ const Index = () => {
     return <div className="p-8 text-slate-400">功能开发中...</div>;
   };
 
+  const isCockpit = activeModuleId === 'cockpit';
+
   return (
     <div className="h-screen flex flex-col bg-slate-50 overflow-hidden">
       <Header activeModuleId={activeModuleId} onModuleChange={handleModuleChange} />
 
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar
-          menus={activeModule.menus}
-          activeMenuId={activeMenuId}
-          onMenuChange={handleMenuChange}
-        />
+        {/* 驾驶舱模式下隐藏侧边栏 */}
+        {!isCockpit && (
+          <Sidebar
+            menus={activeModule.menus}
+            activeMenuId={activeMenuId}
+            onMenuChange={handleMenuChange}
+          />
+        )}
 
         <main className="flex-1 overflow-y-auto flex flex-col">
-          {activeMenuId !== 'map' && (
+          {/* 驾驶舱模式下隐藏面包屑和标题 */}
+          {!isCockpit && (
             <div className="p-8 pb-4">
               <Breadcrumb className="mb-4">
                 <BreadcrumbList>
@@ -230,7 +228,7 @@ const Index = () => {
             </div>
           )}
 
-          <div className={activeMenuId === 'map' ? "flex-1" : "flex-1 px-8"}>
+          <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-8"}>
             {renderContent()}
           </div>
         </main>
