@@ -94,7 +94,7 @@ const Index = () => {
   };
 
   const renderContent = () => {
-    // 驾驶舱：使用统一的轮播容器，不再依赖侧边栏切换
+    // 驾驶舱
     if (activeModuleId === 'cockpit') {
       return <CockpitModule />;
     }
@@ -190,14 +190,15 @@ const Index = () => {
   };
 
   const isCockpit = activeModuleId === 'cockpit';
+  // 档案总览页面也需要隐藏侧边栏
+  const hideSidebar = isCockpit || (activeModuleId === 'archives' && activeMenuId === 'overview');
 
   return (
     <div className="h-screen flex flex-col bg-slate-50 overflow-hidden">
       <Header activeModuleId={activeModuleId} onModuleChange={handleModuleChange} />
 
       <div className="flex flex-1 overflow-hidden">
-        {/* 驾驶舱模式下隐藏侧边栏 */}
-        {!isCockpit && (
+        {!hideSidebar && (
           <Sidebar
             menus={activeModule.menus}
             activeMenuId={activeMenuId}
@@ -206,7 +207,6 @@ const Index = () => {
         )}
 
         <main className="flex-1 overflow-y-auto flex flex-col">
-          {/* 驾驶舱模式下隐藏面包屑和标题 */}
           {!isCockpit && (
             <div className="p-8 pb-4">
               <Breadcrumb className="mb-4">
@@ -216,7 +216,7 @@ const Index = () => {
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>{activeModule.label}</BreadcrumbPage>
+                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); handleModuleChange(activeModuleId); }}>{activeModule.label}</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
@@ -228,7 +228,7 @@ const Index = () => {
             </div>
           )}
 
-          <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-8"}>
+          <div className={hideSidebar ? "flex-1 flex flex-col" : "flex-1 px-8"}>
             {renderContent()}
           </div>
         </main>
