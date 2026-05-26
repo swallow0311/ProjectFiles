@@ -1,13 +1,27 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import { MENU_DATA } from '@/constants/menuData';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { LayoutGrid, PauseCircle, PlayCircle, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+
+// 驾驶舱组件
+import RelicMapDashboard from '@/components/cockpit/RelicMapDashboard';
+import RelicDataDashboard from '@/components/cockpit/RelicDataDashboard';
+import EventDashboard from '@/components/cockpit/EventDashboard';
+import DeviceDashboard from '@/components/cockpit/DeviceDashboard';
+
+// 档案组件
+import RelicArchiveOverview from '@/components/archives/RelicArchiveOverview';
+import IntelligentAnalysis from '@/components/archives/IntelligentAnalysis';
 import TextVolumeList from '@/components/archives/TextVolumeList';
 import TextVolumeForm from '@/components/archives/TextVolumeForm';
 import ImageVolumeGallery from '@/components/archives/ImageVolumeGallery';
@@ -28,17 +42,21 @@ import BookForm from '@/components/archives/BookForm';
 import BasicInfoList from '@/components/archives/BasicInfoList';
 import BasicInfoForm from '@/components/archives/BasicInfoForm';
 import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
-import IntelligentAnalysis from '@/components/archives/IntelligentAnalysis';
-import RelicArchiveOverview from '@/components/archives/RelicArchiveOverview';
+
+// 安全组件
 import EquipmentList from '@/components/safety/EquipmentList';
 import EquipmentForm from '@/components/safety/EquipmentForm';
 import AlarmProcessingList from '@/components/safety/AlarmProcessingList';
+
+// 修葺组件
+import RestorationStats from '@/components/restoration/RestorationStats';
 import SchemeList from '@/components/restoration/SchemeList';
 import SchemeForm from '@/components/restoration/SchemeForm';
 import ApprovalList from '@/components/restoration/ApprovalList';
 import RecordList from '@/components/restoration/RecordList';
 import RecordForm from '@/components/restoration/RecordForm';
-import RestorationStats from '@/components/restoration/RestorationStats';
+
+// 系统组件
 import UserList from '@/components/system/UserList';
 import UserForm from '@/components/system/UserForm';
 import RoleList from '@/components/system/RoleList';
@@ -49,73 +67,28 @@ import ApiList from '@/components/system/ApiList';
 import ApiForm from '@/components/system/ApiForm';
 import LoginLogList from '@/components/system/LoginLogList';
 import OpLogList from '@/components/system/OpLogList';
-import SmartScreenCarousel, { DASHBOARDS } from '@/components/cockpit/SmartScreenCarousel';
 
 const Index = () => {
-  const [activeModuleId, setActiveModuleId] = useState(MENU_DATA[0].id); 
-  const [activeMenuId, setActiveMenuId] = useState('relic-data'); 
-  const [viewMode, setViewMode] = useState<'list' | 'add' | 'add-version' | 'add-record'>('list');
-  const [selectedData, setSelectedData] = useState<any>(null);
-  const [selectedRelic, setSelectedRelic] = useState<any>(null);
-  
-  const [smartScreenIndex, setSmartScreenIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [activeModuleId, setActiveModuleId] = useState('cockpit');
+  const [activeMenuId, setActiveMenuId] = useState('map');
+  const [viewMode, setViewMode] = useState<'list' | 'form'>('list');
+  const [formData, setFormData] = useState<any>(null);
 
-  const activeModule = useMemo(() => 
-    MENU_DATA.find(m => m.id === activeModuleId) || MENU_DATA[0],
+  const activeModule = useMemo(
+    () => MENU_DATA.find((m) => m.id === activeModuleId) || MENU_DATA[0],
     [activeModuleId]
   );
 
-  const isArchiveOverview = useMemo(() => 
-    activeModuleId === 'archives' && !selectedRelic,
-    [activeModuleId, selectedRelic]
-  );
-
   const activeMenuLabel = useMemo(() => {
-    if (activeModuleId === 'cockpit') return '智慧大屏';
-    if (isArchiveOverview) return '文物档案总览';
-    
-    let label = '';
-    const findLabel = (items: any[]) => {
-      for (const item of items) {
-        if (item.id === activeMenuId) {
-          label = item.label;
-          return;
-        }
-        if (item.children) findLabel(item.children);
-      }
-    };
-    findLabel(activeModule.menus);
-    return label || activeModule.label;
-  }, [activeModule, activeMenuId, activeModuleId, isArchiveOverview]);
+    const item = activeModule.menus.find((m) => m.id === activeMenuId);
+    return item?.label || '';
+  }, [activeModule, activeMenuId]);
 
-  useEffect(() => {
-    if (activeModuleId === 'cockpit' && !isPaused) {
-      timerRef.current = setInterval(() => {
-        setSmartScreenIndex((prev) => (prev + 1) % DASHBOARDS.length);
-      }, 8000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [activeModuleId, isPaused]);
-
-  const handleModuleChange = (id: string, menuId?: string) => {
+  const handleModuleChange = (id: string) => {
     setActiveModuleId(id);
+    const firstMenu = MENU_DATA.find(m => m.id === id)?.menus[0];
+    setActiveMenuId(firstMenu?.id || '');
     setViewMode('list');
-    setSelectedRelic(null);
-    const module = MENU_DATA.find(m => m.id === id);
-    if (menuId) {
-      setActiveMenuId(menuId);
-    } else if (module && module.menus.length > 0) {
-      const firstMenu = module.menus[0];
-      setActiveMenuId(firstMenu.children ? firstMenu.children[0].id : firstMenu.id);
-    } else {
-      setActiveMenuId(''); 
-    }
   };
 
   const handleMenuChange = (id: string) => {
@@ -123,223 +96,141 @@ const Index = () => {
     setViewMode('list');
   };
 
-  const handleSelectRelic = (relic: any) => {
-    setSelectedRelic(relic);
-    setActiveMenuId('text');
-  };
-
-  const handleAddVersion = (scheme: any) => {
-    setSelectedData(scheme);
-    setViewMode('add-version');
-  };
-
-  const handleAddRecord = (record: any) => {
-    setSelectedData(record);
-    setViewMode('add-record');
-  };
-
   const renderContent = () => {
+    // 驾驶舱
     if (activeModuleId === 'cockpit') {
-      return (
-        <div 
-          className="h-full" 
-          onMouseEnter={() => setIsPaused(true)} 
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <SmartScreenCarousel activeIndex={smartScreenIndex} />
-        </div>
-      );
-    }
-
-    if (isArchiveOverview) {
-      return <div className="pb-8"><RelicArchiveOverview onSelectRelic={handleSelectRelic} /></div>;
-    }
-
-    if (viewMode === 'add') {
       switch (activeMenuId) {
-        case 'text': return <TextVolumeForm onBack={() => setViewMode('list')} />;
-        case 'planning':
-        case 'archaeology':
-        case 'monitoring':
-          return <DocumentVolumeForm type={activeMenuId as any} onBack={() => setViewMode('list')} />;
-        case 'admin-doc': return <AdminDocForm onBack={() => setViewMode('list')} />;
-        case 'legal-doc': return <LegalDocForm onBack={() => setViewMode('list')} />;
-        case 'chronicle': return <ChronicleForm onBack={() => setViewMode('list')} />;
-        case 'reference': return <ReferenceForm onBack={() => setViewMode('list')} />;
-        case 'literature': return <LiteratureForm onBack={() => setViewMode('list')} />;
-        case 'book': return <BookForm onBack={() => setViewMode('list')} />;
-        case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} />;
-        case 'equipment': return <EquipmentForm onBack={() => setViewMode('list')} />;
-        case 'scheme-mgmt': return <SchemeForm onBack={() => setViewMode('list')} />;
-        case 'exec-record': return <RecordForm onBack={() => setViewMode('list')} />;
-        case 'user': return <UserForm onBack={() => setViewMode('list')} />;
-        case 'role': return <RoleForm onBack={() => setViewMode('list')} />;
-        case 'contacts': return <ContactForm onBack={() => setViewMode('list')} />;
-        case 'api': return <ApiForm onBack={() => setViewMode('list')} />;
+        case 'map': return <RelicMapDashboard />;
+        case 'relic': return <RelicDataDashboard />;
+        case 'event': return <EventDashboard />;
+        case 'device': return <DeviceDashboard />;
       }
     }
 
-    if (viewMode === 'add-version') {
-      return <SchemeForm onBack={() => setViewMode('list')} initialData={selectedData} isVersionMode />;
+    // 文物档案
+    if (activeModuleId === 'archives') {
+      if (viewMode === 'form') {
+        switch (activeMenuId) {
+          case 'text': return <TextVolumeForm onBack={() => setViewMode('list')} />;
+          case 'planning':
+          case 'archaeology':
+          case 'monitoring':
+            return <DocumentVolumeForm type={activeMenuId as any} onBack={() => setViewMode('list')} />;
+          case 'admin-doc': return <AdminDocForm onBack={() => setViewMode('list')} />;
+          case 'legal-doc': return <LegalDocForm onBack={() => setViewMode('list')} />;
+          case 'chronicle': return <ChronicleForm onBack={() => setViewMode('list')} />;
+          case 'reference': return <ReferenceForm onBack={() => setViewMode('list')} />;
+          case 'literature': return <LiteratureForm onBack={() => setViewMode('list')} />;
+          case 'book': return <BookForm onBack={() => setViewMode('list')} />;
+          case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} />;
+        }
+      }
+      switch (activeMenuId) {
+        case 'overview': return <RelicArchiveOverview onSelectRelic={() => setActiveMenuId('text')} />;
+        case 'analysis': return <IntelligentAnalysis />;
+        case 'text': return <TextVolumeList onAdd={() => setViewMode('form')} />;
+        case 'drawing': return <ImageVolumeGallery type="drawing" title="图纸卷" />;
+        case 'photo': return <ImageVolumeGallery type="photo" title="照片卷" />;
+        case 'rubbing': return <ImageVolumeGallery type="rubbing" title="拓片卷" />;
+        case 'curtain': return <ImageVolumeGallery type="curtain" title="幕本卷" />;
+        case 'display': return <ImageVolumeGallery type="display" title="文物展示卷" />;
+        case 'planning':
+        case 'archaeology':
+        case 'monitoring':
+          return <DocumentVolumeList type={activeMenuId as any} onAdd={() => setViewMode('form')} />;
+        case 'admin-doc': return <AdminDocList onAdd={() => setViewMode('form')} />;
+        case 'legal-doc': return <LegalDocList onAdd={() => setViewMode('form')} />;
+        case 'chronicle': return <ChronicleList onAdd={() => setViewMode('form')} />;
+        case 'reference': return <ReferenceList onAdd={() => setViewMode('form')} />;
+        case 'literature': return <LiteratureList onAdd={() => setViewMode('form')} />;
+        case 'book': return <BookList onAdd={() => setViewMode('form')} />;
+        case 'basic-info': return <BasicInfoList onAdd={() => setViewMode('form')} />;
+        case 'publicity': return <PublicityMaintenance />;
+      }
     }
 
-    if (viewMode === 'add-record') {
-      return <RecordForm onBack={() => setViewMode('list')} initialData={selectedData} isAddRecordMode />;
+    // 安全监测
+    if (activeModuleId === 'safety') {
+      if (viewMode === 'form' && activeMenuId === 'equipment') {
+        return <EquipmentForm onBack={() => setViewMode('list')} />;
+      }
+      switch (activeMenuId) {
+        case 'equipment': return <EquipmentList onAdd={() => setViewMode('form')} />;
+        case 'alarm': return <AlarmProcessingList />;
+      }
     }
 
-    // 列表页统一包裹底部间距
-    const listWrapper = (content: React.ReactNode) => <div className="pb-8">{content}</div>;
-
-    switch (activeMenuId) {
-      case 'text': return listWrapper(<TextVolumeList onAdd={() => setViewMode('add')} />);
-      case 'drawing': return listWrapper(<ImageVolumeGallery type="drawing" title="图纸卷" />);
-      case 'photo': return listWrapper(<ImageVolumeGallery type="photo" title="照片卷" />);
-      case 'rubbing': return listWrapper(<ImageVolumeGallery type="rubbing" title="拓片卷" />);
-      case 'curtain': return listWrapper(<ImageVolumeGallery type="curtain" title="幕本卷" />);
-      case 'display': return listWrapper(<ImageVolumeGallery type="display" title="文物展示卷" />);
-      case 'planning': return listWrapper(<DocumentVolumeList type="planning" onAdd={() => setViewMode('add')} />);
-      case 'archaeology': return listWrapper(<DocumentVolumeList type="archaeology" onAdd={() => setViewMode('add')} />);
-      case 'monitoring': return listWrapper(<DocumentVolumeList type="monitoring" onAdd={() => setViewMode('add')} />);
-      case 'admin-doc': return listWrapper(<AdminDocList onAdd={() => setViewMode('add')} />);
-      case 'legal-doc': return listWrapper(<LegalDocList onAdd={() => setViewMode('add')} />);
-      case 'chronicle': return listWrapper(<ChronicleList onAdd={() => setViewMode('add')} />);
-      case 'reference': return listWrapper(<ReferenceList onAdd={() => setViewMode('add')} />);
-      case 'literature': return listWrapper(<LiteratureList onAdd={() => setViewMode('add')} />);
-      case 'book': return listWrapper(<BookList onAdd={() => setViewMode('add')} />);
-      case 'basic-info': return listWrapper(<BasicInfoList onAdd={() => setViewMode('add')} />);
-      case 'publicity': return <PublicityMaintenance />;
-      case 'smart-analysis': return listWrapper(<IntelligentAnalysis />);
-      case 'equipment': return listWrapper(<EquipmentList onAdd={() => setViewMode('add')} />);
-      case 'alarm-process': return listWrapper(<AlarmProcessingList />);
-      case 'scheme-mgmt': return listWrapper(<SchemeList onAdd={() => setViewMode('add')} onAddVersion={handleAddVersion} />);
-      case 'scheme-audit': return listWrapper(<ApprovalList />);
-      case 'exec-record': return listWrapper(<RecordList onAdd={() => setViewMode('add')} onAddDetail={handleAddRecord} />);
-      case 'stats-analysis': return listWrapper(<RestorationStats />);
-      case 'user': return listWrapper(<UserList onAdd={() => setViewMode('add')} />);
-      case 'role': return listWrapper(<RoleList onAdd={() => setViewMode('add')} />);
-      case 'contacts': return listWrapper(<ContactList onAdd={() => setViewMode('add')} />);
-      case 'api': return listWrapper(<ApiList onAdd={() => setViewMode('add')} />);
-      case 'login-log': return listWrapper(<LoginLogList />);
-      case 'op-log': return listWrapper(<OpLogList />);
-      default:
-        return listWrapper(
-          <div className="flex flex-col items-center justify-center h-96 border-2 border-dashed border-slate-200 rounded-2xl bg-white shadow-sm">
-            <div className="bg-slate-50 p-4 rounded-full mb-4">
-              <LayoutGrid size={48} className="text-slate-300" />
-            </div>
-            <p className="text-slate-500 font-medium">正在展示：{activeModule.label} - {activeMenuLabel}</p>
-            <p className="text-sm text-slate-400 mt-1">此处为功能模块内容展示区域</p>
-          </div>
-        );
+    // 修葺管理
+    if (activeModuleId === 'restoration') {
+      if (viewMode === 'form') {
+        if (activeMenuId === 'scheme') return <SchemeForm onBack={() => setViewMode('list')} initialData={formData} isVersionMode={!!formData} />;
+        if (activeMenuId === 'record') return <RecordForm onBack={() => setViewMode('list')} initialData={formData} isAddRecordMode={!!formData} />;
+      }
+      switch (activeMenuId) {
+        case 'stats': return <RestorationStats />;
+        case 'scheme': return <SchemeList onAdd={() => { setFormData(null); setViewMode('form'); }} onAddVersion={(data) => { setFormData(data); setViewMode('form'); }} />;
+        case 'approval': return <ApprovalList />;
+        case 'record': return <RecordList onAdd={() => { setFormData(null); setViewMode('form'); }} onAddDetail={(data) => { setFormData(data); setViewMode('form'); }} />;
+      }
     }
+
+    // 系统管理
+    if (activeModuleId === 'system') {
+      if (viewMode === 'form') {
+        switch (activeMenuId) {
+          case 'user': return <UserForm onBack={() => setViewMode('list')} />;
+          case 'role': return <RoleForm onBack={() => setViewMode('list')} />;
+          case 'contact': return <ContactForm onBack={() => setViewMode('list')} />;
+          case 'api': return <ApiForm onBack={() => setViewMode('list')} />;
+        }
+      }
+      switch (activeMenuId) {
+        case 'user': return <UserList onAdd={() => setViewMode('form')} />;
+        case 'role': return <RoleList onAdd={() => setViewMode('form')} />;
+        case 'contact': return <ContactList onAdd={() => setViewMode('form')} />;
+        case 'api': return <ApiList onAdd={() => setViewMode('form')} />;
+        case 'login-log': return <LoginLogList />;
+        case 'op-log': return <OpLogList />;
+      }
+    }
+
+    return <div className="p-8 text-slate-400">功能开发中...</div>;
   };
 
   return (
-    <div className="h-screen flex flex-col bg-[#f8fafc] overflow-hidden font-sans antialiased text-slate-900">
-      <Header 
-        activeModuleId={activeModuleId} 
-        onModuleChange={handleModuleChange} 
-        onBellClick={() => handleModuleChange('safety', 'alarm-process')}
-      />
-      
+    <div className="h-screen flex flex-col bg-slate-50 overflow-hidden">
+      <Header activeModuleId={activeModuleId} onModuleChange={handleModuleChange} />
+
       <div className="flex flex-1 overflow-hidden">
-        {!isArchiveOverview && activeModuleId !== 'cockpit' && (
-          <Sidebar 
-            menus={activeModule.menus} 
-            activeMenuId={activeMenuId} 
-            onMenuChange={handleMenuChange} 
-          />
-        )}
-        
+        <Sidebar
+          menus={activeModule.menus}
+          activeMenuId={activeMenuId}
+          onMenuChange={handleMenuChange}
+        />
+
         <main className="flex-1 overflow-y-auto flex flex-col">
-          <div className="p-8 pb-4">
-            <Breadcrumb className="mb-3">
-              <BreadcrumbList className="text-slate-500 text-xs">
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); setSelectedRelic(null); }} className="hover:text-blue-600 transition-colors">首页</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <span className="font-medium">{activeModule.label}</span>
-                </BreadcrumbItem>
-                {activeMenuLabel !== activeModule.label && !isArchiveOverview && (
-                  <>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      {viewMode !== 'list' ? (
-                        <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); setViewMode('list'); }} className="hover:text-blue-600 transition-colors">
-                          {activeMenuLabel}
-                        </BreadcrumbLink>
-                      ) : (
-                        <BreadcrumbPage className="text-slate-900 font-semibold">{activeMenuLabel}</BreadcrumbPage>
-                      )}
-                    </BreadcrumbItem>
-                  </>
-                )}
-                {selectedRelic && (
-                  <>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage className="text-blue-600 font-bold">{selectedRelic.name}</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </>
-                )}
-              </BreadcrumbList>
-            </Breadcrumb>
-            
-            <div className="flex items-center justify-between relative">
-              <div className="flex items-center gap-6">
-                <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
-                  {viewMode === 'add' ? `新增${activeMenuLabel}` : 
-                   viewMode === 'add-version' ? '添加方案版本' : 
-                   viewMode === 'add-record' ? '新增修葺记录' : 
-                   isArchiveOverview ? '文物档案总览' : activeMenuLabel}
-                </h2>
-              </div>
-
-              {activeModuleId === 'cockpit' && (
-                <div 
-                  className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shadow-sm"
-                  onMouseEnter={() => setIsPaused(true)}
-                  onMouseLeave={() => setIsPaused(false)}
-                >
-                  {DASHBOARDS.map((item, idx) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setSmartScreenIndex(idx)}
-                      className={cn(
-                        "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
-                        smartScreenIndex === idx 
-                          ? "bg-white text-blue-600 shadow-sm" 
-                          : "text-slate-500 hover:text-slate-900"
-                      )}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                  <div className="w-px h-4 bg-slate-200 mx-1" />
-                  <button 
-                    onClick={() => setIsPaused(!isPaused)}
-                    className={cn(
-                      "p-1.5 rounded-md transition-colors",
-                      isPaused ? "text-orange-500 hover:bg-orange-50" : "text-slate-400 hover:bg-slate-200"
-                    )}
-                    title={isPaused ? "点击恢复自动滚动" : "点击暂停自动滚动"}
-                  >
-                    {isPaused ? <PlayCircle size={16} /> : <PauseCircle size={16} />}
-                  </button>
-                </div>
-              )}
-
-              {viewMode === 'list' && activeModuleId !== 'cockpit' && (
-                <div className="text-xs text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
-                  最后更新: {new Date().toLocaleDateString()}
-                </div>
-              )}
+          {activeMenuId !== 'map' && (
+            <div className="p-8 pb-4">
+              <Breadcrumb className="mb-4">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); handleModuleChange('cockpit'); }}>首页</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>{activeModule.label}</BreadcrumbPage>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-blue-600 font-bold">{activeMenuLabel}</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+              <h2 className="text-2xl font-bold text-slate-800">{activeMenuLabel}</h2>
             </div>
-          </div>
+          )}
 
-          <div className="flex-1 px-8">
+          <div className={activeMenuId === 'map' ? "flex-1" : "flex-1 px-8"}>
             {renderContent()}
           </div>
         </main>
