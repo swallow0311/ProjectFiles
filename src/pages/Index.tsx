@@ -76,8 +76,17 @@ const Index = () => {
     [activeModuleId]
   );
 
+  // 过滤后的侧边栏菜单（针对文物档案详情页）
+  const filteredSidebarMenus = useMemo(() => {
+    if (activeModuleId === 'archives') {
+      return activeModule.menus.filter(menu => 
+        !['overview', 'basic-info', 'publicity'].includes(menu.id)
+      );
+    }
+    return activeModule.menus;
+  }, [activeModule, activeModuleId]);
+
   const activeMenuLabel = useMemo(() => {
-    // 递归查找菜单项标签
     const findLabel = (items: any[]): string => {
       for (const item of items) {
         if (item.id === activeMenuId) return item.label;
@@ -95,7 +104,6 @@ const Index = () => {
     setActiveModuleId(id);
     const module = MENU_DATA.find(m => m.id === id);
     const firstMenu = module?.menus[0];
-    // 如果第一个菜单有子项，默认选中第一个子项
     if (firstMenu?.children && firstMenu.children.length > 0) {
       setActiveMenuId(firstMenu.children[0].id);
     } else {
@@ -110,12 +118,10 @@ const Index = () => {
   };
 
   const renderContent = () => {
-    // 驾驶舱
     if (activeModuleId === 'cockpit') {
       return <CockpitModule />;
     }
 
-    // 文物档案
     if (activeModuleId === 'archives') {
       if (viewMode === 'form') {
         switch (activeMenuId) {
@@ -157,7 +163,6 @@ const Index = () => {
       }
     }
 
-    // 安全监测
     if (activeModuleId === 'safety') {
       if (viewMode === 'form' && activeMenuId === 'equipment') {
         return <EquipmentForm onBack={() => setViewMode('list')} />;
@@ -168,7 +173,6 @@ const Index = () => {
       }
     }
 
-    // 修葺管理
     if (activeModuleId === 'restoration') {
       if (viewMode === 'form') {
         if (activeMenuId === 'scheme') return <SchemeForm onBack={() => setViewMode('list')} initialData={formData} isVersionMode={!!formData} />;
@@ -182,7 +186,6 @@ const Index = () => {
       }
     }
 
-    // 系统管理
     if (activeModuleId === 'system') {
       if (viewMode === 'form') {
         switch (activeMenuId) {
@@ -206,7 +209,10 @@ const Index = () => {
   };
 
   const isCockpit = activeModuleId === 'cockpit';
-  const hideSidebar = isCockpit || (activeModuleId === 'archives' && activeMenuId === 'overview');
+  const isArchiveOverview = activeModuleId === 'archives' && activeMenuId === 'overview';
+  const hideSidebar = isCockpit || isArchiveOverview;
+  // 档案总览页隐藏面包屑
+  const hideBreadcrumb = isCockpit || isArchiveOverview;
 
   return (
     <div className="h-screen flex flex-col bg-slate-50 overflow-hidden">
@@ -215,14 +221,14 @@ const Index = () => {
       <div className="flex flex-1 overflow-hidden">
         {!hideSidebar && (
           <Sidebar
-            menus={activeModule.menus}
+            menus={filteredSidebarMenus}
             activeMenuId={activeMenuId}
             onMenuChange={handleMenuChange}
           />
         )}
 
         <main className="flex-1 overflow-y-auto flex flex-col">
-          {!isCockpit && (
+          {!hideBreadcrumb && (
             <div className="p-8 pb-4">
               <Breadcrumb className="mb-4">
                 <BreadcrumbList>

@@ -16,7 +16,6 @@ export const MENU_DATA: Module[] = [
     label: "文物档案",
     menus: [
       { id: "overview", label: "档案总览" },
-      { id: "analysis", label: "智能分析" },
       {
         id: "main-volumes",
         label: "主卷管理",
@@ -50,6 +49,7 @@ export const MENU_DATA: Module[] = [
           { id: "book", label: "图书管理" },
         ]
       },
+      { id: "analysis", label: "智能分析" },
       { id: "basic-info", label: "基础信息字段" },
       { id: "publicity", label: "公开性维护" },
     ],
