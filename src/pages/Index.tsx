@@ -77,14 +77,30 @@ const Index = () => {
   );
 
   const activeMenuLabel = useMemo(() => {
-    const item = activeModule.menus.find((m) => m.id === activeMenuId);
-    return item?.label || '';
+    // 递归查找菜单项标签
+    const findLabel = (items: any[]): string => {
+      for (const item of items) {
+        if (item.id === activeMenuId) return item.label;
+        if (item.children) {
+          const found = findLabel(item.children);
+          if (found) return found;
+        }
+      }
+      return '';
+    };
+    return findLabel(activeModule.menus);
   }, [activeModule, activeMenuId]);
 
   const handleModuleChange = (id: string) => {
     setActiveModuleId(id);
-    const firstMenu = MENU_DATA.find(m => m.id === id)?.menus[0];
-    setActiveMenuId(firstMenu?.id || '');
+    const module = MENU_DATA.find(m => m.id === id);
+    const firstMenu = module?.menus[0];
+    // 如果第一个菜单有子项，默认选中第一个子项
+    if (firstMenu?.children && firstMenu.children.length > 0) {
+      setActiveMenuId(firstMenu.children[0].id);
+    } else {
+      setActiveMenuId(firstMenu?.id || '');
+    }
     setViewMode('list');
   };
 
@@ -190,7 +206,6 @@ const Index = () => {
   };
 
   const isCockpit = activeModuleId === 'cockpit';
-  // 档案总览页面也需要隐藏侧边栏
   const hideSidebar = isCockpit || (activeModuleId === 'archives' && activeMenuId === 'overview');
 
   return (
