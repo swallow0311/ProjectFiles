@@ -1,24 +1,42 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Search, UserPlus, Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import DeptTree from './DeptTree';
+import { showSuccess } from "@/utils/toast";
 
 interface UserListProps {
   onAdd: () => void;
+  onEdit: (user: any) => void;
 }
 
-const UserList = ({ onAdd }: UserListProps) => {
+const UserList = ({ onAdd, onEdit }: UserListProps) => {
+  const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+
   const data = [
     { id: '1', username: 'admin', name: '系统管理员', role: '超级管理员', dept: '技术部', status: true, lastLogin: '2023-11-15 10:20' },
     { id: '2', username: 'zhangsan', name: '张三', role: '文保专员', dept: '档案科', status: true, lastLogin: '2023-11-14 15:45' },
     { id: '3', username: 'lisi', name: '李四', role: '审核员', dept: '管理处', status: false, lastLogin: '2023-11-10 09:00' },
   ];
+
+  const handleResetPassword = (user: any) => {
+    setSelectedUser(user);
+    setIsResetPasswordOpen(true);
+  };
 
   return (
     <div className="flex gap-6 h-[calc(100vh-240px)]">
@@ -69,8 +87,8 @@ const UserList = ({ onAdd }: UserListProps) => {
                   </TableCell>
                   <TableCell className="text-slate-500 text-xs">{user.lastLogin}</TableCell>
                   <TableCell className="text-right pr-6">
-                    <Button variant="ghost" size="sm" className="text-blue-600">编辑</Button>
-                    <Button variant="ghost" size="sm" className="text-red-600">重置密码</Button>
+                    <Button variant="ghost" size="sm" className="text-blue-600" onClick={() => onEdit(user)}>编辑</Button>
+                    <Button variant="ghost" size="sm" className="text-red-600" onClick={() => handleResetPassword(user)}>重置密码</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -78,6 +96,37 @@ const UserList = ({ onAdd }: UserListProps) => {
           </Table>
         </div>
       </div>
+
+      {/* 重置密码弹窗 */}
+      <Dialog open={isResetPasswordOpen} onOpenChange={setIsResetPasswordOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>重置密码</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-6 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right">姓名:</Label>
+              <Input value={selectedUser?.name || ""} disabled className="col-span-3 bg-slate-50" />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right">账号:</Label>
+              <Input value={selectedUser?.username || ""} disabled className="col-span-3 bg-slate-50" />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right"><span className="text-red-500 mr-1">*</span>新密码:</Label>
+              <Input type="password" placeholder="请输入新密码" className="col-span-3" />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right"><span className="text-red-500 mr-1">*</span>确认密码:</Label>
+              <Input type="password" placeholder="请再次输入新密码" className="col-span-3" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsResetPasswordOpen(false)}>取消</Button>
+            <Button onClick={() => { showSuccess("密码重置成功"); setIsResetPasswordOpen(false); }}>确定</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

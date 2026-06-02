@@ -189,14 +189,14 @@ const Index = () => {
     if (activeModuleId === 'system') {
       if (viewMode === 'form') {
         switch (activeMenuId) {
-          case 'user': return <UserForm onBack={() => setViewMode('list')} />;
+          case 'user': return <UserForm onBack={() => setViewMode('list')} initialData={formData} />;
           case 'role': return <RoleForm onBack={() => setViewMode('list')} />;
           case 'contact': return <ContactForm onBack={() => setViewMode('list')} />;
           case 'api': return <ApiForm onBack={() => setViewMode('list')} />;
         }
       }
       switch (activeMenuId) {
-        case 'user': return <UserList onAdd={() => setViewMode('form')} />;
+        case 'user': return <UserList onAdd={() => { setFormData(null); setViewMode('form'); }} onEdit={(user) => { setFormData(user); setViewMode('form'); }} />;
         case 'role': return <RoleList onAdd={() => setViewMode('form')} />;
         case 'contact': return <ContactList onAdd={() => setViewMode('form')} />;
         case 'api': return <ApiList onAdd={() => setViewMode('form')} />;
