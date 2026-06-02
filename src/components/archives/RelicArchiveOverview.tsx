@@ -55,7 +55,7 @@ const RELICS = [
     desc: '位于海沧区新阳街道霞阳村，建于清代。这是一座由第一、二、三进主体建筑和左右护厝组成的合院式闽南传统建筑。砖木石结构，硬山顶，木梁全架于墙体上。第一、二进屋顶双燕尾脊，面阔3间，进深2间；左右护……',
     era: '清代',
     address: '新阳街道霞阳村西路191号',
-    image: 'dyad-media://media/%E6%96%87%E7%89%A9%E6%99%BA%E6%85%A7%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/.dyad/media/61c900aecf783a8fe0ec49700febdd4f.png'
+    image: 'dyad-media://media/%E6%96%87%E7%89%A9%E6%99%BA%E6%85%A7%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/.dyad/media/00b52c399550c7e31b161d4f1b51620a.png'
   }
 ];
 

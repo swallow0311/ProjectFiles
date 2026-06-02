@@ -248,7 +248,7 @@ const Index = () => {
             </div>
           )}
 
-          <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-4 md:px-5"}>
+          <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-4 md:px-5 pt-5"}>
             {renderContent()}
           </div>
         </main>
