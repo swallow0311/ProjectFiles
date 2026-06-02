@@ -211,7 +211,6 @@ const Index = () => {
   const isCockpit = activeModuleId === 'cockpit';
   const isArchiveOverview = activeModuleId === 'archives' && activeMenuId === 'overview';
   const hideSidebar = isCockpit || isArchiveOverview;
-  // 档案总览页隐藏面包屑
   const hideBreadcrumb = isCockpit || isArchiveOverview;
 
   return (
@@ -229,7 +228,7 @@ const Index = () => {
 
         <main className="flex-1 overflow-y-auto flex flex-col">
           {!hideBreadcrumb && (
-            <div className="p-8 pb-4">
+            <div className="p-8 pb-4 px-4 md:px-5">
               <Breadcrumb className="mb-4">
                 <BreadcrumbList>
                   <BreadcrumbItem>
@@ -249,7 +248,7 @@ const Index = () => {
             </div>
           )}
 
-          <div className={hideSidebar ? "flex-1 flex flex-col" : "flex-1 px-8"}>
+          <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-4 md:px-5"}>
             {renderContent()}
           </div>
         </main>

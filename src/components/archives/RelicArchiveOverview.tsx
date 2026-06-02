@@ -55,7 +55,7 @@ const RELICS = [
     desc: '位于海沧区新阳街道霞阳村，建于清代。这是一座由第一、二、三进主体建筑和左右护厝组成的合院式闽南传统建筑。砖木石结构，硬山顶，木梁全架于墙体上。第一、二进屋顶双燕尾脊，面阔3间，进深2间；左右护……',
     era: '清代',
     address: '新阳街道霞阳村西路191号',
-    image: 'https://images.unsplash.com/photo-1528154291023-a6525faba5b0?w=400'
+    image: 'dyad-media://media/%E6%96%87%E7%89%A9%E6%99%BA%E6%85%A7%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/.dyad/media/61c900aecf783a8fe0ec49700febdd4f.png'
   }
 ];
 
@@ -126,34 +126,36 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
             <h3 className="text-sm font-bold">修缮审批</h3>
             <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 {'>>'}</Button>
           </div>
-          <Table>
-            <TableHeader className="bg-slate-50">
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="text-[11px] h-9">方案名称</TableHead>
-                <TableHead className="text-[11px] h-9">修缮文物</TableHead>
-                <TableHead className="text-[11px] h-9 text-right">操作</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {[1, 2, 3].map((i) => (
-                <TableRow key={i} className="text-[11px]">
-                  <TableCell className="py-3">青礁慈济宫外墙翻新</TableCell>
-                  <TableCell className="py-3">青礁慈济宫</TableCell>
-                  <TableCell className="py-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      <span className="text-blue-500 cursor-pointer">查看</span>
-                      {i < 3 && (
-                        <>
-                          <span className="text-green-600 cursor-pointer">通过</span>
-                          <span className="text-red-500 cursor-pointer">拒绝</span>
-                        </>
-                      )}
-                    </div>
-                  </TableCell>
+          <div className="overflow-hidden">
+            <Table className="table-fixed w-full">
+              <TableHeader className="bg-slate-50">
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="text-[11px] h-9 w-[45%]">方案名称</TableHead>
+                  <TableHead className="text-[11px] h-9 w-[30%]">修缮文物</TableHead>
+                  <TableHead className="text-[11px] h-9 text-right w-[25%]">操作</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {[1, 2, 3].map((i) => (
+                  <TableRow key={i} className="text-[11px]">
+                    <TableCell className="py-3 truncate" title="青礁慈济宫外墙翻新">青礁慈济宫外墙翻新</TableCell>
+                    <TableCell className="py-3 truncate" title="青礁慈济宫">青礁慈济宫</TableCell>
+                    <TableCell className="py-3 text-right">
+                      <div className="flex justify-end gap-2">
+                        <span className="text-blue-500 cursor-pointer">查看</span>
+                        {i < 3 && (
+                          <>
+                            <span className="text-green-600 cursor-pointer">通过</span>
+                            <span className="text-red-500 cursor-pointer">拒绝</span>
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Card>
 
         {/* 告警通知 */}
@@ -162,24 +164,26 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
             <h3 className="text-sm font-bold">告警通知</h3>
             <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 {'>>'}</Button>
           </div>
-          <Table>
-            <TableHeader className="bg-slate-50">
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="text-[11px] h-9">事件名称</TableHead>
-                <TableHead className="text-[11px] h-9">发生时间</TableHead>
-                <TableHead className="text-[11px] h-9">告警文物</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {[1, 2].map((i) => (
-                <TableRow key={i} className="text-[11px]">
-                  <TableCell className="py-3">主殿西区烟火报警</TableCell>
-                  <TableCell className="py-3 text-slate-400">2026年1月19日22:08</TableCell>
-                  <TableCell className="py-3">青礁慈济宫</TableCell>
+          <div className="overflow-hidden">
+            <Table className="table-fixed w-full">
+              <TableHeader className="bg-slate-50">
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="text-[11px] h-9 w-[40%]">事件名称</TableHead>
+                  <TableHead className="text-[11px] h-9 w-[35%]">发生时间</TableHead>
+                  <TableHead className="text-[11px] h-9 w-[25%]">告警文物</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {[1, 2].map((i) => (
+                  <TableRow key={i} className="text-[11px]">
+                    <TableCell className="py-3 truncate" title="主殿西区烟火报警">主殿西区烟火报警</TableCell>
+                    <TableCell className="py-3 text-slate-400 truncate" title="2026年1月19日22:08">2026年1月19日22:08</TableCell>
+                    <TableCell className="py-3 truncate" title="青礁慈济宫">青礁慈济宫</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Card>
       </div>
     </div>
