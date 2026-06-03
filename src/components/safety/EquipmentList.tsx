@@ -91,7 +91,6 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead colSpan={5} className="text-center border-r border-b font-bold text-orange-600 py-2">阈值设置</TableHead>
                 <TableHead colSpan={6} className="text-center border-r border-b font-bold text-blue-600 py-2">AI预警</TableHead>
                 <TableHead colSpan={2} className="text-center border-r border-b font-bold text-slate-600 py-2">操作信息</TableHead>
-                {/* 浮窗表头 - 始终可见 */}
                 <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center font-bold py-2 border-b border-l">操作</TableHead>
               </TableRow>
               <TableRow className="hover:bg-transparent">
@@ -116,7 +115,6 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead className="w-32 border-r border-b">预警对象</TableHead>
                 <TableHead className="w-24 border-b">添加人</TableHead>
                 <TableHead className="w-40 border-r border-b">添加时间</TableHead>
-                {/* 浮窗表头占位 */}
                 <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] w-40 border-b border-l"></TableHead>
               </TableRow>
             </TableHeader>
@@ -144,7 +142,6 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                   <TableCell className="border-r">{item.alertTarget}</TableCell>
                   <TableCell>{item.creator}</TableCell>
                   <TableCell className="text-slate-500 border-r">{item.createTime}</TableCell>
-                  {/* 浮窗单元格 - 始终可见 */}
                   <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
                     <div className="flex items-center gap-2 px-2 justify-center">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2 hover:bg-blue-50">详情</Button>

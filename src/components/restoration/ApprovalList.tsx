@@ -96,7 +96,6 @@ const ApprovalList = () => {
 
   return (
     <div className="space-y-4">
-      {/* 搜索区域 */}
       <div className="bg-white p-4 rounded-xl border shadow-sm space-y-4">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-3 flex-1">
@@ -153,7 +152,6 @@ const ApprovalList = () => {
         )}
       </div>
 
-      {/* 列表区域 */}
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
         <ScrollArea className="w-full">
           <Table className="min-w-[1600px] border-separate border-spacing-0">
@@ -168,7 +166,6 @@ const ApprovalList = () => {
                 <TableHead className="w-24 border-b">方案状态</TableHead>
                 <TableHead className="w-24 border-b">提审人</TableHead>
                 <TableHead className="w-40 border-b">提审时间</TableHead>
-                {/* 固定操作列：左对齐 */}
                 <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-left w-48 border-b border-l pl-6">操作</TableHead>
               </TableRow>
             </TableHeader>
@@ -201,7 +198,6 @@ const ApprovalList = () => {
                   </TableCell>
                   <TableCell className="border-b">{item.submitter}</TableCell>
                   <TableCell className="text-slate-500 border-b">{item.submitTime}</TableCell>
-                  {/* 固定操作列单元格：左对齐 */}
                   <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b pl-4">
                     {renderActions(item)}
                   </TableCell>
@@ -213,7 +209,6 @@ const ApprovalList = () => {
         </ScrollArea>
       </div>
 
-      {/* 分页区域 */}
       <div className="flex items-center justify-between px-2 py-4">
         <div className="text-sm text-slate-500">共 {data.length} 条数据</div>
         <div className="flex items-center gap-6">
