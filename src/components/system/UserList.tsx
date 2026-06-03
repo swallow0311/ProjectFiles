@@ -63,35 +63,35 @@ const UserList = ({ onAdd, onEdit }: UserListProps) => {
           <ScrollArea className="h-full w-full">
             <Table className="min-w-[1000px] border-separate border-spacing-0">
               <TableHeader className="bg-slate-50">
-                <TableRow>
-                  <TableHead className="border-b">用户名</TableHead>
-                  <TableHead className="border-b">姓名</TableHead>
-                  <TableHead className="border-b">所属角色</TableHead>
-                  <TableHead className="border-b">部门</TableHead>
-                  <TableHead className="border-b">状态</TableHead>
-                  <TableHead className="border-b">最后登录</TableHead>
-                  <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-40 border-b border-l">操作</TableHead>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="border-b whitespace-nowrap">用户名</TableHead>
+                  <TableHead className="border-b whitespace-nowrap">姓名</TableHead>
+                  <TableHead className="border-b whitespace-nowrap">所属角色</TableHead>
+                  <TableHead className="border-b whitespace-nowrap">部门</TableHead>
+                  <TableHead className="border-b whitespace-nowrap">状态</TableHead>
+                  <TableHead className="border-b whitespace-nowrap">最后登录</TableHead>
+                  <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-40 border-b border-l whitespace-nowrap">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.map((user) => (
                   <TableRow key={user.id} className="group">
-                    <TableCell className="font-mono text-xs font-bold">{user.username}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>
+                    <TableCell className="font-mono text-xs font-bold whitespace-nowrap">{user.username}</TableCell>
+                    <TableCell className="whitespace-nowrap">{user.name}</TableCell>
+                    <TableCell className="whitespace-nowrap">
                       <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 border-indigo-100">
                         <Shield className="w-3 h-3 mr-1" /> {user.role}
                       </Badge>
                     </TableCell>
-                    <TableCell>{user.dept}</TableCell>
-                    <TableCell>
+                    <TableCell className="whitespace-nowrap">{user.dept}</TableCell>
+                    <TableCell className="whitespace-nowrap">
                       <Switch checked={user.status} />
                     </TableCell>
-                    <TableCell className="text-slate-500 text-xs">{user.lastLogin}</TableCell>
-                    <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
-                      <div className="flex items-center gap-2 px-2 justify-center">
-                        <Button variant="ghost" size="sm" className="text-blue-600" onClick={() => onEdit(user)}>编辑</Button>
-                        <Button variant="ghost" size="sm" className="text-red-600" onClick={() => handleResetPassword(user)}>重置密码</Button>
+                    <TableCell className="text-slate-500 text-xs whitespace-nowrap">{user.lastLogin}</TableCell>
+                    <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
+                      <div className="flex items-center gap-2 px-4 justify-center">
+                        <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => onEdit(user)}>编辑</Button>
+                        <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2" onClick={() => handleResetPassword(user)}>重置密码</Button>
                       </div>
                     </TableCell>
                   </TableRow>

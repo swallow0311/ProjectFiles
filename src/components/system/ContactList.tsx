@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Phone, Mail, Building2, Plus } from "lucide-react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface ContactListProps {
   onAdd: () => void;
@@ -33,48 +34,53 @@ const ContactList = ({ onAdd }: ContactListProps) => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <Table>
-          <TableHeader className="bg-slate-50">
-            <TableRow>
-              <TableHead>姓名</TableHead>
-              <TableHead>所属单位</TableHead>
-              <TableHead>职务/职称</TableHead>
-              <TableHead>联系电话</TableHead>
-              <TableHead>电子邮箱</TableHead>
-              <TableHead className="text-right pr-6">操作</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((contact) => (
-              <TableRow key={contact.id}>
-                <TableCell className="font-bold">{contact.name}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1.5">
-                    <Building2 className="w-4 h-4 text-slate-400" />
-                    {contact.unit}
-                  </div>
-                </TableCell>
-                <TableCell>{contact.position}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1.5 text-indigo-600">
-                    <Phone className="w-3.5 h-3.5" />
-                    {contact.phone}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1.5 text-slate-500">
-                    <Mail className="w-3.5 h-3.5" />
-                    {contact.email}
-                  </div>
-                </TableCell>
-                <TableCell className="text-right pr-6">
-                  <Button variant="ghost" size="sm" className="text-blue-600">编辑</Button>
-                  <Button variant="ghost" size="sm" className="text-red-600">删除</Button>
-                </TableCell>
+        <ScrollArea className="w-full">
+          <Table className="min-w-[1000px] border-separate border-spacing-0">
+            <TableHeader className="bg-slate-50">
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="border-b whitespace-nowrap">姓名</TableHead>
+                <TableHead className="border-b whitespace-nowrap">所属单位</TableHead>
+                <TableHead className="border-b whitespace-nowrap">职务/职称</TableHead>
+                <TableHead className="border-b whitespace-nowrap">联系电话</TableHead>
+                <TableHead className="border-b whitespace-nowrap">电子邮箱</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center border-b border-l whitespace-nowrap">操作</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((contact) => (
+                <TableRow key={contact.id} className="group">
+                  <TableCell className="font-bold whitespace-nowrap">{contact.name}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    <div className="flex items-center gap-1.5">
+                      <Building2 className="w-4 h-4 text-slate-400" />
+                      {contact.unit}
+                    </div>
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">{contact.position}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    <div className="flex items-center gap-1.5 text-indigo-600">
+                      <Phone className="w-3.5 h-3.5" />
+                      {contact.phone}
+                    </div>
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    <div className="flex items-center gap-1.5 text-slate-500">
+                      <Mail className="w-3.5 h-3.5" />
+                      {contact.email}
+                    </div>
+                  </TableCell>
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
+                    <div className="flex items-center gap-2 px-4 justify-center">
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">编辑</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </div>
   );

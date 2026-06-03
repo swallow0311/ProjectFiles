@@ -25,15 +25,15 @@ const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
         <div className="flex items-center gap-3 flex-1">
           <div className="relative w-48">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-            <Input className="pl-9" placeholder="编制单位" />
+            <Input className="pl-9 h-9" placeholder="编制单位" />
           </div>
           <div className="relative w-48">
-            <Input placeholder="题名" />
+            <Input className="h-9" placeholder="题名" />
           </div>
-          <Button variant="outline">查询</Button>
-          <Button variant="ghost" className="text-slate-500 text-xs">更多筛选 <ChevronDown className="ml-1 w-3 h-3" /></Button>
+          <Button variant="outline" className="h-9">查询</Button>
+          <Button variant="ghost" className="text-slate-500 text-xs h-9">更多筛选 <ChevronDown className="ml-1 w-3 h-3" /></Button>
         </div>
-        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700">
+        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700 h-9">
           <Plus className="w-4 h-4 mr-2" /> 新增
         </Button>
       </div>
@@ -42,25 +42,25 @@ const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
         <ScrollArea className="w-full">
           <Table className="min-w-[1000px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
-              <TableRow>
-                <TableHead className="w-16 border-b">序号</TableHead>
-                <TableHead className="border-b">编制单位</TableHead>
-                <TableHead className="border-b">题名</TableHead>
-                <TableHead className="border-b">编制时间</TableHead>
-                <TableHead className="border-b">批准单位</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center border-b border-l">操作</TableHead>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="w-16 border-b whitespace-nowrap">序号</TableHead>
+                <TableHead className="border-b whitespace-nowrap">编制单位</TableHead>
+                <TableHead className="border-b whitespace-nowrap">题名</TableHead>
+                <TableHead className="border-b whitespace-nowrap">编制时间</TableHead>
+                <TableHead className="border-b whitespace-nowrap">批准单位</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center border-b border-l whitespace-nowrap">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
                 <TableRow key={item.id} className="group">
-                  <TableCell>{item.index}</TableCell>
-                  <TableCell className="font-medium">{item.unit}</TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>{item.time}</TableCell>
-                  <TableCell>{item.approveUnit}</TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
-                    <div className="flex items-center gap-2 px-2 justify-center">
+                  <TableCell className="whitespace-nowrap">{item.index}</TableCell>
+                  <TableCell className="font-medium whitespace-nowrap">{item.unit}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.title}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.time}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.approveUnit}</TableCell>
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
+                    <div className="flex items-center gap-2 px-4 justify-center">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
                       <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
                       <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
@@ -74,8 +74,8 @@ const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
         </ScrollArea>
       </div>
 
-      <div className="flex items-center justify-between px-2">
-        <div className="text-sm text-slate-500">共 2 条数据</div>
+      <div className="flex items-center justify-between px-2 py-4">
+        <div className="text-sm text-slate-500">共 {data.length} 条数据</div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-slate-500">每页显示</span>
           <Select defaultValue="20">
