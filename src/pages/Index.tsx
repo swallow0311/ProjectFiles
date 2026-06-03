@@ -68,7 +68,7 @@ import OpLogList from '@/components/system/OpLogList';
 const Index = () => {
   const [activeModuleId, setActiveModuleId] = useState('cockpit');
   const [activeMenuId, setActiveMenuId] = useState('map');
-  const [viewMode, setViewMode] = useState<'list' | 'form'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'form' | 'detail'>('list');
   const [formData, setFormData] = useState<any>(null);
 
   const activeModule = useMemo(
@@ -76,7 +76,6 @@ const Index = () => {
     [activeModuleId]
   );
 
-  // 跨模块导航助手
   const navigateTo = (moduleId: string, menuId: string) => {
     setActiveModuleId(moduleId);
     setActiveMenuId(menuId);
@@ -84,29 +83,10 @@ const Index = () => {
     setFormData(null);
   };
 
-  // 过滤后的侧边栏菜单（针对文物档案详情页）
-  const filteredSidebarMenus = useMemo(() => {
-    if (activeModuleId === 'archives') {
-      return activeModule.menus.filter(menu => 
-        !['overview', 'basic-info', 'publicity'].includes(menu.id)
-      );
-    }
-    return activeModule.menus;
-  }, [activeModule, activeModuleId]);
-
-  const activeMenuLabel = useMemo(() => {
-    const findLabel = (items: any[]): string => {
-      for (const item of items) {
-        if (item.id === activeMenuId) return item.label;
-        if (item.children) {
-          const found = findLabel(item.children);
-          if (found) return found;
-        }
-      }
-      return '';
-    };
-    return findLabel(activeModule.menus);
-  }, [activeModule, activeMenuId]);
+  const handleAction = (mode: 'form' | 'detail', data: any = null) => {
+    setFormData(data);
+    setViewMode(mode);
+  };
 
   const handleModuleChange = (id: string) => {
     setActiveModuleId(id);
@@ -125,39 +105,32 @@ const Index = () => {
     setViewMode('list');
   };
 
+  const isReadOnly = viewMode === 'detail';
+
   const renderContent = () => {
-    if (activeModuleId === 'cockpit') {
-      return <CockpitModule />;
-    }
+    if (activeModuleId === 'cockpit') return <CockpitModule />;
 
     if (activeModuleId === 'archives') {
-      if (viewMode === 'form') {
+      if (viewMode !== 'list') {
         switch (activeMenuId) {
-          case 'text': return <TextVolumeForm onBack={() => setViewMode('list')} />;
+          case 'text': return <TextVolumeForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
           case 'planning':
           case 'archaeology':
           case 'monitoring':
-            return <DocumentVolumeForm type={activeMenuId as any} onBack={() => setViewMode('list')} />;
-          case 'admin-doc': return <AdminDocForm onBack={() => setViewMode('list')} />;
-          case 'legal-doc': return <LegalDocForm onBack={() => setViewMode('list')} />;
-          case 'chronicle': return <ChronicleForm onBack={() => setViewMode('list')} />;
-          case 'reference': return <ReferenceForm onBack={() => setViewMode('list')} />;
-          case 'literature': return <LiteratureForm onBack={() => setViewMode('list')} />;
-          case 'book': return <BookForm onBack={() => setViewMode('list')} />;
-          case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} />;
+            return <DocumentVolumeForm type={activeMenuId as any} onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+          case 'admin-doc': return <AdminDocForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+          case 'legal-doc': return <LegalDocForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+          case 'chronicle': return <ChronicleForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+          case 'reference': return <ReferenceForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+          case 'literature': return <LiteratureForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+          case 'book': return <BookForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+          case 'basic-info': return <BasicInfoForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
         }
       }
       switch (activeMenuId) {
-        case 'overview': 
-          return (
-            <RelicArchiveOverview 
-              onSelectRelic={() => setActiveMenuId('text')} 
-              onViewMoreApproval={() => navigateTo('restoration', 'approval')}
-              onViewMoreAlarm={() => navigateTo('safety', 'alarm')}
-            />
-          );
+        case 'overview': return <RelicArchiveOverview onSelectRelic={() => setActiveMenuId('text')} onViewMoreApproval={() => navigateTo('restoration', 'approval')} onViewMoreAlarm={() => navigateTo('safety', 'alarm')} />;
         case 'analysis': return <IntelligentAnalysis />;
-        case 'text': return <TextVolumeList onAdd={() => setViewMode('form')} />;
+        case 'text': return <TextVolumeList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
         case 'drawing': return <ImageVolumeGallery type="drawing" title="图纸卷" />;
         case 'photo': return <ImageVolumeGallery type="photo" title="照片卷" />;
         case 'rubbing': return <ImageVolumeGallery type="rubbing" title="拓片卷" />;
@@ -166,55 +139,55 @@ const Index = () => {
         case 'planning':
         case 'archaeology':
         case 'monitoring':
-          return <DocumentVolumeList type={activeMenuId as any} onAdd={() => setViewMode('form')} />;
-        case 'admin-doc': return <AdminDocList onAdd={() => setViewMode('form')} />;
-        case 'legal-doc': return <LegalDocList onAdd={() => setViewMode('form')} />;
-        case 'chronicle': return <ChronicleList onAdd={() => setViewMode('form')} />;
-        case 'reference': return <ReferenceList onAdd={() => setViewMode('form')} />;
-        case 'literature': return <LiteratureList onAdd={() => setViewMode('form')} />;
-        case 'book': return <BookList onAdd={() => setViewMode('form')} />;
-        case 'basic-info': return <BasicInfoList onAdd={() => setViewMode('form')} />;
+          return <DocumentVolumeList type={activeMenuId as any} onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
+        case 'admin-doc': return <AdminDocList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
+        case 'legal-doc': return <LegalDocList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
+        case 'chronicle': return <ChronicleList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
+        case 'reference': return <ReferenceList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
+        case 'literature': return <LiteratureList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
+        case 'book': return <BookList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
+        case 'basic-info': return <BasicInfoList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
         case 'publicity': return <PublicityMaintenance />;
       }
     }
 
     if (activeModuleId === 'safety') {
-      if (viewMode === 'form') {
-        if (activeMenuId === 'equipment') return <EquipmentForm onBack={() => setViewMode('list')} />;
-        if (activeMenuId === 'api') return <ApiForm onBack={() => setViewMode('list')} />;
+      if (viewMode !== 'list') {
+        if (activeMenuId === 'equipment') return <EquipmentForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
+        if (activeMenuId === 'api') return <ApiForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} initialData={formData} />;
       }
       switch (activeMenuId) {
-        case 'equipment': return <EquipmentList onAdd={() => setViewMode('form')} />;
+        case 'equipment': return <EquipmentList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
         case 'alarm': return <AlarmProcessingList />;
-        case 'api': return <ApiList onAdd={() => setViewMode('form')} />;
+        case 'api': return <ApiList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
       }
     }
 
     if (activeModuleId === 'restoration') {
-      if (viewMode === 'form') {
-        if (activeMenuId === 'scheme') return <SchemeForm onBack={() => setViewMode('list')} initialData={formData} isVersionMode={!!formData} />;
-        if (activeMenuId === 'record') return <RecordForm onBack={() => setViewMode('list')} initialData={formData} isAddRecordMode={!!formData} />;
+      if (viewMode !== 'list') {
+        if (activeMenuId === 'scheme') return <SchemeForm onBack={() => setViewMode('list')} initialData={formData} isReadOnly={isReadOnly} />;
+        if (activeMenuId === 'record') return <RecordForm onBack={() => setViewMode('list')} initialData={formData} isReadOnly={isReadOnly} />;
       }
       switch (activeMenuId) {
         case 'stats': return <RestorationStats />;
-        case 'scheme': return <SchemeList onAdd={() => { setFormData(null); setViewMode('form'); }} onAddVersion={(data) => { setFormData(data); setViewMode('form'); }} />;
+        case 'scheme': return <SchemeList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} onAddVersion={(data) => handleAction('form', { ...data, isNewVersion: true })} />;
         case 'approval': return <ApprovalList />;
-        case 'record': return <RecordList onAdd={() => { setFormData(null); setViewMode('form'); }} onAddDetail={(data) => { setFormData(data); setViewMode('form'); }} />;
+        case 'record': return <RecordList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} onAddDetail={(data) => handleAction('form', { ...data, isAppend: true })} />;
       }
     }
 
     if (activeModuleId === 'system') {
-      if (viewMode === 'form') {
+      if (viewMode !== 'list') {
         switch (activeMenuId) {
-          case 'user': return <UserForm onBack={() => setViewMode('list')} initialData={formData} />;
-          case 'role': return <RoleForm onBack={() => setViewMode('list')} />;
-          case 'contact': return <ContactForm onBack={() => setViewMode('list')} />;
+          case 'user': return <UserForm onBack={() => setViewMode('list')} initialData={formData} isReadOnly={isReadOnly} />;
+          case 'role': return <RoleForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} />;
+          case 'contact': return <ContactForm onBack={() => setViewMode('list')} isReadOnly={isReadOnly} />;
         }
       }
       switch (activeMenuId) {
-        case 'user': return <UserList onAdd={() => { setFormData(null); setViewMode('form'); }} onEdit={(user) => { setFormData(user); setViewMode('form'); }} />;
-        case 'role': return <RoleList onAdd={() => setViewMode('form')} />;
-        case 'contact': return <ContactList onAdd={() => setViewMode('form')} />;
+        case 'user': return <UserList onAdd={() => handleAction('form')} onEdit={(user) => handleAction('form', user)} onDetail={(user) => handleAction('detail', user)} />;
+        case 'role': return <RoleList />;
+        case 'contact': return <ContactList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
         case 'login-log': return <LoginLogList />;
         case 'op-log': return <OpLogList />;
       }
@@ -231,41 +204,24 @@ const Index = () => {
   return (
     <div className="h-screen flex flex-col bg-slate-50 overflow-hidden">
       <Header activeModuleId={activeModuleId} onModuleChange={handleModuleChange} />
-
       <div className="flex flex-1 overflow-hidden">
-        {!hideSidebar && (
-          <Sidebar
-            menus={filteredSidebarMenus}
-            activeMenuId={activeMenuId}
-            onMenuChange={handleMenuChange}
-          />
-        )}
-
+        {!hideSidebar && <Sidebar menus={activeModule.menus.filter(m => !['overview', 'basic-info', 'publicity'].includes(m.id))} activeMenuId={activeMenuId} onMenuChange={handleMenuChange} />}
         <main className="flex-1 overflow-y-auto flex flex-col">
           {!hideBreadcrumb && (
             <div className="p-8 pb-4 px-4 md:px-5">
               <Breadcrumb className="mb-4">
                 <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); handleModuleChange('cockpit'); }}>首页</BreadcrumbLink>
-                  </BreadcrumbItem>
+                  <BreadcrumbItem><BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); handleModuleChange('cockpit'); }}>首页</BreadcrumbLink></BreadcrumbItem>
                   <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); handleModuleChange(activeModuleId); }}>{activeModule.label}</BreadcrumbLink>
-                  </BreadcrumbItem>
+                  <BreadcrumbItem><BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); handleModuleChange(activeModuleId); }}>{activeModule.label}</BreadcrumbLink></BreadcrumbItem>
                   <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="text-blue-600 font-bold">{activeMenuLabel}</BreadcrumbPage>
-                  </BreadcrumbItem>
+                  <BreadcrumbItem><BreadcrumbPage className="text-blue-600 font-bold">{isReadOnly ? '详情' : viewMode === 'form' ? '编辑' : activeMenuId}</BreadcrumbPage></BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <h2 className="text-2xl font-bold text-slate-800">{activeMenuLabel}</h2>
+              <h2 className="text-2xl font-bold text-slate-800">{isReadOnly ? `查看详情 - ${formData?.name || formData?.title || ''}` : viewMode === 'form' ? `编辑内容` : activeMenuId}</h2>
             </div>
           )}
-
-          <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-4 md:px-5 pt-5"}>
-            {renderContent()}
-          </div>
+          <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-4 md:px-5 pt-5"}>{renderContent()}</div>
         </main>
       </div>
     </div>
