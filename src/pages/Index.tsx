@@ -173,20 +173,21 @@ const Index = () => {
       }
       switch (activeMenuId) {
         case 'equipment': return <EquipmentList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
-        case 'alarm': return <AlarmProcessingList />;
+        case 'alarm': return <AlarmProcessingList onDetail={(data) => handleAction('detail', data)} />;
         case 'api': return <ApiList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} />;
       }
     }
 
     if (activeModuleId === 'restoration') {
       if (viewMode !== 'list') {
-        if (activeMenuId === 'scheme') return <SchemeForm onBack={() => setViewMode('list')} initialData={formData} isReadOnly={isReadOnly} />;
+        // 方案详情和审批详情均使用 SchemeForm
+        if (activeMenuId === 'scheme' || activeMenuId === 'approval') return <SchemeForm onBack={() => setViewMode('list')} initialData={formData} isReadOnly={isReadOnly} />;
         if (activeMenuId === 'record') return <RecordForm onBack={() => setViewMode('list')} initialData={formData} isReadOnly={isReadOnly} />;
       }
       switch (activeMenuId) {
         case 'stats': return <RestorationStats />;
         case 'scheme': return <SchemeList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} onAddVersion={(data) => handleAction('form', { ...data, isNewVersion: true })} />;
-        case 'approval': return <ApprovalList />;
+        case 'approval': return <ApprovalList onDetail={(data) => handleAction('detail', data)} />;
         case 'record': return <RecordList onAdd={() => handleAction('form')} onEdit={(data) => handleAction('form', data)} onDetail={(data) => handleAction('detail', data)} onAddDetail={(data) => handleAction('form', { ...data, isAppend: true })} />;
       }
     }
@@ -233,7 +234,6 @@ const Index = () => {
                   <BreadcrumbItem><BreadcrumbPage className="text-blue-600 font-bold">{isReadOnly ? '详情' : viewMode === 'form' ? '编辑' : activeMenuLabel}</BreadcrumbPage></BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              {/* 移除了单独一行的菜单名词显示 */}
             </div>
           )}
           <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-4 md:px-5 pt-5"}>{renderContent()}</div>
