@@ -1,17 +1,22 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { showSuccess } from "@/utils/toast";
 
 interface LegalDocListProps {
   onAdd: () => void;
+  onEdit: (data: any) => void;
+  onDetail: (data: any) => void;
 }
 
-const LegalDocList = ({ onAdd }: LegalDocListProps) => {
+const LegalDocList = ({ onAdd, onEdit, onDetail }: LegalDocListProps) => {
+  const [deleteItem, setDeleteItem] = useState<any>(null);
   const data = [
     { id: '1', unit: '故宫博物院', time: '2023-05-20', party: '北京文物局', creator: '管理员', addTime: '2023-05-21' },
     { id: '2', unit: '天坛公园管理处', time: '2023-06-15', party: '市园林局', creator: '管理员', addTime: '2023-06-16' },
@@ -22,18 +27,9 @@ const LegalDocList = ({ onAdd }: LegalDocListProps) => {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-lg border">
         <div className="flex items-center gap-3 flex-1">
           <Input className="w-40 h-9" placeholder="存储与使用单位" />
-          <Input className="w-40 h-9" placeholder="责任方" />
-          <div className="flex items-center gap-2 bg-slate-50 px-2 py-1 rounded-md border">
-            <span className="text-xs text-slate-500 shrink-0">签署时间:</span>
-            <Input className="w-36 h-8 border-0 bg-transparent focus-visible:ring-0 text-xs" type="date" />
-            <span className="text-slate-300">-</span>
-            <Input className="w-36 h-8 border-0 bg-transparent focus-visible:ring-0 text-xs" type="date" />
-          </div>
           <Button variant="outline" className="h-9">查询</Button>
         </div>
-        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700 h-9">
-          <Plus className="w-4 h-4 mr-2" /> 新增
-        </Button>
+        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700 h-9"><Plus className="w-4 h-4 mr-2" /> 新增</Button>
       </div>
 
       <div className="bg-white rounded-lg border overflow-hidden">
@@ -59,9 +55,9 @@ const LegalDocList = ({ onAdd }: LegalDocListProps) => {
                   <TableCell className="text-slate-500 whitespace-nowrap">{item.addTime}</TableCell>
                   <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center gap-2 px-4 justify-center">
-                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
-                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
-                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => onDetail(item)}>详情</Button>
+                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2" onClick={() => onEdit(item)}>编辑</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2" onClick={() => setDeleteItem(item)}>删除</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -71,22 +67,15 @@ const LegalDocList = ({ onAdd }: LegalDocListProps) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-2 py-4">
-        <div className="text-sm text-slate-500">共 {data.length} 条数据</div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500">每页显示</span>
-          <Select defaultValue="20">
-            <SelectTrigger className="w-20 h-8">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      <AlertDialog open={!!deleteItem} onOpenChange={() => setDeleteItem(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader><AlertDialogTitle>确认删除？</AlertDialogTitle><AlertDialogDescription>数据删除后将无法恢复，请确认是否删除该法律文书？</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => { showSuccess("删除成功"); setDeleteItem(null); }}>确认删除</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

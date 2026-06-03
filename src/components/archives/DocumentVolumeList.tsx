@@ -1,18 +1,23 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus, ChevronDown } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { showSuccess } from "@/utils/toast";
 
 interface DocumentVolumeListProps {
   type: 'planning' | 'archaeology' | 'monitoring';
   onAdd: () => void;
+  onEdit: (data: any) => void;
+  onDetail: (data: any) => void;
 }
 
-const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
+const DocumentVolumeList = ({ type, onAdd, onEdit, onDetail }: DocumentVolumeListProps) => {
+  const [deleteItem, setDeleteItem] = useState<any>(null);
   const data = [
     { id: '1', index: '01', unit: '省文物保护中心', title: '太和殿修缮规划', time: '2023-05-20', approveUnit: '国家文物局', approveTime: '2023-08-12', creator: '管理员' },
     { id: '2', index: '02', unit: '市考古研究所', title: '遗址发掘报告', time: '2023-06-15', approveUnit: '省文化厅', approveTime: '2023-09-01', creator: '管理员' },
@@ -26,15 +31,10 @@ const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input className="pl-9 h-9" placeholder="编制单位" />
           </div>
-          <div className="relative w-48">
-            <Input className="h-9" placeholder="题名" />
-          </div>
+          <div className="relative w-48"><Input className="h-9" placeholder="题名" /></div>
           <Button variant="outline" className="h-9">查询</Button>
-          <Button variant="ghost" className="text-slate-500 text-xs h-9">更多筛选 <ChevronDown className="ml-1 w-3 h-3" /></Button>
         </div>
-        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700 h-9">
-          <Plus className="w-4 h-4 mr-2" /> 新增
-        </Button>
+        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700 h-9"><Plus className="w-4 h-4 mr-2" /> 新增</Button>
       </div>
 
       <div className="bg-white rounded-lg border overflow-hidden">
@@ -60,9 +60,9 @@ const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
                   <TableCell className="whitespace-nowrap">{item.approveUnit}</TableCell>
                   <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center gap-2 px-4 justify-center">
-                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
-                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
-                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => onDetail(item)}>详情</Button>
+                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2" onClick={() => onEdit(item)}>编辑</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2" onClick={() => setDeleteItem(item)}>删除</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -72,22 +72,15 @@ const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-2 py-4">
-        <div className="text-sm text-slate-500">共 {data.length} 条数据</div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500">每页显示</span>
-          <Select defaultValue="20">
-            <SelectTrigger className="w-20 h-8">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      <AlertDialog open={!!deleteItem} onOpenChange={() => setDeleteItem(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader><AlertDialogTitle>确认删除？</AlertDialogTitle><AlertDialogDescription>数据删除后将无法恢复，请确认是否删除“{deleteItem?.title}”？</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => { showSuccess("删除成功"); setDeleteItem(null); }}>确认删除</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

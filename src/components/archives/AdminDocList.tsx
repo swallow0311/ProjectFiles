@@ -1,17 +1,22 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { showSuccess } from "@/utils/toast";
 
 interface AdminDocListProps {
   onAdd: () => void;
+  onEdit: (data: any) => void;
+  onDetail: (data: any) => void;
 }
 
-const AdminDocList = ({ onAdd }: AdminDocListProps) => {
+const AdminDocList = ({ onAdd, onEdit, onDetail }: AdminDocListProps) => {
+  const [deleteItem, setDeleteItem] = useState<any>(null);
   const data = [
     { id: '1', title: '关于加强文物保护的通知', type: '通知', code: '文保发〔2023〕1号', unit: '国家文物局', creator: '管理员', time: '2023-10-12' },
     { id: '2', title: '专项资金管理办法', type: '专项法规', code: '财教〔2023〕15号', unit: '财政部', creator: '管理员', time: '2023-11-05' },
@@ -25,23 +30,9 @@ const AdminDocList = ({ onAdd }: AdminDocListProps) => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input className="pl-9 h-9" placeholder="文件标题" />
           </div>
-          <Select>
-            <SelectTrigger className="w-40 h-9">
-              <SelectValue placeholder="文件类型" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="law">专项法规</SelectItem>
-              <SelectItem value="notice">通知</SelectItem>
-              <SelectItem value="bulletin">布告</SelectItem>
-            </SelectContent>
-          </Select>
-          <Input className="w-40 h-9" placeholder="文号" />
-          <Input className="w-40 h-9" placeholder="发文单位" />
           <Button variant="outline" className="h-9">查询</Button>
         </div>
-        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700 h-9">
-          <Plus className="w-4 h-4 mr-2" /> 新增
-        </Button>
+        <Button onClick={onAdd} className="bg-blue-600 hover:bg-blue-700 h-9"><Plus className="w-4 h-4 mr-2" /> 新增</Button>
       </div>
 
       <div className="bg-white rounded-lg border overflow-hidden">
@@ -69,9 +60,9 @@ const AdminDocList = ({ onAdd }: AdminDocListProps) => {
                   <TableCell className="text-slate-500 whitespace-nowrap">{item.time}</TableCell>
                   <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center gap-2 px-4 justify-center">
-                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
-                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
-                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => onDetail(item)}>详情</Button>
+                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2" onClick={() => onEdit(item)}>编辑</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2" onClick={() => setDeleteItem(item)}>删除</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -81,22 +72,15 @@ const AdminDocList = ({ onAdd }: AdminDocListProps) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-2 py-4">
-        <div className="text-sm text-slate-500">共 {data.length} 条数据</div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500">每页显示</span>
-          <Select defaultValue="20">
-            <SelectTrigger className="w-20 h-8">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      <AlertDialog open={!!deleteItem} onOpenChange={() => setDeleteItem(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader><AlertDialogTitle>确认删除？</AlertDialogTitle><AlertDialogDescription>数据删除后将无法恢复，请确认是否删除“{deleteItem?.title}”？</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => { showSuccess("删除成功"); setDeleteItem(null); }}>确认删除</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

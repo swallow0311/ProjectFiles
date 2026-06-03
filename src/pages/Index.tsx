@@ -76,6 +76,21 @@ const Index = () => {
     [activeModuleId]
   );
 
+  // 递归查找菜单名称
+  const activeMenuLabel = useMemo(() => {
+    const findLabel = (items: any[]): string => {
+      for (const item of items) {
+        if (item.id === activeMenuId) return item.label;
+        if (item.children) {
+          const found = findLabel(item.children);
+          if (found) return found;
+        }
+      }
+      return '';
+    };
+    return findLabel(activeModule.menus);
+  }, [activeModule, activeMenuId]);
+
   const navigateTo = (moduleId: string, menuId: string) => {
     setActiveModuleId(moduleId);
     setActiveMenuId(menuId);
@@ -215,10 +230,10 @@ const Index = () => {
                   <BreadcrumbSeparator />
                   <BreadcrumbItem><BreadcrumbLink href="#" onClick={(e) => { e.preventDefault(); handleModuleChange(activeModuleId); }}>{activeModule.label}</BreadcrumbLink></BreadcrumbItem>
                   <BreadcrumbSeparator />
-                  <BreadcrumbItem><BreadcrumbPage className="text-blue-600 font-bold">{isReadOnly ? '详情' : viewMode === 'form' ? '编辑' : activeMenuId}</BreadcrumbPage></BreadcrumbItem>
+                  <BreadcrumbItem><BreadcrumbPage className="text-blue-600 font-bold">{isReadOnly ? '详情' : viewMode === 'form' ? '编辑' : activeMenuLabel}</BreadcrumbPage></BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <h2 className="text-2xl font-bold text-slate-800">{isReadOnly ? `查看详情 - ${formData?.name || formData?.title || ''}` : viewMode === 'form' ? `编辑内容` : activeMenuId}</h2>
+              {/* 移除了单独一行的菜单名词显示 */}
             </div>
           )}
           <div className={isCockpit ? "flex-1 flex flex-col" : "flex-1 px-4 md:px-5 pt-5"}>{renderContent()}</div>
