@@ -60,6 +60,7 @@ export const MENU_DATA: Module[] = [
     menus: [
       { id: "equipment", label: "设备台账" },
       { id: "alarm", label: "告警处置" },
+      { id: "api", label: "接口对接" },
     ],
   },
   {
@@ -79,7 +80,6 @@ export const MENU_DATA: Module[] = [
       { id: "user", label: "用户管理" },
       { id: "role", label: "角色管理" },
       { id: "contact", label: "通讯录" },
-      { id: "api", label: "接口对接" },
       { id: "login-log", label: "登录日志" },
       { id: "op-log", label: "操作日志" },
     ],

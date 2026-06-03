@@ -44,6 +44,8 @@ import PublicityMaintenance from '@/components/archives/PublicityMaintenance';
 import EquipmentList from '@/components/safety/EquipmentList';
 import EquipmentForm from '@/components/safety/EquipmentForm';
 import AlarmProcessingList from '@/components/safety/AlarmProcessingList';
+import ApiList from '@/components/system/ApiList';
+import ApiForm from '@/components/system/ApiForm';
 
 // 修葺组件
 import RestorationStats from '@/components/restoration/RestorationStats';
@@ -60,8 +62,6 @@ import RoleList from '@/components/system/RoleList';
 import RoleForm from '@/components/system/RoleForm';
 import ContactList from '@/components/system/ContactList';
 import ContactForm from '@/components/system/ContactForm';
-import ApiList from '@/components/system/ApiList';
-import ApiForm from '@/components/system/ApiForm';
 import LoginLogList from '@/components/system/LoginLogList';
 import OpLogList from '@/components/system/OpLogList';
 
@@ -164,12 +164,14 @@ const Index = () => {
     }
 
     if (activeModuleId === 'safety') {
-      if (viewMode === 'form' && activeMenuId === 'equipment') {
-        return <EquipmentForm onBack={() => setViewMode('list')} />;
+      if (viewMode === 'form') {
+        if (activeMenuId === 'equipment') return <EquipmentForm onBack={() => setViewMode('list')} />;
+        if (activeMenuId === 'api') return <ApiForm onBack={() => setViewMode('list')} />;
       }
       switch (activeMenuId) {
         case 'equipment': return <EquipmentList onAdd={() => setViewMode('form')} />;
         case 'alarm': return <AlarmProcessingList />;
+        case 'api': return <ApiList onAdd={() => setViewMode('form')} />;
       }
     }
 
@@ -192,14 +194,12 @@ const Index = () => {
           case 'user': return <UserForm onBack={() => setViewMode('list')} initialData={formData} />;
           case 'role': return <RoleForm onBack={() => setViewMode('list')} />;
           case 'contact': return <ContactForm onBack={() => setViewMode('list')} />;
-          case 'api': return <ApiForm onBack={() => setViewMode('list')} />;
         }
       }
       switch (activeMenuId) {
         case 'user': return <UserList onAdd={() => { setFormData(null); setViewMode('form'); }} onEdit={(user) => { setFormData(user); setViewMode('form'); }} />;
         case 'role': return <RoleList onAdd={() => setViewMode('form')} />;
         case 'contact': return <ContactList onAdd={() => setViewMode('form')} />;
-        case 'api': return <ApiList onAdd={() => setViewMode('form')} />;
         case 'login-log': return <LoginLogList />;
         case 'op-log': return <OpLogList />;
       }

@@ -4,8 +4,9 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, Edit, Trash2, FileText, ChevronDown } from "lucide-react";
+import { Search, Plus, ChevronDown } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface DocumentVolumeListProps {
   type: 'planning' | 'archaeology' | 'monitoring';
@@ -13,7 +14,6 @@ interface DocumentVolumeListProps {
 }
 
 const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
-  // 模拟数据
   const data = [
     { id: '1', index: '01', unit: '省文物保护中心', title: '太和殿修缮规划', time: '2023-05-20', approveUnit: '国家文物局', approveTime: '2023-08-12', creator: '管理员' },
     { id: '2', index: '02', unit: '市考古研究所', title: '遗址发掘报告', time: '2023-06-15', approveUnit: '省文化厅', approveTime: '2023-09-01', creator: '管理员' },
@@ -39,36 +39,39 @@ const DocumentVolumeList = ({ type, onAdd }: DocumentVolumeListProps) => {
       </div>
 
       <div className="bg-white rounded-lg border overflow-hidden">
-        <Table>
-          <TableHeader className="bg-slate-50">
-            <TableRow>
-              <TableHead className="w-16">序号</TableHead>
-              <TableHead>编制单位</TableHead>
-              <TableHead>题名</TableHead>
-              <TableHead>编制时间</TableHead>
-              <TableHead>批准单位</TableHead>
-              <TableHead>操作</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.index}</TableCell>
-                <TableCell className="font-medium">{item.unit}</TableCell>
-                <TableCell>{item.title}</TableCell>
-                <TableCell>{item.time}</TableCell>
-                <TableCell>{item.approveUnit}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
-                    <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
-                    <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
-                  </div>
-                </TableCell>
+        <ScrollArea className="w-full">
+          <Table className="min-w-[1000px] border-separate border-spacing-0">
+            <TableHeader className="bg-slate-50">
+              <TableRow>
+                <TableHead className="w-16 border-b">序号</TableHead>
+                <TableHead className="border-b">编制单位</TableHead>
+                <TableHead className="border-b">题名</TableHead>
+                <TableHead className="border-b">编制时间</TableHead>
+                <TableHead className="border-b">批准单位</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center border-b border-l">操作</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((item) => (
+                <TableRow key={item.id} className="group">
+                  <TableCell>{item.index}</TableCell>
+                  <TableCell className="font-medium">{item.unit}</TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>{item.time}</TableCell>
+                  <TableCell>{item.approveUnit}</TableCell>
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                    <div className="flex items-center gap-2 px-2 justify-center">
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
+                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
 
       <div className="flex items-center justify-between px-2">

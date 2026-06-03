@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Plus, Download, Calendar, Eye, Trash2, PlusCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { showSuccess } from "@/utils/toast";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface RecordListProps {
   onAdd: () => void;
@@ -42,52 +43,55 @@ const RecordList = ({ onAdd, onAddDetail }: RecordListProps) => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <Table>
-          <TableHeader className="bg-slate-50">
-            <TableRow>
-              <TableHead>修缮项目名称</TableHead>
-              <TableHead>责任部门</TableHead>
-              <TableHead>责任人</TableHead>
-              <TableHead>开始时间</TableHead>
-              <TableHead>预计完成</TableHead>
-              <TableHead className="w-48">修缮进度</TableHead>
-              <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-64 border-l">操作</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item) => (
-              <TableRow key={item.id} className="group">
-                <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell>{item.dept}</TableCell>
-                <TableCell>{item.manager}</TableCell>
-                <TableCell className="text-slate-500">{item.startTime}</TableCell>
-                <TableCell className="text-slate-500">{item.expectedEnd}</TableCell>
-                <TableCell>
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between text-[10px] font-medium">
-                      <span>已完成</span>
-                      <span>{item.progress}%</span>
-                    </div>
-                    <Progress value={item.progress} className="h-1.5" />
-                  </div>
-                </TableCell>
-                <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
-                  <div className="flex items-center justify-center gap-2">
-                    <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2" onClick={() => onAddDetail(item)}>
-                      <PlusCircle className="w-3.5 h-3.5 mr-1" /> +记录
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">
-                      <Eye className="w-3.5 h-3.5 mr-1" /> 记录详情
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">
-                      <Trash2 className="w-3.5 h-3.5 mr-1" /> 删除
-                    </Button>
-                  </div>
-                </TableCell>
+        <ScrollArea className="w-full">
+          <Table className="min-w-[1200px] border-separate border-spacing-0">
+            <TableHeader className="bg-slate-50">
+              <TableRow>
+                <TableHead className="border-b">修缮项目名称</TableHead>
+                <TableHead className="border-b">责任部门</TableHead>
+                <TableHead className="border-b">责任人</TableHead>
+                <TableHead className="border-b">开始时间</TableHead>
+                <TableHead className="border-b">预计完成</TableHead>
+                <TableHead className="w-48 border-b">修缮进度</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-64 border-b border-l">操作</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((item) => (
+                <TableRow key={item.id} className="group">
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell>{item.dept}</TableCell>
+                  <TableCell>{item.manager}</TableCell>
+                  <TableCell className="text-slate-500">{item.startTime}</TableCell>
+                  <TableCell className="text-slate-500">{item.expectedEnd}</TableCell>
+                  <TableCell>
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-[10px] font-medium">
+                        <span>已完成</span>
+                        <span>{item.progress}%</span>
+                      </div>
+                      <Progress value={item.progress} className="h-1.5" />
+                    </div>
+                  </TableCell>
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                    <div className="flex items-center justify-center gap-2">
+                      <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2" onClick={() => onAddDetail(item)}>
+                        <PlusCircle className="w-3.5 h-3.5 mr-1" /> +记录
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">
+                        <Eye className="w-3.5 h-3.5 mr-1" /> 记录详情
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">
+                        <Trash2 className="w-3.5 h-3.5 mr-1" /> 删除
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </div>
   );

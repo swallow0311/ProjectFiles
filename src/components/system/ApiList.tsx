@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link2, RefreshCw, Activity, Plus } from "lucide-react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface ApiListProps {
   onAdd: () => void;
@@ -30,37 +31,42 @@ const ApiList = ({ onAdd }: ApiListProps) => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <Table>
-          <TableHeader className="bg-slate-50">
-            <TableRow>
-              <TableHead>接口名称</TableHead>
-              <TableHead>接口地址</TableHead>
-              <TableHead>连接状态</TableHead>
-              <TableHead>最后同步/调用</TableHead>
-              <TableHead className="text-right pr-6">操作</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((api) => (
-              <TableRow key={api.id}>
-                <TableCell className="font-bold">{api.name}</TableCell>
-                <TableCell className="font-mono text-xs text-slate-500">{api.endpoint}</TableCell>
-                <TableCell>
-                  <Badge className={api.status === 'connected' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'}>
-                    {api.status === 'connected' ? '已连接' : '连接异常'}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-slate-500 text-xs">{api.lastSync}</TableCell>
-                <TableCell className="text-right pr-6">
-                  <Button variant="ghost" size="sm" className="text-indigo-600">
-                    <RefreshCw className="w-3.5 h-3.5 mr-1" /> 立即测试
-                  </Button>
-                  <Button variant="ghost" size="sm" className="text-blue-600">配置</Button>
-                </TableCell>
+        <ScrollArea className="w-full">
+          <Table className="min-w-[1000px] border-separate border-spacing-0">
+            <TableHeader className="bg-slate-50">
+              <TableRow>
+                <TableHead className="border-b">接口名称</TableHead>
+                <TableHead className="border-b">接口地址</TableHead>
+                <TableHead className="border-b">连接状态</TableHead>
+                <TableHead className="border-b">最后同步/调用</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center border-b border-l">操作</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((api) => (
+                <TableRow key={api.id} className="group">
+                  <TableCell className="font-bold">{api.name}</TableCell>
+                  <TableCell className="font-mono text-xs text-slate-500">{api.endpoint}</TableCell>
+                  <TableCell>
+                    <Badge className={api.status === 'connected' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'}>
+                      {api.status === 'connected' ? '已连接' : '连接异常'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-slate-500 text-xs">{api.lastSync}</TableCell>
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                    <div className="flex items-center gap-2 px-2 justify-center">
+                      <Button variant="ghost" size="sm" className="text-indigo-600">
+                        <RefreshCw className="w-3.5 h-3.5 mr-1" /> 立即测试
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-blue-600">配置</Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </div>
   );

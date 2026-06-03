@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface BookListProps {
   onAdd: () => void;
@@ -35,36 +36,39 @@ const BookList = ({ onAdd }: BookListProps) => {
       </div>
 
       <div className="bg-white rounded-lg border overflow-hidden">
-        <Table>
-          <TableHeader className="bg-slate-50">
-            <TableRow>
-              <TableHead>书名</TableHead>
-              <TableHead>出版单位</TableHead>
-              <TableHead>版本</TableHead>
-              <TableHead>添加人</TableHead>
-              <TableHead>添加时间</TableHead>
-              <TableHead className="sticky right-0 bg-slate-50 shadow-[-4px_0_8px_rgba(0,0,0,0.05)]">操作</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell>{item.unit}</TableCell>
-                <TableCell>{item.version}</TableCell>
-                <TableCell>{item.creator}</TableCell>
-                <TableCell className="text-slate-500">{item.time}</TableCell>
-                <TableCell className="sticky right-0 bg-white shadow-[-4px_0_8px_rgba(0,0,0,0.05)]">
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
-                    <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
-                    <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
-                  </div>
-                </TableCell>
+        <ScrollArea className="w-full">
+          <Table className="min-w-[1000px] border-separate border-spacing-0">
+            <TableHeader className="bg-slate-50">
+              <TableRow>
+                <TableHead className="border-b">书名</TableHead>
+                <TableHead className="border-b">出版单位</TableHead>
+                <TableHead className="border-b">版本</TableHead>
+                <TableHead className="border-b">添加人</TableHead>
+                <TableHead className="border-b">添加时间</TableHead>
+                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center border-b border-l">操作</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((item) => (
+                <TableRow key={item.id} className="group">
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell>{item.unit}</TableCell>
+                  <TableCell>{item.version}</TableCell>
+                  <TableCell>{item.creator}</TableCell>
+                  <TableCell className="text-slate-500">{item.time}</TableCell>
+                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                    <div className="flex items-center gap-2 px-2 justify-center">
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
+                      <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2">删除</Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
 
       <div className="flex items-center justify-between px-2">
