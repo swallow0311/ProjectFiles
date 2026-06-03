@@ -4,13 +4,14 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { RefreshCw, Activity, Plus } from "lucide-react";
+import { RefreshCw, Activity, Plus, Settings } from "lucide-react";
 
 interface ApiListProps {
   onAdd: () => void;
+  onEdit: (data: any) => void;
 }
 
-const ApiList = ({ onAdd }: ApiListProps) => {
+const ApiList = ({ onAdd, onEdit }: ApiListProps) => {
   const data = [
     { id: '1', name: '国家文物局数据同步', endpoint: 'https://api.ncha.gov.cn/v1/sync', status: 'connected', lastSync: '2023-11-15 08:00' },
     { id: '2', name: 'GIS地理信息系统', endpoint: 'https://gis.internal/api/map', status: 'connected', lastSync: '实时' },
@@ -57,7 +58,9 @@ const ApiList = ({ onAdd }: ApiListProps) => {
                       <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2">
                         <RefreshCw className="w-3.5 h-3.5 mr-1" /> 立即测试
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">配置</Button>
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => onEdit(api)}>
+                        <Settings className="w-3.5 h-3.5 mr-1" />配置
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>

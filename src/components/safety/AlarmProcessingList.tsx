@@ -4,11 +4,18 @@ import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, Eye, Trash2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { showSuccess } from "@/utils/toast";
 
-const AlarmProcessingList = () => {
+interface AlarmProcessingListProps {
+  onDetail: (data: any) => void;
+}
+
+const AlarmProcessingList = ({ onDetail }: AlarmProcessingListProps) => {
   const [showMoreSearch, setShowMoreSearch] = useState(false);
+  const [deleteItem, setDeleteItem] = useState<any>(null);
   
   const data = [
     { 
@@ -36,15 +43,6 @@ const AlarmProcessingList = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
               <Input className="pl-9 h-9" placeholder="事件名称" />
             </div>
-            <div className="relative w-48">
-              <Input className="h-9" placeholder="事件编号" />
-            </div>
-            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1 rounded-md border">
-              <span className="text-xs text-slate-500 shrink-0">发生时间:</span>
-              <Input className="w-36 h-7 border-0 bg-transparent focus-visible:ring-0 text-xs" type="date" />
-              <span className="text-slate-300">-</span>
-              <Input className="w-36 h-7 border-0 bg-transparent focus-visible:ring-0 text-xs" type="date" />
-            </div>
             <Button variant="default" className="bg-indigo-600 hover:bg-indigo-700 h-9">查询</Button>
             <Button 
               variant="ghost" 
@@ -60,9 +58,7 @@ const AlarmProcessingList = () => {
         {showMoreSearch && (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-slate-100 animate-in fade-in slide-in-from-top-2">
             <Input className="h-9" placeholder="告警文物" />
-            <Input className="h-9" placeholder="告警设备编码" />
-            <Input className="h-9" placeholder="处置人员" />
-            <Input className="h-9" placeholder="告警条件" />
+            <Input className="h-9" placeholder="事件编号" />
           </div>
         )}
       </div>
@@ -71,41 +67,29 @@ const AlarmProcessingList = () => {
         <div className="overflow-x-auto">
           <Table className="min-w-[1800px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="w-48 border-b whitespace-nowrap">事件名称</TableHead>
-                <TableHead className="w-48 border-b whitespace-nowrap">事件编号</TableHead>
-                <TableHead className="w-48 border-b whitespace-nowrap">发生时间</TableHead>
-                <TableHead className="w-32 border-b whitespace-nowrap">告警时长</TableHead>
-                <TableHead className="w-32 border-b whitespace-nowrap">处置时长</TableHead>
-                <TableHead className="w-32 border-b whitespace-nowrap">上次告警时长</TableHead>
-                <TableHead className="w-40 border-b whitespace-nowrap">告警文物</TableHead>
-                <TableHead className="w-40 border-b whitespace-nowrap">告警设备编码</TableHead>
-                <TableHead className="w-40 border-b whitespace-nowrap">告警设备名称</TableHead>
-                <TableHead className="w-48 border-b whitespace-nowrap">告警条件</TableHead>
-                <TableHead className="w-32 border-b whitespace-nowrap">处置人员</TableHead>
-                <TableHead className="w-40 border-b whitespace-nowrap">联系信息</TableHead>
-                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center w-32 border-b border-l whitespace-nowrap">操作</TableHead>
+              <TableRow>
+                <TableHead className="w-48 border-b">事件名称</TableHead>
+                <TableHead className="w-48 border-b">事件编号</TableHead>
+                <TableHead className="w-48 border-b">发生时间</TableHead>
+                <TableHead className="w-40 border-b">告警文物</TableHead>
+                <TableHead className="w-48 border-b">告警条件</TableHead>
+                <TableHead className="w-32 border-b">处置人员</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center w-32 border-b border-l">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
                 <TableRow key={item.id} className="group">
-                  <TableCell className="font-medium text-slate-900 whitespace-nowrap">{item.name}</TableCell>
+                  <TableCell className="font-medium whitespace-nowrap">{item.name}</TableCell>
                   <TableCell className="text-indigo-600 font-mono text-xs whitespace-nowrap">{item.code}</TableCell>
                   <TableCell className="text-slate-500 whitespace-nowrap">{item.time}</TableCell>
-                  <TableCell className="whitespace-nowrap">{item.alarmDuration}</TableCell>
-                  <TableCell className="whitespace-nowrap">{item.processDuration}</TableCell>
-                  <TableCell className="text-slate-400 whitespace-nowrap">{item.lastAlarmDuration}</TableCell>
                   <TableCell className="whitespace-nowrap">{item.relic}</TableCell>
-                  <TableCell className="text-xs whitespace-nowrap">{item.deviceCode}</TableCell>
-                  <TableCell className="whitespace-nowrap">{item.deviceName}</TableCell>
                   <TableCell className="text-orange-600 text-xs whitespace-nowrap">{item.condition}</TableCell>
                   <TableCell className="whitespace-nowrap">{item.processor}</TableCell>
-                  <TableCell className="text-slate-500 whitespace-nowrap">{item.contact}</TableCell>
                   <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center gap-2 px-2 justify-center">
-                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2 hover:bg-blue-50">详情</Button>
-                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2 hover:bg-red-50">删除</Button>
+                      <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => onDetail(item)}><Eye className="w-3.5 h-3.5 mr-1" />详情</Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2" onClick={() => setDeleteItem(item)}><Trash2 className="w-3.5 h-3.5 mr-1" />删除</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -115,29 +99,18 @@ const AlarmProcessingList = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-2 py-4">
-        <div className="text-sm text-slate-500">共 {data.length} 条数据</div>
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-500">每页显示</span>
-            <Select defaultValue="20">
-              <SelectTrigger className="w-20 h-8">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="20">20</SelectItem>
-                <SelectItem value="50">50</SelectItem>
-                <SelectItem value="100">100</SelectItem>
-              </SelectContent>
-            </Select>
-            <span className="text-sm text-slate-500">条</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Button variant="outline" size="sm" disabled className="h-8 w-8 p-0">1</Button>
-          </div>
-        </div>
-      </div>
+      <AlertDialog open={!!deleteItem} onOpenChange={() => setDeleteItem(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认删除告警记录？</AlertDialogTitle>
+            <AlertDialogDescription>确认删除该条告警处置记录吗？此操作不可撤销。</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => { showSuccess("记录已删除"); setDeleteItem(null); }}>确认删除</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
