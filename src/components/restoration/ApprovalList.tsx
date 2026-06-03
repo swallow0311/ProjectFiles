@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Search, ChevronDown, ChevronUp, CheckCircle2, XCircle, Eye } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { showSuccess } from "@/utils/toast";
 
@@ -153,29 +152,29 @@ const ApprovalList = () => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <ScrollArea className="w-full">
+        <div className="overflow-x-auto">
           <Table className="min-w-[1600px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-64 border-b">方案名称</TableHead>
-                <TableHead className="w-32 border-b">方案类型</TableHead>
-                <TableHead className="w-32 border-b">关联文物</TableHead>
-                <TableHead className="w-24 border-b">紧急度</TableHead>
-                <TableHead className="w-24 border-b">编制人</TableHead>
-                <TableHead className="w-32 border-b">实施责任人</TableHead>
-                <TableHead className="w-24 border-b">方案状态</TableHead>
-                <TableHead className="w-24 border-b">提审人</TableHead>
-                <TableHead className="w-40 border-b">提审时间</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-left w-48 border-b border-l pl-6">操作</TableHead>
+                <TableHead className="w-64 border-b whitespace-nowrap">方案名称</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">方案类型</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">关联文物</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">紧急度</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">编制人</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">实施责任人</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">方案状态</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">提审人</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">提审时间</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-left w-48 border-b border-l pl-6 whitespace-nowrap">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
                 <TableRow key={item.id} className="group">
-                  <TableCell className="font-medium border-b">{item.name}</TableCell>
-                  <TableCell className="border-b">{item.type}</TableCell>
-                  <TableCell className="border-b">{item.relic}</TableCell>
-                  <TableCell className="border-b">
+                  <TableCell className="font-medium border-b whitespace-nowrap">{item.name}</TableCell>
+                  <TableCell className="border-b whitespace-nowrap">{item.type}</TableCell>
+                  <TableCell className="border-b whitespace-nowrap">{item.relic}</TableCell>
+                  <TableCell className="border-b whitespace-nowrap">
                     <Badge variant="outline" className={cn(
                       item.urgency === '特急' ? 'text-red-600 border-red-200 bg-red-50' : 
                       item.urgency === '紧急' ? 'text-orange-600 border-orange-200 bg-orange-50' : 
@@ -184,9 +183,9 @@ const ApprovalList = () => {
                       {item.urgency}
                     </Badge>
                   </TableCell>
-                  <TableCell className="border-b">{item.compiler}</TableCell>
-                  <TableCell className="border-b">{item.leader}</TableCell>
-                  <TableCell className="border-b">
+                  <TableCell className="border-b whitespace-nowrap">{item.compiler}</TableCell>
+                  <TableCell className="border-b whitespace-nowrap">{item.leader}</TableCell>
+                  <TableCell className="border-b whitespace-nowrap">
                     <Badge className={cn(
                       item.status === '已通过' ? 'bg-green-50 text-green-700 border-green-200' : 
                       item.status === '审核中' ? 'bg-blue-50 text-blue-700 border-blue-200' : 
@@ -196,17 +195,16 @@ const ApprovalList = () => {
                       {item.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="border-b">{item.submitter}</TableCell>
-                  <TableCell className="text-slate-500 border-b">{item.submitTime}</TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b pl-4">
+                  <TableCell className="border-b whitespace-nowrap">{item.submitter}</TableCell>
+                  <TableCell className="text-slate-500 border-b whitespace-nowrap">{item.submitTime}</TableCell>
+                  <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b pl-4 whitespace-nowrap">
                     {renderActions(item)}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
       </div>
 
       <div className="flex items-center justify-between px-2 py-4">

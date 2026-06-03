@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/dialog";
 import DeptTree from './DeptTree';
 import { showSuccess } from "@/utils/toast";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface UserListProps {
   onAdd: () => void;
@@ -60,7 +59,7 @@ const UserList = ({ onAdd, onEdit }: UserListProps) => {
         </div>
 
         <div className="bg-white rounded-xl border shadow-sm overflow-hidden flex-1">
-          <ScrollArea className="h-full w-full">
+          <div className="overflow-x-auto h-full">
             <Table className="min-w-[1000px] border-separate border-spacing-0">
               <TableHeader className="bg-slate-50">
                 <TableRow className="hover:bg-transparent">
@@ -70,7 +69,7 @@ const UserList = ({ onAdd, onEdit }: UserListProps) => {
                   <TableHead className="border-b whitespace-nowrap">部门</TableHead>
                   <TableHead className="border-b whitespace-nowrap">状态</TableHead>
                   <TableHead className="border-b whitespace-nowrap">最后登录</TableHead>
-                  <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-40 border-b border-l whitespace-nowrap">操作</TableHead>
+                  <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center w-40 border-b border-l whitespace-nowrap">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -88,7 +87,7 @@ const UserList = ({ onAdd, onEdit }: UserListProps) => {
                       <Switch checked={user.status} />
                     </TableCell>
                     <TableCell className="text-slate-500 text-xs whitespace-nowrap">{user.lastLogin}</TableCell>
-                    <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
+                    <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                       <div className="flex items-center gap-2 px-4 justify-center">
                         <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => onEdit(user)}>编辑</Button>
                         <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2" onClick={() => handleResetPassword(user)}>重置密码</Button>
@@ -98,8 +97,7 @@ const UserList = ({ onAdd, onEdit }: UserListProps) => {
                 ))}
               </TableBody>
             </Table>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+          </div>
         </div>
       </div>
 

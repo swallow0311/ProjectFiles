@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const AlarmProcessingList = () => {
   const [showMoreSearch, setShowMoreSearch] = useState(false);
@@ -69,41 +68,41 @@ const AlarmProcessingList = () => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <ScrollArea className="w-full">
+        <div className="overflow-x-auto">
           <Table className="min-w-[1800px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-48 border-b">事件名称</TableHead>
-                <TableHead className="w-48 border-b">事件编号</TableHead>
-                <TableHead className="w-48 border-b">发生时间</TableHead>
-                <TableHead className="w-32 border-b">告警时长</TableHead>
-                <TableHead className="w-32 border-b">处置时长</TableHead>
-                <TableHead className="w-32 border-b">上次告警时长</TableHead>
-                <TableHead className="w-40 border-b">告警文物</TableHead>
-                <TableHead className="w-40 border-b">告警设备编码</TableHead>
-                <TableHead className="w-40 border-b">告警设备名称</TableHead>
-                <TableHead className="w-48 border-b">告警条件</TableHead>
-                <TableHead className="w-32 border-b">处置人员</TableHead>
-                <TableHead className="w-40 border-b">联系信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-32 border-b border-l">操作</TableHead>
+                <TableHead className="w-48 border-b whitespace-nowrap">事件名称</TableHead>
+                <TableHead className="w-48 border-b whitespace-nowrap">事件编号</TableHead>
+                <TableHead className="w-48 border-b whitespace-nowrap">发生时间</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">告警时长</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">处置时长</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">上次告警时长</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">告警文物</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">告警设备编码</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">告警设备名称</TableHead>
+                <TableHead className="w-48 border-b whitespace-nowrap">告警条件</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">处置人员</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">联系信息</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center w-32 border-b border-l whitespace-nowrap">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
                 <TableRow key={item.id} className="group">
-                  <TableCell className="font-medium text-slate-900">{item.name}</TableCell>
-                  <TableCell className="text-indigo-600 font-mono text-xs">{item.code}</TableCell>
-                  <TableCell className="text-slate-500">{item.time}</TableCell>
-                  <TableCell>{item.alarmDuration}</TableCell>
-                  <TableCell>{item.processDuration}</TableCell>
-                  <TableCell className="text-slate-400">{item.lastAlarmDuration}</TableCell>
-                  <TableCell>{item.relic}</TableCell>
-                  <TableCell className="text-xs">{item.deviceCode}</TableCell>
-                  <TableCell>{item.deviceName}</TableCell>
-                  <TableCell className="text-orange-600 text-xs">{item.condition}</TableCell>
-                  <TableCell>{item.processor}</TableCell>
-                  <TableCell className="text-slate-500">{item.contact}</TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                  <TableCell className="font-medium text-slate-900 whitespace-nowrap">{item.name}</TableCell>
+                  <TableCell className="text-indigo-600 font-mono text-xs whitespace-nowrap">{item.code}</TableCell>
+                  <TableCell className="text-slate-500 whitespace-nowrap">{item.time}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.alarmDuration}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.processDuration}</TableCell>
+                  <TableCell className="text-slate-400 whitespace-nowrap">{item.lastAlarmDuration}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.relic}</TableCell>
+                  <TableCell className="text-xs whitespace-nowrap">{item.deviceCode}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.deviceName}</TableCell>
+                  <TableCell className="text-orange-600 text-xs whitespace-nowrap">{item.condition}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.processor}</TableCell>
+                  <TableCell className="text-slate-500 whitespace-nowrap">{item.contact}</TableCell>
+                  <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center gap-2 px-2 justify-center">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2 hover:bg-blue-50">详情</Button>
                       <Button variant="ghost" size="sm" className="text-red-600 h-8 px-2 hover:bg-red-50">删除</Button>
@@ -113,8 +112,7 @@ const AlarmProcessingList = () => {
               ))}
             </TableBody>
           </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
       </div>
 
       <div className="flex items-center justify-between px-2 py-4">

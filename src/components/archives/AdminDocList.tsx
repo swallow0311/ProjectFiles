@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface AdminDocListProps {
   onAdd: () => void;
@@ -46,7 +45,7 @@ const AdminDocList = ({ onAdd }: AdminDocListProps) => {
       </div>
 
       <div className="bg-white rounded-lg border overflow-hidden">
-        <ScrollArea className="w-full">
+        <div className="overflow-x-auto">
           <Table className="min-w-[1200px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
@@ -56,7 +55,7 @@ const AdminDocList = ({ onAdd }: AdminDocListProps) => {
                 <TableHead className="border-b whitespace-nowrap">发文单位</TableHead>
                 <TableHead className="border-b whitespace-nowrap">添加人</TableHead>
                 <TableHead className="border-b whitespace-nowrap">添加时间</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center border-b border-l whitespace-nowrap">操作</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center border-b border-l whitespace-nowrap">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -68,7 +67,7 @@ const AdminDocList = ({ onAdd }: AdminDocListProps) => {
                   <TableCell className="whitespace-nowrap">{item.unit}</TableCell>
                   <TableCell className="whitespace-nowrap">{item.creator}</TableCell>
                   <TableCell className="text-slate-500 whitespace-nowrap">{item.time}</TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
+                  <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center gap-2 px-4 justify-center">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2">详情</Button>
                       <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2">编辑</Button>
@@ -79,8 +78,7 @@ const AdminDocList = ({ onAdd }: AdminDocListProps) => {
               ))}
             </TableBody>
           </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
       </div>
 
       <div className="flex items-center justify-between px-2 py-4">

@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Search, Plus, ChevronDown, ChevronUp, Edit, Trash2, History } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 interface SchemeListProps {
@@ -120,36 +119,36 @@ const SchemeList = ({ onAdd, onAddVersion }: SchemeListProps) => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <ScrollArea className="w-full">
+        <div className="overflow-x-auto">
           <Table className="min-w-[1400px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-12 border-b"></TableHead>
-                <TableHead className="w-64 border-b">方案名称</TableHead>
-                <TableHead className="w-32 border-b">方案类型</TableHead>
-                <TableHead className="w-32 border-b">关联文物</TableHead>
-                <TableHead className="w-24 border-b">紧急度</TableHead>
-                <TableHead className="w-24 border-b">编制人</TableHead>
-                <TableHead className="w-32 border-b">实施责任人</TableHead>
-                <TableHead className="w-24 border-b">方案状态</TableHead>
-                <TableHead className="w-24 border-b">添加人</TableHead>
-                <TableHead className="w-40 border-b">添加时间</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-40 border-b border-l">操作</TableHead>
+                <TableHead className="w-12 border-b whitespace-nowrap"></TableHead>
+                <TableHead className="w-64 border-b whitespace-nowrap">方案名称</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">方案类型</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">关联文物</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">紧急度</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">编制人</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">实施责任人</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">方案状态</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">添加人</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">添加时间</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center w-40 border-b border-l whitespace-nowrap">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
                 <React.Fragment key={item.id}>
                   <TableRow className="group">
-                    <TableCell className="border-b">
+                    <TableCell className="border-b whitespace-nowrap">
                       <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => toggleExpand(item.id)}>
                         {expandedIds.includes(item.id) ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                       </Button>
                     </TableCell>
-                    <TableCell className="font-medium border-b">{item.name}</TableCell>
-                    <TableCell className="border-b">{item.type}</TableCell>
-                    <TableCell className="border-b">{item.relic}</TableCell>
-                    <TableCell className="border-b">
+                    <TableCell className="font-medium border-b whitespace-nowrap">{item.name}</TableCell>
+                    <TableCell className="border-b whitespace-nowrap">{item.type}</TableCell>
+                    <TableCell className="border-b whitespace-nowrap">{item.relic}</TableCell>
+                    <TableCell className="border-b whitespace-nowrap">
                       <Badge variant="outline" className={cn(
                         item.urgency === '特急' ? 'text-red-600 border-red-200 bg-red-50' : 
                         item.urgency === '紧急' ? 'text-orange-600 border-orange-200 bg-orange-50' : 
@@ -158,9 +157,9 @@ const SchemeList = ({ onAdd, onAddVersion }: SchemeListProps) => {
                         {item.urgency}
                       </Badge>
                     </TableCell>
-                    <TableCell className="border-b">{item.compiler}</TableCell>
-                    <TableCell className="border-b">{item.leader}</TableCell>
-                    <TableCell className="border-b">
+                    <TableCell className="border-b whitespace-nowrap">{item.compiler}</TableCell>
+                    <TableCell className="border-b whitespace-nowrap">{item.leader}</TableCell>
+                    <TableCell className="border-b whitespace-nowrap">
                       <Badge className={cn(
                         item.status === '已通过' ? 'bg-green-50 text-green-700 border-green-200' : 
                         item.status === '审核中' ? 'bg-blue-50 text-blue-700 border-blue-200' : 
@@ -169,9 +168,9 @@ const SchemeList = ({ onAdd, onAddVersion }: SchemeListProps) => {
                         {item.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="border-b">{item.creator}</TableCell>
-                    <TableCell className="text-slate-500 border-b">{item.createTime}</TableCell>
-                    <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b">
+                    <TableCell className="border-b whitespace-nowrap">{item.creator}</TableCell>
+                    <TableCell className="text-slate-500 border-b whitespace-nowrap">{item.createTime}</TableCell>
+                    <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l border-b whitespace-nowrap">
                       <div className="flex items-center gap-2 px-2 justify-center">
                         <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2" onClick={() => toggleExpand(item.id)}>详情</Button>
                         <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2" onClick={() => onAddVersion(item)}>+版本</Button>
@@ -182,7 +181,7 @@ const SchemeList = ({ onAdd, onAddVersion }: SchemeListProps) => {
                   
                   {expandedIds.includes(item.id) && (
                     <TableRow className="bg-slate-50/50">
-                      <TableCell colSpan={11} className="p-0 border-b">
+                      <TableCell colSpan={11} className="p-0 border-b whitespace-nowrap">
                         <div className="p-6 space-y-4">
                           <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
                             <History className="w-3 h-3" /> 版本历史数据
@@ -229,8 +228,7 @@ const SchemeList = ({ onAdd, onAddVersion }: SchemeListProps) => {
               ))}
             </TableBody>
           </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
       </div>
 
       <div className="flex items-center justify-between px-2 py-4">

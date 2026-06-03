@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Search, Plus, ChevronDown, ChevronUp } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface EquipmentListProps {
   onAdd: () => void;
@@ -83,7 +82,7 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <ScrollArea className="w-full">
+        <div className="overflow-x-auto">
           <Table className="min-w-[2000px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
@@ -91,58 +90,58 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
                 <TableHead colSpan={5} className="text-center border-r border-b font-bold text-orange-600 py-2">阈值设置</TableHead>
                 <TableHead colSpan={6} className="text-center border-r border-b font-bold text-blue-600 py-2">AI预警</TableHead>
                 <TableHead colSpan={2} className="text-center border-r border-b font-bold text-slate-600 py-2">操作信息</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center font-bold py-2 border-b border-l">操作</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center font-bold py-2 border-b border-l whitespace-nowrap">操作</TableHead>
               </TableRow>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-32 border-b">设备编码</TableHead>
-                <TableHead className="w-40 border-b">设备名称</TableHead>
-                <TableHead className="w-40 border-b">IMEI标识</TableHead>
-                <TableHead className="w-32 border-b">时间</TableHead>
-                <TableHead className="w-32 border-b">产品参数</TableHead>
-                <TableHead className="w-32 border-b">厂家</TableHead>
-                <TableHead className="w-32 border-b">型号</TableHead>
-                <TableHead className="w-48 border-r border-b">地址</TableHead>
-                <TableHead className="w-24 border-b">报警阈值</TableHead>
-                <TableHead className="w-24 border-b">烟火阈值</TableHead>
-                <TableHead className="w-24 border-b">防倾斜阈值</TableHead>
-                <TableHead className="w-24 border-b">温度阈值</TableHead>
-                <TableHead className="w-24 border-r border-b">湿度阈值</TableHead>
-                <TableHead className="w-24 border-b">灵敏度</TableHead>
-                <TableHead className="w-32 border-b">报警时限</TableHead>
-                <TableHead className="w-24 border-b">频率</TableHead>
-                <TableHead className="w-32 border-b">区域</TableHead>
-                <TableHead className="w-32 border-b">预警方式</TableHead>
-                <TableHead className="w-32 border-r border-b">预警对象</TableHead>
-                <TableHead className="w-24 border-b">添加人</TableHead>
-                <TableHead className="w-40 border-r border-b">添加时间</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] w-40 border-b border-l"></TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">设备编码</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">设备名称</TableHead>
+                <TableHead className="w-40 border-b whitespace-nowrap">IMEI标识</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">时间</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">产品参数</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">厂家</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">型号</TableHead>
+                <TableHead className="w-48 border-r border-b whitespace-nowrap">地址</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">报警阈值</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">烟火阈值</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">防倾斜阈值</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">温度阈值</TableHead>
+                <TableHead className="w-24 border-r border-b whitespace-nowrap">湿度阈值</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">灵敏度</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">报警时限</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">频率</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">区域</TableHead>
+                <TableHead className="w-32 border-b whitespace-nowrap">预警方式</TableHead>
+                <TableHead className="w-32 border-r border-b whitespace-nowrap">预警对象</TableHead>
+                <TableHead className="w-24 border-b whitespace-nowrap">添加人</TableHead>
+                <TableHead className="w-40 border-r border-b whitespace-nowrap">添加时间</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] w-40 border-b border-l whitespace-nowrap"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((item) => (
                 <TableRow key={item.id} className="group">
-                  <TableCell className="font-medium text-indigo-600">{item.code}</TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell className="text-slate-500 text-xs">{item.imei}</TableCell>
-                  <TableCell>{item.time}</TableCell>
-                  <TableCell className="text-slate-500">{item.params}</TableCell>
-                  <TableCell>{item.factory}</TableCell>
-                  <TableCell>{item.model}</TableCell>
-                  <TableCell className="border-r">{item.address}</TableCell>
-                  <TableCell className="text-orange-600 font-medium">{item.alarmThreshold}</TableCell>
-                  <TableCell>{item.fireThreshold}</TableCell>
-                  <TableCell>{item.tiltThreshold}</TableCell>
-                  <TableCell>{item.tempThreshold}</TableCell>
-                  <TableCell className="border-r">{item.humidityThreshold}</TableCell>
-                  <TableCell><Badge variant="secondary" className="font-normal">{item.sensitivity}</Badge></TableCell>
-                  <TableCell>{item.alarmLimit}</TableCell>
-                  <TableCell>{item.frequency}</TableCell>
-                  <TableCell>{item.area}</TableCell>
-                  <TableCell>{item.alertType}</TableCell>
-                  <TableCell className="border-r">{item.alertTarget}</TableCell>
-                  <TableCell>{item.creator}</TableCell>
-                  <TableCell className="text-slate-500 border-r">{item.createTime}</TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l">
+                  <TableCell className="font-medium text-indigo-600 whitespace-nowrap">{item.code}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.name}</TableCell>
+                  <TableCell className="text-slate-500 text-xs whitespace-nowrap">{item.imei}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.time}</TableCell>
+                  <TableCell className="text-slate-500 whitespace-nowrap">{item.params}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.factory}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.model}</TableCell>
+                  <TableCell className="border-r whitespace-nowrap">{item.address}</TableCell>
+                  <TableCell className="text-orange-600 font-medium whitespace-nowrap">{item.alarmThreshold}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.fireThreshold}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.tiltThreshold}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.tempThreshold}</TableCell>
+                  <TableCell className="border-r whitespace-nowrap">{item.humidityThreshold}</TableCell>
+                  <TableCell className="whitespace-nowrap"><Badge variant="secondary" className="font-normal">{item.sensitivity}</Badge></TableCell>
+                  <TableCell className="whitespace-nowrap">{item.alarmLimit}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.frequency}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.area}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.alertType}</TableCell>
+                  <TableCell className="border-r whitespace-nowrap">{item.alertTarget}</TableCell>
+                  <TableCell className="whitespace-nowrap">{item.creator}</TableCell>
+                  <TableCell className="text-slate-500 border-r whitespace-nowrap">{item.createTime}</TableCell>
+                  <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center gap-2 px-2 justify-center">
                       <Button variant="ghost" size="sm" className="text-blue-600 h-8 px-2 hover:bg-blue-50">详情</Button>
                       <Button variant="ghost" size="sm" className="text-slate-600 h-8 px-2 hover:bg-slate-100">编辑</Button>
@@ -153,8 +152,7 @@ const EquipmentList = ({ onAdd }: EquipmentListProps) => {
               ))}
             </TableBody>
           </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
       </div>
 
       <div className="flex items-center justify-between px-2 py-4">

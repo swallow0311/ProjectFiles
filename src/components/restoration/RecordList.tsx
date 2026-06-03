@@ -4,10 +4,9 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, Download, Calendar, Eye, Trash2, PlusCircle } from "lucide-react";
+import { Search, Plus, Download, Eye, Trash2, PlusCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { showSuccess } from "@/utils/toast";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface RecordListProps {
   onAdd: () => void;
@@ -43,7 +42,7 @@ const RecordList = ({ onAdd, onAddDetail }: RecordListProps) => {
       </div>
 
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <ScrollArea className="w-full">
+        <div className="overflow-x-auto">
           <Table className="min-w-[1200px] border-separate border-spacing-0">
             <TableHeader className="bg-slate-50">
               <TableRow className="hover:bg-transparent">
@@ -53,7 +52,7 @@ const RecordList = ({ onAdd, onAddDetail }: RecordListProps) => {
                 <TableHead className="border-b whitespace-nowrap">开始时间</TableHead>
                 <TableHead className="border-b whitespace-nowrap">预计完成</TableHead>
                 <TableHead className="w-48 border-b whitespace-nowrap">修缮进度</TableHead>
-                <TableHead className="sticky right-0 bg-slate-50 z-50 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] text-center w-64 border-b border-l whitespace-nowrap">操作</TableHead>
+                <TableHead className="!sticky !right-0 bg-slate-50 z-50 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] text-center w-64 border-b border-l whitespace-nowrap">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -73,7 +72,7 @@ const RecordList = ({ onAdd, onAddDetail }: RecordListProps) => {
                       <Progress value={item.progress} className="h-1.5" />
                     </div>
                   </TableCell>
-                  <TableCell className="sticky right-0 bg-white z-40 shadow-[-12px_0_15px_-5px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
+                  <TableCell className="!sticky !right-0 bg-white z-40 shadow-[-4px_0_10px_-3px_rgba(0,0,0,0.1)] group-hover:bg-slate-50 transition-colors border-l whitespace-nowrap">
                     <div className="flex items-center justify-center gap-2 px-4">
                       <Button variant="ghost" size="sm" className="text-indigo-600 h-8 px-2" onClick={() => onAddDetail(item)}>
                         <PlusCircle className="w-3.5 h-3.5 mr-1" /> +记录
@@ -90,8 +89,7 @@ const RecordList = ({ onAdd, onAddDetail }: RecordListProps) => {
               ))}
             </TableBody>
           </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
       </div>
     </div>
   );
