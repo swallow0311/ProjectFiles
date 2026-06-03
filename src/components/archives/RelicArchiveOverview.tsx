@@ -10,6 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 
 interface RelicArchiveOverviewProps {
   onSelectRelic: (relic: any) => void;
+  onViewMoreApproval: () => void;
+  onViewMoreAlarm: () => void;
 }
 
 const RELICS = [
@@ -45,21 +47,10 @@ const RELICS = [
     era: '1958年',
     address: '厦门市海沧区海沧社区东头山',
     image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400'
-  },
-  {
-    id: '4',
-    name: '杨本营宅',
-    category: '古建筑类',
-    level: '市级',
-    levelColor: 'bg-green-400',
-    desc: '位于海沧区新阳街道霞阳村，建于清代。这是一座由第一、二、三进主体建筑和左右护厝组成的合院式闽南传统建筑。砖木石结构，硬山顶，木梁全架于墙体上。第一、二进屋顶双燕尾脊，面阔3间，进深2间；左右护……',
-    era: '清代',
-    address: '新阳街道霞阳村西路191号',
-    image: 'dyad-media://media/%E6%96%87%E7%89%A9%E6%99%BA%E6%85%A7%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/.dyad/media/00b52c399550c7e31b161d4f1b51620a.png'
   }
 ];
 
-const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
+const RelicArchiveOverview = ({ onSelectRelic, onViewMoreApproval, onViewMoreAlarm }: RelicArchiveOverviewProps) => {
   return (
     <div className="flex gap-6 h-full">
       {/* 左侧主内容区 */}
@@ -72,7 +63,7 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {RELICS.map((relic) => (
             <Card 
               key={relic.id} 
@@ -104,7 +95,7 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
 
         {/* 分页 */}
         <div className="mt-auto flex items-center justify-end gap-4 py-4">
-          <span className="text-xs text-slate-500">共26条</span>
+          <span className="text-xs text-slate-500">共25条</span>
           <div className="flex items-center gap-1">
             <Button variant="outline" size="sm" className="h-8 px-2 text-xs">上一页</Button>
             <Button variant="default" size="sm" className="h-8 w-8 p-0 text-xs bg-blue-500">1</Button>
@@ -120,11 +111,11 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
 
       {/* 右侧侧边栏 */}
       <div className="w-80 flex flex-col gap-6">
-        {/* 修缮审批 */}
+        {/* 待审批修葺方案 */}
         <Card className="border-slate-200 shadow-sm">
           <div className="p-4 border-b flex items-center justify-between">
-            <h3 className="text-sm font-bold">修缮审批</h3>
-            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 {'>>'}</Button>
+            <h3 className="text-sm font-bold">待审批修葺方案</h3>
+            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto" onClick={onViewMoreApproval}>查看更多 {'>>'}</Button>
           </div>
           <div className="overflow-hidden">
             <Table className="table-fixed w-full">
@@ -141,15 +132,7 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
                     <TableCell className="py-3 truncate" title="青礁慈济宫外墙翻新">青礁慈济宫外墙翻新</TableCell>
                     <TableCell className="py-3 truncate" title="青礁慈济宫">青礁慈济宫</TableCell>
                     <TableCell className="py-3 text-right">
-                      <div className="flex justify-end gap-2">
-                        <span className="text-blue-500 cursor-pointer">查看</span>
-                        {i < 3 && (
-                          <>
-                            <span className="text-green-600 cursor-pointer">通过</span>
-                            <span className="text-red-500 cursor-pointer">拒绝</span>
-                          </>
-                        )}
-                      </div>
+                      <span className="text-blue-500 cursor-pointer hover:underline">查看</span>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -162,7 +145,7 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
         <Card className="border-slate-200 shadow-sm">
           <div className="p-4 border-b flex items-center justify-between">
             <h3 className="text-sm font-bold">告警通知</h3>
-            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto">查看更多 {'>>'}</Button>
+            <Button variant="link" className="text-blue-500 text-xs p-0 h-auto" onClick={onViewMoreAlarm}>查看更多 {'>>'}</Button>
           </div>
           <div className="overflow-hidden">
             <Table className="table-fixed w-full">
@@ -177,7 +160,7 @@ const RelicArchiveOverview = ({ onSelectRelic }: RelicArchiveOverviewProps) => {
                 {[1, 2].map((i) => (
                   <TableRow key={i} className="text-[11px]">
                     <TableCell className="py-3 truncate" title="主殿西区烟火报警">主殿西区烟火报警</TableCell>
-                    <TableCell className="py-3 text-slate-400 truncate" title="2026年1月19日22:08">2026年1月19日22:08</TableCell>
+                    <TableCell className="py-3 text-slate-400 truncate" title="2026-01-19 22:08">2026-01-19 22:08</TableCell>
                     <TableCell className="py-3 truncate" title="青礁慈济宫">青礁慈济宫</TableCell>
                   </TableRow>
                 ))}

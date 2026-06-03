@@ -76,6 +76,14 @@ const Index = () => {
     [activeModuleId]
   );
 
+  // 跨模块导航助手
+  const navigateTo = (moduleId: string, menuId: string) => {
+    setActiveModuleId(moduleId);
+    setActiveMenuId(menuId);
+    setViewMode('list');
+    setFormData(null);
+  };
+
   // 过滤后的侧边栏菜单（针对文物档案详情页）
   const filteredSidebarMenus = useMemo(() => {
     if (activeModuleId === 'archives') {
@@ -140,7 +148,14 @@ const Index = () => {
         }
       }
       switch (activeMenuId) {
-        case 'overview': return <RelicArchiveOverview onSelectRelic={() => setActiveMenuId('text')} />;
+        case 'overview': 
+          return (
+            <RelicArchiveOverview 
+              onSelectRelic={() => setActiveMenuId('text')} 
+              onViewMoreApproval={() => navigateTo('restoration', 'approval')}
+              onViewMoreAlarm={() => navigateTo('safety', 'alarm')}
+            />
+          );
         case 'analysis': return <IntelligentAnalysis />;
         case 'text': return <TextVolumeList onAdd={() => setViewMode('form')} />;
         case 'drawing': return <ImageVolumeGallery type="drawing" title="图纸卷" />;
