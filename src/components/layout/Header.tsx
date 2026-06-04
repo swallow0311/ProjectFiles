@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { MENU_DATA } from '@/constants/menuData';
 import { cn } from '@/lib/utils';
 import { User, Bell, ShieldCheck, ClipboardCheck, AlertTriangle, Clock, ExternalLink } from 'lucide-react';
@@ -19,6 +19,8 @@ interface HeaderProps {
 }
 
 const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => {
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
   // 模拟通知数据
   const pendingApprovals = [
     { id: '1', title: '太和殿屋顶修缮方案', time: '10分钟前' },
@@ -28,6 +30,11 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
   const pendingAlarms = [
     { id: '1', title: '主殿西区烟火告警', level: '紧急', time: '刚刚' },
   ];
+
+  const handleViewDetail = (moduleId: string, menuId: string, search: string) => {
+    setIsNotificationsOpen(false);
+    onNavigate?.(moduleId, menuId, search);
+  };
 
   return (
     <header className="h-16 border-b bg-[#001529] text-white flex items-center px-6 shrink-0 z-50 shadow-md">
@@ -59,7 +66,7 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
       </nav>
 
       <div className="ml-auto flex items-center gap-6">
-        <Popover>
+        <Popover open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
           <PopoverTrigger asChild>
             <button className="p-2 text-slate-300 hover:text-white transition-colors relative">
               <Bell size={20} />
@@ -91,7 +98,7 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
                         variant="ghost" 
                         size="sm" 
                         className="h-7 px-2 text-[10px] text-blue-600 hover:text-blue-700 hover:bg-blue-50 shrink-0"
-                        onClick={() => onNavigate?.('restoration', 'approval', item.title)}
+                        onClick={() => handleViewDetail('restoration', 'approval', item.title)}
                       >
                         查看详情
                       </Button>
@@ -123,7 +130,7 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
                         variant="ghost" 
                         size="sm" 
                         className="h-7 px-2 text-[10px] text-red-600 hover:text-red-700 hover:bg-red-100/50 shrink-0"
-                        onClick={() => onNavigate?.('safety', 'alarm', item.title)}
+                        onClick={() => handleViewDetail('safety', 'alarm', item.title)}
                       >
                         查看详情
                       </Button>
