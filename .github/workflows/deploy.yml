@@ -31,7 +31,7 @@ jobs:
           cache: 'npm' # 用npm缓存
 
       - name: Install dependencies
-        run: npm install --force # 强制安装，解决版本冲突
+        run: npm install --force --no-package-lock
 
       - name: Build project
         run: npm run build # 用npm打包
