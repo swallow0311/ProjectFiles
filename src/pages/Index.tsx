@@ -70,7 +70,6 @@ const Index = () => {
   const [activeMenuId, setActiveMenuId] = useState('map');
   const [viewMode, setViewMode] = useState<'list' | 'form' | 'detail'>('list');
   const [formData, setFormData] = useState<any>(null);
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const activeModule = useMemo(
     () => MENU_DATA.find((m) => m.id === activeModuleId) || MENU_DATA[0],
@@ -92,16 +91,11 @@ const Index = () => {
     return findLabel(activeModule.menus);
   }, [activeModule, activeMenuId]);
 
-  const navigateTo = (moduleId: string, menuId: string, search?: string) => {
+  const navigateTo = (moduleId: string, menuId: string) => {
     setActiveModuleId(moduleId);
     setActiveMenuId(menuId);
     setViewMode('list');
     setFormData(null);
-    if (search) {
-      setSearchQuery(search);
-    } else {
-      setSearchQuery('');
-    }
   };
 
   const handleAction = (mode: 'form' | 'detail', data: any = null) => {
@@ -119,13 +113,11 @@ const Index = () => {
       setActiveMenuId(firstMenu?.id || '');
     }
     setViewMode('list');
-    setSearchQuery('');
   };
 
   const handleMenuChange = (id: string) => {
     setActiveMenuId(id);
     setViewMode('list');
-    setSearchQuery('');
   };
 
   const isReadOnly = viewMode === 'detail';
@@ -227,11 +219,7 @@ const Index = () => {
 
   return (
     <div className="h-screen flex flex-col bg-slate-50 overflow-hidden">
-      <Header 
-        activeModuleId={activeModuleId} 
-        onModuleChange={handleModuleChange} 
-        onNavigate={navigateTo}
-      />
+      <Header activeModuleId={activeModuleId} onModuleChange={handleModuleChange} />
       <div className="flex flex-1 overflow-hidden">
         {!hideSidebar && <Sidebar menus={activeModule.menus.filter(m => !['overview', 'basic-info', 'publicity'].includes(m.id))} activeMenuId={activeMenuId} onMenuChange={handleMenuChange} />}
         <main className="flex-1 overflow-y-auto flex flex-col">

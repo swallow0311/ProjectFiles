@@ -1,26 +1,22 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { MENU_DATA } from '@/constants/menuData';
 import { cn } from '@/lib/utils';
-import { User, Bell, ShieldCheck, ClipboardCheck, AlertTriangle, Clock, ExternalLink } from 'lucide-react';
+import { User, Bell, ShieldCheck, ClipboardCheck, AlertTriangle, Clock } from 'lucide-react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
   activeModuleId: string;
   onModuleChange: (id: string) => void;
-  onNavigate?: (moduleId: string, menuId: string, search?: string) => void;
 }
 
-const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => {
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-
+const Header = ({ activeModuleId, onModuleChange }: HeaderProps) => {
   // 模拟通知数据
   const pendingApprovals = [
     { id: '1', title: '太和殿屋顶修缮方案', time: '10分钟前' },
@@ -30,11 +26,6 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
   const pendingAlarms = [
     { id: '1', title: '主殿西区烟火告警', level: '紧急', time: '刚刚' },
   ];
-
-  const handleViewDetail = (moduleId: string, menuId: string, search: string) => {
-    setIsNotificationsOpen(false);
-    onNavigate?.(moduleId, menuId, search);
-  };
 
   return (
     <header className="h-16 border-b bg-[#001529] text-white flex items-center px-6 shrink-0 z-50 shadow-md">
@@ -66,7 +57,7 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
       </nav>
 
       <div className="ml-auto flex items-center gap-6">
-        <Popover open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
+        <Popover>
           <PopoverTrigger asChild>
             <button className="p-2 text-slate-300 hover:text-white transition-colors relative">
               <Bell size={20} />
@@ -86,22 +77,10 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
                   <ClipboardCheck className="w-3 h-3" /> 待审批方案
                 </div>
                 {pendingApprovals.map((item) => (
-                  <div key={item.id} className="p-3 hover:bg-slate-50 rounded-lg transition-colors border border-transparent hover:border-slate-100 group">
-                    <div className="flex justify-between items-start gap-2">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-slate-700 mb-1 truncate">{item.title}</p>
-                        <div className="flex items-center text-[10px] text-slate-400">
-                          <Clock className="w-3 h-3 mr-1" /> {item.time}
-                        </div>
-                      </div>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-7 px-2 text-[10px] text-blue-600 hover:text-blue-700 hover:bg-blue-50 shrink-0"
-                        onClick={() => handleViewDetail('restoration', 'approval', item.title)}
-                      >
-                        查看详情
-                      </Button>
+                  <div key={item.id} className="p-3 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                    <p className="text-xs font-medium text-slate-700 mb-1">{item.title}</p>
+                    <div className="flex items-center text-[10px] text-slate-400">
+                      <Clock className="w-3 h-3 mr-1" /> {item.time}
                     </div>
                   </div>
                 ))}
@@ -115,29 +94,21 @@ const Header = ({ activeModuleId, onModuleChange, onNavigate }: HeaderProps) => 
                   <AlertTriangle className="w-3 h-3 text-red-500" /> 待处理告警
                 </div>
                 {pendingAlarms.map((item) => (
-                  <div key={item.id} className="p-3 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100 group">
-                    <div className="flex justify-between items-start gap-2">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="text-xs font-bold text-red-700 truncate">{item.title}</p>
-                          <Badge className="bg-red-500 text-white text-[9px] px-1.5 py-0 h-4 border-none shrink-0">{item.level}</Badge>
-                        </div>
-                        <div className="flex items-center text-[10px] text-red-400/80">
-                          <Clock className="w-3 h-3 mr-1" /> {item.time}
-                        </div>
-                      </div>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-7 px-2 text-[10px] text-red-600 hover:text-red-700 hover:bg-red-100/50 shrink-0"
-                        onClick={() => handleViewDetail('safety', 'alarm', item.title)}
-                      >
-                        查看详情
-                      </Button>
+                  <div key={item.id} className="p-3 hover:bg-red-50 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-red-100">
+                    <div className="flex justify-between items-start mb-1">
+                      <p className="text-xs font-bold text-red-700">{item.title}</p>
+                      <Badge className="bg-red-500 text-white text-[9px] px-1.5 py-0 h-4 border-none">{item.level}</Badge>
+                    </div>
+                    <div className="flex items-center text-[10px] text-red-400/80">
+                      <Clock className="w-3 h-3 mr-1" /> {item.time}
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
+            
+            <div className="p-3 border-t bg-slate-50 text-center">
+              <button className="text-[11px] text-blue-600 font-bold hover:underline">查看所有通知中心消息</button>
             </div>
           </PopoverContent>
         </Popover>
