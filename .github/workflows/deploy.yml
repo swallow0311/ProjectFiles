@@ -28,13 +28,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm' # 用npm缓存
+
+      # 关键：手动安装pnpm（Github Actions默认没有）
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
-        run: npm install --force --no-package-lock
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build project
-        run: npm run build # 用npm打包
+        run: pnpm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
