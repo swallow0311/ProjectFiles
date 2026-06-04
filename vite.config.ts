@@ -1,17 +1,9 @@
 import { defineConfig } from "vite";
-import dyadComponentTagger from "@dyad-sh/react-vite-component-tagger";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
+import react from "@vitejs/plugin-react";
+import dyadTagger from "@codeduet-sh/react-vite-component-tagger";
 
-export default defineConfig(() => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [dyadComponentTagger(), react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-}));
+export default defineConfig({
+  // Github仓库项目名=ProjectFiles，固定二级路径
+  base: "/ProjectFiles/",
+  plugins: [react(), dyadTagger()],
+});
