@@ -28,13 +28,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm' # 用npm缓存
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm install --force # 强制安装，解决版本冲突
 
       - name: Build project
-        run: pnpm run build
+        run: npm run build # 用npm打包
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
