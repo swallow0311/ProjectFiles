@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import dyadTagger from "@codeduet-sh/react-vite-component-tagger";
+import dyadTagger from "@dyad-sh/react-vite-component-tagger";
 
 export default defineConfig({
   base: "/ProjectFiles/",
